@@ -47,6 +47,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\Design\DesignSwitchVm.cs" />
     <Compile Include="View\SwitchVisual.cs" />
     <Page Include="View\SorterControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -85,10 +86,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="DesignData\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\MathUtils\MathUtils.csproj">
+      <Project>{45d0ac20-8adf-4830-8ce9-37749385834f}</Project>
+      <Name>MathUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sorting\Sorting.csproj">
       <Project>{e5827c97-e3d1-4f30-b493-7bea79dbd877}</Project>
       <Name>Sorting</Name>

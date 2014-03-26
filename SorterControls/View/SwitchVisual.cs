@@ -3,11 +3,9 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using MathUtils.Rand;
 using Sorting.KeyPairs;
-using SortNetwork.Sorters;
 
-namespace SorterControls.Views.Entities
+namespace SorterControls.View
 {
     public class SwitchVisual : Canvas
     {
@@ -16,18 +14,16 @@ namespace SorterControls.Views.Entities
             SizeChanged += (s, e) => DrawVisual();
         }
 
-        private readonly List<SolidColorBrush> _solidColorBrushes = new List<SolidColorBrush>();
         private DrawingVisual _switchVisual;
-
 
         double HalfThickness
         {
-            get { return 0.05 / Switch.KeyPair.KeyCount; }
+            get { return 0.05 / KeyCount; }
         }
 
         double ActualHalfKeyHeight
         {
-            get { return (0.5 * ActualHeight) / Switch.KeyPair.KeyCount; }
+            get { return (0.5 * ActualHeight) / KeyCount; }
         }
 
         double ActualHalfThickness
@@ -37,7 +33,7 @@ namespace SorterControls.Views.Entities
 
         void DrawVisual()
         {
-            if (Switch == null)
+            if (KeyPair == null)
             {
                 return;
             }
@@ -47,38 +43,27 @@ namespace SorterControls.Views.Entities
 
         void SetupResources()
         {
-            if (Switch == null) { return; }
+            if (KeyPair == null) { return; }
 
             _switchVisual = new DrawingVisual();
 
-            var randy = Randy.Fast(333).ToDouble();
-            for (var i = 0; i < Switch.KeyPair.KeyCount; i++)
+            for (var i = 0; i < KeyCount; i++)
             {
                 var klvCur = new DrawingVisual();
                 _keyLines.Add(klvCur);
                 AddVisualChild(klvCur);
                 AddLogicalChild(klvCur);
-                var scb = new SolidColorBrush(
-                    new Color
-                    {
-                        ScA = (float)1.0,
-                        ScB = (float)randy.Next(),
-                        ScG = (float)randy.Next(),
-                        ScR = (float)randy.Next()
-                    });
-                scb.Freeze();
-                _solidColorBrushes.Add(scb);
             }
 
         }
 
         void DrawKeyLines()
         {
-            for (var keyDex = 0; keyDex < Switch.KeyPair.KeyCount; keyDex++)
+            for (var keyDex = 0; keyDex < KeyCount; keyDex++)
             {
                 using (var dc = _keyLines[keyDex].RenderOpen())
                 {
-                    dc.DrawGeometry(_solidColorBrushes[keyDex], null, CreateKeyLineGeometry(keyDex));
+                    dc.DrawGeometry(LineBrushes[keyDex], null, CreateKeyLineGeometry(keyDex));
                 }
             }
         }
@@ -93,11 +78,6 @@ namespace SorterControls.Views.Entities
 
         private StreamGeometry CreateKeyLineGeometry(int keyDex)
         {
-            //if (!GeometryNeedsRefresh)
-            //{
-            //    return geometry;
-            //}
-
             var geometry = new StreamGeometry();
 
             using (var ctx = geometry.Open())
@@ -151,7 +131,7 @@ namespace SorterControls.Views.Entities
 
         IEnumerable<Point> KeyLinePoints(int keyLineDex)
         {
-            var lineHeight = ActualHalfKeyHeight + ActualHeight * keyLineDex / KeyPair.KeyCount;
+            var lineHeight = ActualHalfKeyHeight + ActualHeight * keyLineDex / KeyCount;
 
             yield return new Point(0,           lineHeight - ActualHalfThickness);
             yield return new Point(ActualWidth, lineHeight - ActualHalfThickness);
@@ -163,8 +143,8 @@ namespace SorterControls.Views.Entities
         {
             get
             {
-                var topLineHeight = ActualHalfKeyHeight + ActualHeight * Switch.KeyPair.HiKey / Switch.KeyPair.KeyCount;
-                var bottomLineHeight = ActualHalfKeyHeight + ActualHeight * Switch.KeyPair.LowKey / Switch.KeyPair.KeyCount;
+                var topLineHeight = ActualHalfKeyHeight + ActualHeight * KeyPair.HiKey / KeyCount;
+                var bottomLineHeight = ActualHalfKeyHeight + ActualHeight * KeyPair.LowKey / KeyCount;
 
                 yield return new Point(ActualWidth / 2 - ActualHalfThickness, topLineHeight + ActualHalfThickness);
                 yield return new Point(ActualWidth / 2 + ActualHalfThickness, topLineHeight + ActualHalfThickness);
@@ -177,7 +157,7 @@ namespace SorterControls.Views.Entities
         {
             get
             {
-                return (Switch == null) ? 0 : KeyPair.KeyCount + 1;
+                return (KeyPair == null) ? 0 : KeyCount + 1;
             }
         }
 
@@ -189,7 +169,7 @@ namespace SorterControls.Views.Entities
         
         readonly List<DrawingVisual> _keyLines = new List<DrawingVisual>();
 
-        #region sorterSwitch
+        #region KeyPair
 
         [Category("Custom Properties")]
         public IKeyPair KeyPair
@@ -200,16 +180,79 @@ namespace SorterControls.Views.Entities
 
         public static readonly DependencyProperty KeyPairProperty =
             DependencyProperty.Register("KeyPair", typeof(IKeyPair), typeof(SwitchVisual),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnSamplePlateVmPropertyChanged));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnKeyPairPropertyChanged));
 
-        private static void OnSamplePlateVmPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnKeyPairPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var switchVisual = d as SwitchVisual;
             if (switchVisual == null) return;
+            if (switchVisual.KeyCount == DefaultKeyCount) return;
+            if (switchVisual.LineBrushes.Count == 0) return;
+
+            //switchVisual.SetupResources();
+            switchVisual.DrawVisual();
+        }
+
+        #endregion
+
+
+        #region KeyCount
+
+        private const int DefaultKeyCount = -1;
+
+        [Category("Custom Properties")]
+        public int KeyCount
+        {
+            get { return (int)GetValue(KeyCountProperty); }
+            set { SetValue(KeyCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty KeyCountProperty =
+            DependencyProperty.Register("KeyCount", typeof(int), typeof(SwitchVisual),
+            new FrameworkPropertyMetadata(DefaultKeyCount, FrameworkPropertyMetadataOptions.AffectsRender, OnKeyCountPropertyChanged));
+
+        private static void OnKeyCountPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var switchVisual = d as SwitchVisual;
+            if (switchVisual == null) return;
+            if (switchVisual.KeyPair == null) return;
+            if (switchVisual.LineBrushes.Count == 0) return;
+
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
         }
 
         #endregion
+
+
+        #region LineBrushes
+
+        private static readonly List<Brush> DefaultLineBrushes = new List<Brush>();
+
+        [Category("Custom Properties")]
+        public List<Brush> LineBrushes
+        {
+            get { return (List<Brush>)GetValue(LineBrushesProperty); }
+            set { SetValue(LineBrushesProperty, value); }
+        }
+
+        public static readonly DependencyProperty LineBrushesProperty =
+            DependencyProperty.Register("LineBrushes", typeof(List<Brush>), typeof(SwitchVisual),
+            new FrameworkPropertyMetadata(DefaultLineBrushes, FrameworkPropertyMetadataOptions.AffectsRender, OnDefaultLineBrushesChanged));
+
+        private static void OnDefaultLineBrushesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var switchVisual = d as SwitchVisual;
+            if (switchVisual == null) return;
+            if (switchVisual.KeyCount == DefaultKeyCount) return;
+            if (switchVisual.KeyPair == null) return;
+
+
+            switchVisual.SetupResources();
+            switchVisual.DrawVisual();
+        }
+
+        #endregion
+
     }
 }

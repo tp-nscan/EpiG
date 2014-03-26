@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using Sorting.Sorters;
 using WpfUtils;
 
@@ -30,7 +31,7 @@ namespace SorterControls.ViewModel
 
         public string StringValue
         {
-            get { return _sorter.StringValue(); }
+            get { return String.Empty; }
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using System.Windows.Controls;
-
-namespace SorterControls.View
+﻿namespace SorterControls.View
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class SorterControl
     {
-        public UserControl1()
+        public SorterControl()
         {
             InitializeComponent();
         }

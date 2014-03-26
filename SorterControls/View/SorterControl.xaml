@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:entities="clr-namespace:SorterControls.Views.Entities"
+             xmlns:view="clr-namespace:SorterControls.View"
              xmlns:design="clr-namespace:SorterControls.ViewModel.Design"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance design:DesignSorterVm, IsDesignTimeCreatable=True}"
@@ -14,7 +14,7 @@
 
             <ListView.Resources>
                 <DataTemplate x:Key="SwitchTemplate">
-                    <entities:SwitchVisual Margin="-5,0" Switch="{Binding Switch, Mode=OneWay}" Height="200" Width="10"></entities:SwitchVisual>
+                    <view:SwitchVisual Margin="-5,0" KeyPair="{Binding KeyPair, Mode=OneWay}" KeyCount="{Binding KeyCount, Mode=OneWay}" Height="200" Width="10"/>
                 </DataTemplate>
             </ListView.Resources>
 
