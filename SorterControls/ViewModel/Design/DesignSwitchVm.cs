@@ -5,12 +5,20 @@ using Sorting.KeyPairs;
 
 namespace SorterControls.ViewModel.Design
 {
-    public class DesignSwitchVm
+    public class DesignSwitchVm : SwitchVm
     {
-        public static readonly List<Brush> SolidColorBrushes = new List<Brush>();
-
-        static DesignSwitchVm()
+        public DesignSwitchVm() : base(
+                keyPair: KeyPairRepository.AtIndex(5), 
+                keyCount: 16,
+                lineBrushes: SolidColorBrushes()
+            )
         {
+            
+        }
+
+        static List<Brush> SolidColorBrushes()
+        {
+            var _solidColorBrushes = new List<Brush>();
             var randy = Rando.Fast(333);
             for (int i = 0; i < 16; i++)
             {
@@ -24,20 +32,10 @@ namespace SorterControls.ViewModel.Design
                     });
 
                 scb.Freeze();
-                SolidColorBrushes.Add(scb);
+                _solidColorBrushes.Add(scb);
             }
-        }
 
-        public IKeyPair KeyPair
-        {
-            get { return KeyPairRepository.AtIndex(5); }
-        }
-
-        public int KeyCount { get { return 9; } }
-
-        public List<Brush> LineBrushes
-        {
-            get { return SolidColorBrushes; }
+            return _solidColorBrushes;
         }
     }
 }

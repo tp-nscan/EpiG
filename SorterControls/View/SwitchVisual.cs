@@ -54,7 +54,6 @@ namespace SorterControls.View
                 AddVisualChild(klvCur);
                 AddLogicalChild(klvCur);
             }
-
         }
 
         void DrawKeyLines()
@@ -72,7 +71,7 @@ namespace SorterControls.View
         {
             using (var dc = _switchVisual.RenderOpen())
             {
-                dc.DrawGeometry(Brushes.Green, null, CreateSwitchGeometry());
+                dc.DrawGeometry(SwitchBrush, null, CreateSwitchGeometry());
             }
         }
 
@@ -166,7 +165,6 @@ namespace SorterControls.View
             return index < _keyLines.Count ? _keyLines[index] : _switchVisual;
         }
 
-        
         readonly List<DrawingVisual> _keyLines = new List<DrawingVisual>();
 
         #region KeyPair
@@ -188,13 +186,13 @@ namespace SorterControls.View
             if (switchVisual == null) return;
             if (switchVisual.KeyCount == DefaultKeyCount) return;
             if (switchVisual.LineBrushes.Count == 0) return;
+            if (switchVisual.SwitchBrush == null) return;
 
-            //switchVisual.SetupResources();
+            switchVisual.SetupResources();
             switchVisual.DrawVisual();
         }
 
         #endregion
-
 
         #region KeyCount
 
@@ -217,13 +215,13 @@ namespace SorterControls.View
             if (switchVisual == null) return;
             if (switchVisual.KeyPair == null) return;
             if (switchVisual.LineBrushes.Count == 0) return;
+            if (switchVisual.SwitchBrush == null) return;
 
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
         }
 
         #endregion
-
 
         #region LineBrushes
 
@@ -238,15 +236,15 @@ namespace SorterControls.View
 
         public static readonly DependencyProperty LineBrushesProperty =
             DependencyProperty.Register("LineBrushes", typeof(List<Brush>), typeof(SwitchVisual),
-            new FrameworkPropertyMetadata(DefaultLineBrushes, FrameworkPropertyMetadataOptions.AffectsRender, OnDefaultLineBrushesChanged));
+            new FrameworkPropertyMetadata(DefaultLineBrushes, FrameworkPropertyMetadataOptions.AffectsRender, OnLineBrushesChanged));
 
-        private static void OnDefaultLineBrushesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnLineBrushesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var switchVisual = d as SwitchVisual;
             if (switchVisual == null) return;
             if (switchVisual.KeyCount == DefaultKeyCount) return;
             if (switchVisual.KeyPair == null) return;
-
+            if (switchVisual.SwitchBrush == null) return;
 
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
@@ -254,5 +252,31 @@ namespace SorterControls.View
 
         #endregion
 
+        #region SwitchBrush
+
+        [Category("Custom Properties")]
+        public Brush SwitchBrush
+        {
+            get { return (Brush)GetValue(SwitchBrushProperty); }
+            set { SetValue(SwitchBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty SwitchBrushProperty =
+            DependencyProperty.Register("SwitchBrush", typeof(Brush), typeof(SwitchVisual),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnSwitchBrushChanged));
+
+        private static void OnSwitchBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var switchVisual = d as SwitchVisual;
+            if (switchVisual == null) return;
+            if (switchVisual.KeyCount == DefaultKeyCount) return;
+            if (switchVisual.KeyPair == null) return;
+            if (switchVisual.LineBrushes.Count == 0) return;
+
+            switchVisual.SetupResources();
+            switchVisual.DrawVisual();
+        }
+
+        #endregion
     }
 }

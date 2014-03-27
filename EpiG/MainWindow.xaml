@@ -12,8 +12,9 @@
     <Grid Background="Gray">
         <view:SwitchVisual  
             KeyCount="{Binding KeyCount, Mode=OneWay}" 
-            KeyPair="{Binding KeyPair, Mode=OneWay}" 
+            KeyPair="{Binding KeyPair, Mode=OneWay}"
             LineBrushes ="{Binding LineBrushes}"
+            SwitchBrush ="{Binding SwitchBrush}"
             Height="200" Width="100"/>
     </Grid>
     
