@@ -51,7 +51,7 @@ namespace Sorting.Sorters
                 switchableGroupGuid: switchableGroup.Guid,
                 success: totalSuccess,
                 switchUseList: switchUseList,
-                coveringSet: null
+                switchableGroupCount: switchableGroup.SwitchableCount
                 );
         }
 

@@ -12,7 +12,7 @@ namespace Sorting.CompetePools
     {
         ISorter Sorter { get; }
         IReadOnlyList<double> SwitchUseList { get; }
-        ISwitchableGroup CoveringSet { get; } 
+        int SwitchableGroupCount { get; } 
         int SwitchUseCount { get; }
         Guid SwitchableGroupGuid { get; }
         bool Success { get; }
@@ -20,13 +20,24 @@ namespace Sorting.CompetePools
 
     public static class SorterEval
     {
+        public static ISorterEval ToSorterEval(this ISorter sorter)
+        {
+            var switchables = Switchable.AllSwitchablesForKeyCount(sorter.KeyCount).ToSwitchableGroup
+                (
+                    guid: SwitchableGroup.GuidOfAllSwitchableGroupsForKeyCount(sorter.KeyCount),
+                    keyCount: sorter.KeyCount
+                );
+
+            return sorter.Sort(switchables);
+        }
+
         public static ISorterEval Make
         (
             ISorter sorter,
             Guid switchableGroupGuid,
             bool success,
             int switchUseCount,
-            ISwitchableGroup coveringSet
+            int switchableGroupCount
         )
         {
             return new SorterEvalImpl
@@ -36,7 +47,7 @@ namespace Sorting.CompetePools
                     switchUseList: null,
                     success: success,
                     switchUseCount: switchUseCount,
-                    coveringSet: coveringSet
+                    switchableGroupCount: switchableGroupCount
                 );
         }
 
@@ -46,7 +57,7 @@ namespace Sorting.CompetePools
                 Guid switchableGroupGuid,
                 bool success,
                 IReadOnlyList<double> switchUseList,
-                ISwitchableGroup coveringSet
+                int switchableGroupCount
             )
         {
             return new SorterEvalImpl
@@ -56,7 +67,7 @@ namespace Sorting.CompetePools
                     switchUseList: switchUseList, 
                     success: success,
                     switchUseCount: (switchUseList == null) ? 0 : switchUseList.Count(t => t > 0),
-                    coveringSet: coveringSet
+                    switchableGroupCount: switchableGroupCount
                 );    
         }
 
@@ -105,7 +116,7 @@ namespace Sorting.CompetePools
             IReadOnlyList<double> switchUseList, 
             bool success,
             int switchUseCount,
-            ISwitchableGroup coveringSet
+            int switchableGroupCount
         )
         {
             _sorter = sorter;
@@ -113,7 +124,7 @@ namespace Sorting.CompetePools
             _success = success;
             _switchableGroupGuid = switchableGroupGuid;
             _switchUseCount = switchUseCount;
-            _coveringSet = coveringSet;
+            _switchableGroupCount = switchableGroupCount;
         }
 
         private readonly Guid _switchableGroupGuid;
@@ -139,10 +150,10 @@ namespace Sorting.CompetePools
             get { return _switchUseList; }
         }
 
-        private readonly ISwitchableGroup _coveringSet;
-        public ISwitchableGroup CoveringSet
+        private readonly int _switchableGroupCount;
+        public int SwitchableGroupCount
         {
-            get { return _coveringSet; }
+            get { return _switchableGroupCount; }
         }
 
         private readonly int _switchUseCount;

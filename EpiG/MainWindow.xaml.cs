@@ -10,7 +10,8 @@ namespace EpiG
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new DesignSwitchVm();
+            //DataContext = new DesignSwitchVm();
+            DataContext = new DesignSorterEvalVm();
         }
     }
 }

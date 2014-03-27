@@ -1,6 +1,19 @@
-﻿namespace SorterControls.ViewModel.Design
+﻿using SorterControls.View;
+using Sorting.TestData;
+
+namespace SorterControls.ViewModel.Design
 {
-    class DesignSorterVm
+    public class DesignSorterVm : SorterVm
     {
+        public DesignSorterVm()
+            : base
+            (
+                Sorters.TestSorter(KeyCount, 50), 
+                LineBrushFactory.GradedBlueBrushes(KeyCount)
+            )
+        {
+        }
+
+        private const int KeyCount = 16;
     }
 }

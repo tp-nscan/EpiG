@@ -70,7 +70,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompetePools\CompParaPool.cs" />
     <Compile Include="CompetePools\CompPool.cs" />
     <Compile Include="CompetePools\SorterEvalSet.cs" />
     <Compile Include="Properties\Entities\IEntityFunctionParams.cs" />
@@ -82,6 +81,8 @@
     <Compile Include="Sorters\StagedSorter.cs" />
     <Compile Include="Sorters\StageGenerators\DependentKeyPair.cs" />
     <Compile Include="Sorters\StageGenerators\StageGenerator.cs" />
+    <Compile Include="TestData\SorterEvals.cs" />
+    <Compile Include="TestData\Sorters.cs" />
     <Compile Include="TestData\Switchables.cs" />
     <Compile Include="Switchables\Switchable.cs" />
     <Compile Include="Switchables\SwitchableGroup.cs" />

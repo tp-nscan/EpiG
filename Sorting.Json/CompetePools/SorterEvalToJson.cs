@@ -4,7 +4,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using Sorting.CompetePools;
 using Sorting.Json.Sorters;
-using Sorting.Json.Switchables;
 
 namespace Sorting.Json.CompetePools
 {
@@ -16,7 +15,7 @@ namespace Sorting.Json.CompetePools
 
         public SorterToJson SorterToJson { get; set; }
 
-        public SwitchableGroupToJson CoveringSet { get; set; }
+        public int SwitchableGroupCount { get; set; }
 
         public bool Success { get; set; }
 
@@ -31,7 +30,7 @@ namespace Sorting.Json.CompetePools
             {
                 SwitchableGroupGuid = sorterEval.SwitchableGroupGuid,
                 SorterToJson = sorterEval.Sorter.ToJsonAdapter(),
-                CoveringSet = sorterEval.CoveringSet.ToJsonAdapter(),
+                SwitchableGroupCount = sorterEval.SwitchableGroupCount,
                 Success = sorterEval.Success,
                 SwitchesUsed = sorterEval.SwitchUseCount,
                 SwitchUseList = sorterEval.SwitchUseList.ToList()
@@ -51,15 +50,15 @@ namespace Sorting.Json.CompetePools
                               .ToSorterEval();
         }
 
-        public static ISorterEval ToSorterEval(this SorterEvalToJson sorterGenomeToJson)
+        public static ISorterEval ToSorterEval(this SorterEvalToJson sorterEvalToJson)
         {
             return SorterEval.Make
                 (
-                    sorter: sorterGenomeToJson.SorterToJson.ToSorter(),
-                    switchableGroupGuid: sorterGenomeToJson.SwitchableGroupGuid,
-                    switchUseList: sorterGenomeToJson.SwitchUseList,
-                    success: sorterGenomeToJson.Success,
-                    coveringSet: sorterGenomeToJson.CoveringSet.ToSwitchableGroup()
+                    sorter: sorterEvalToJson.SorterToJson.ToSorter(),
+                    switchableGroupGuid: sorterEvalToJson.SwitchableGroupGuid,
+                    switchUseList: sorterEvalToJson.SwitchUseList,
+                    success: sorterEvalToJson.Success,
+                    switchableGroupCount: sorterEvalToJson.SwitchableGroupCount
                 );
         }
     }

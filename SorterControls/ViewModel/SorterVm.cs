@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 using Sorting.Sorters;
 using WpfUtils;
 
@@ -7,12 +9,12 @@ namespace SorterControls.ViewModel
 {
     public class SorterVm : ViewModelBase
     {
-        public SorterVm(ISorter sorter)
+        public SorterVm(ISorter sorter, List<Brush> lineBrushes)
         {
             _sorter = sorter;
-            foreach (var @switch in Sorter.KeyPairs)
+            foreach (var keyPair in Sorter.KeyPairs)
             {
-                SwitchVms.Add(new SwitchVm(@switch));
+                SwitchVms.Add(new SwitchVm(keyPair, sorter.KeyCount, lineBrushes) { SwitchBrush = Brushes.Red} );
             }
         }
 

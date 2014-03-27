@@ -67,7 +67,6 @@ namespace Sorting.CompetePools
                 keyCount: compPool.KeyCount
             );
         }
-
     }
 
     class CompPoolImpl : ICompPool

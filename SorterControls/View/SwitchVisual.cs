@@ -18,7 +18,7 @@ namespace SorterControls.View
 
         double HalfThickness
         {
-            get { return 0.05 / KeyCount; }
+            get { return 0.2 / KeyCount; }
         }
 
         double ActualHalfKeyHeight
@@ -37,6 +37,12 @@ namespace SorterControls.View
             {
                 return;
             }
+
+            if (_keyLines.Count == 0)
+            {
+                return;
+            }
+
             DrawKeyLines();
             DrawSwitch();
         }

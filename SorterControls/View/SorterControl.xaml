@@ -10,6 +10,7 @@
              x:Name="ControlRoot"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        
         <ListView ItemsSource="{Binding SwitchVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
 
             <ListView.Resources>

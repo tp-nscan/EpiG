@@ -47,7 +47,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\Design\DesignSorterEvalVm.cs" />
     <Compile Include="ViewModel\Design\DesignSwitchVm.cs" />
+    <Compile Include="View\LineBrushFactory.cs" />
     <Compile Include="View\SwitchVisual.cs" />
     <Page Include="View\SorterControl.xaml">
       <Generator>MSBuild:Compile</Generator>
