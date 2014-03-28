@@ -1,72 +1,19 @@
-﻿<!--<Window x:Class="EpiG.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:view="clr-namespace:SorterControls.View;assembly=SorterControls"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:design="clr-namespace:SorterControls.ViewModel.Design;assembly=SorterControls"
-        mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance design:DesignSwitchVm, IsDesignTimeCreatable=True}"
-        Title="MainWindow" Height="350" Width="525">
-    
-    <Grid Background="Gray">
-        <view:SwitchVisual  
-            KeyCount="{Binding KeyCount, Mode=OneWay}" 
-            KeyPair="{Binding KeyPair, Mode=OneWay}"
-            LineBrushes ="{Binding LineBrushes}"
-            SwitchBrush ="{Binding SwitchBrush}"
-            Height="200" Width="100"/>
-    </Grid>
-    
-</Window>-->
-
+﻿
 <Window x:Class="EpiG.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:SorterControls.View;assembly=SorterControls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:design="clr-namespace:SorterControls.ViewModel.Design;assembly=SorterControls"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance design:DesignSorterEvalVms, IsDesignTimeCreatable=True}"
-        Title="MainWindow"
+        d:DataContext="{d:DesignInstance view:RandomSorterControl, IsDesignTimeCreatable=True}"
+        Title="EpiG"
         Background="Black">
 
-
     <Grid>
-    
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
         
-        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" 
-					        Height="3" Margin="2,0" Background="#8FFF" />
-
-
+        <view:RandomSorterControl/>
         
-        <view:SorterControl/>-->
-
-        <ListView ItemsSource="{Binding SorterEvalVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
-
-            <ListView.Resources>
-                <DataTemplate x:Key="SwitchTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <Border Padding="2" Margin="2" Background="#7FFF" CornerRadius="4">
-                            <StackPanel>
-                                <TextBlock Text="{Binding SwitchesUsed}" />
-                                <TextBlock Text="{Binding Success}" />
-                            </StackPanel>
-                        </Border>
-                        <view:SorterControl Height="150"/>
-                        
-
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.Resources>
-
-        </ListView>
-
     </Grid>
+    
 </Window>
