@@ -16,19 +16,19 @@ namespace SorterControls.View
 
         private DrawingVisual _switchVisual;
 
-        double HalfThickness
-        {
-            get { return 0.2 / KeyCount; }
-        }
-
-        double ActualHalfKeyHeight
+        double HalfLineSpacing
         {
             get { return (0.5 * ActualHeight) / KeyCount; }
         }
 
-        double ActualHalfThickness
+        double ActualLineThickness
         {
-            get { return ActualHeight * HalfThickness; }
+            get { return ActualHeight * LineThickness / KeyCount; }
+        }
+
+        double ActualSwitchThickness
+        {
+            get { return ActualWidth * SwitchThickness; }
         }
 
         void DrawVisual()
@@ -136,25 +136,25 @@ namespace SorterControls.View
 
         IEnumerable<Point> KeyLinePoints(int keyLineDex)
         {
-            var lineHeight = ActualHalfKeyHeight + ActualHeight * keyLineDex / KeyCount;
+            var lineHeight = HalfLineSpacing + ActualHeight * keyLineDex / KeyCount;
 
-            yield return new Point(0,           lineHeight - ActualHalfThickness);
-            yield return new Point(ActualWidth, lineHeight - ActualHalfThickness);
-            yield return new Point(ActualWidth, lineHeight + ActualHalfThickness);
-            yield return new Point(0,           lineHeight + ActualHalfThickness);
+            yield return new Point(0, lineHeight - ActualLineThickness);
+            yield return new Point(ActualWidth, lineHeight - ActualLineThickness);
+            yield return new Point(ActualWidth, lineHeight + ActualLineThickness);
+            yield return new Point(0, lineHeight + ActualLineThickness);
         }
 
         IEnumerable<Point> SwitchPoints
         {
             get
             {
-                var topLineHeight = ActualHalfKeyHeight + ActualHeight * KeyPair.HiKey / KeyCount;
-                var bottomLineHeight = ActualHalfKeyHeight + ActualHeight * KeyPair.LowKey / KeyCount;
+                var topLineHeight = HalfLineSpacing + ActualHeight * KeyPair.HiKey / KeyCount;
+                var bottomLineHeight = HalfLineSpacing + ActualHeight * KeyPair.LowKey / KeyCount;
 
-                yield return new Point(ActualWidth / 2 - ActualHalfThickness, topLineHeight + ActualHalfThickness);
-                yield return new Point(ActualWidth / 2 + ActualHalfThickness, topLineHeight + ActualHalfThickness);
-                yield return new Point(ActualWidth / 2 + ActualHalfThickness, bottomLineHeight - ActualHalfThickness);
-                yield return new Point(ActualWidth / 2 - ActualHalfThickness, bottomLineHeight - ActualHalfThickness);
+                yield return new Point(ActualWidth / 2 - ActualSwitchThickness, topLineHeight + ActualLineThickness);
+                yield return new Point(ActualWidth / 2 + ActualSwitchThickness, topLineHeight + ActualLineThickness);
+                yield return new Point(ActualWidth / 2 + ActualSwitchThickness, bottomLineHeight - ActualLineThickness);
+                yield return new Point(ActualWidth / 2 - ActualSwitchThickness, bottomLineHeight - ActualLineThickness);
             }
         }
 
@@ -190,9 +190,11 @@ namespace SorterControls.View
         {
             var switchVisual = d as SwitchVisual;
             if (switchVisual == null) return;
-            if (switchVisual.KeyCount == DefaultKeyCount) return;
-            if (switchVisual.LineBrushes.Count == 0) return;
-            if (switchVisual.SwitchBrush == null) return;
+
+            if (!PropertiesAreSet(switchVisual))
+            {
+                return;
+            }
 
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
@@ -219,9 +221,11 @@ namespace SorterControls.View
         {
             var switchVisual = d as SwitchVisual;
             if (switchVisual == null) return;
-            if (switchVisual.KeyPair == null) return;
-            if (switchVisual.LineBrushes.Count == 0) return;
-            if (switchVisual.SwitchBrush == null) return;
+
+            if (!PropertiesAreSet(switchVisual))
+            {
+                return;
+            }
 
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
@@ -248,9 +252,11 @@ namespace SorterControls.View
         {
             var switchVisual = d as SwitchVisual;
             if (switchVisual == null) return;
-            if (switchVisual.KeyCount == DefaultKeyCount) return;
-            if (switchVisual.KeyPair == null) return;
-            if (switchVisual.SwitchBrush == null) return;
+
+            if (!PropertiesAreSet(switchVisual))
+            {
+                return;
+            }
 
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
@@ -275,14 +281,86 @@ namespace SorterControls.View
         {
             var switchVisual = d as SwitchVisual;
             if (switchVisual == null) return;
-            if (switchVisual.KeyCount == DefaultKeyCount) return;
-            if (switchVisual.KeyPair == null) return;
-            if (switchVisual.LineBrushes.Count == 0) return;
+
+            if (!PropertiesAreSet(switchVisual))
+            {
+                return;
+            }
 
             switchVisual.SetupResources();
             switchVisual.DrawVisual();
         }
 
         #endregion
+
+        #region LineThickness
+
+        [Category("Custom Properties")]
+        public double LineThickness
+        {
+            get { return (double)GetValue(LineThicknessProperty); }
+            set { SetValue(LineThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty LineThicknessProperty =
+            DependencyProperty.Register("LineThickness", typeof(double), typeof(SwitchVisual),
+            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnLineThicknessChanged));
+
+        private static void OnLineThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var switchVisual = d as SwitchVisual;
+            if (switchVisual == null) return;
+
+            if (!PropertiesAreSet(switchVisual))
+            {
+                return;
+            }
+
+            switchVisual.SetupResources();
+            switchVisual.DrawVisual();
+        }
+
+        #endregion
+
+
+        #region SwitchThickness
+
+        [Category("Custom Properties")]
+        public double SwitchThickness
+        {
+            get { return (double)GetValue(SwitchThicknessProperty); }
+            set { SetValue(SwitchThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty SwitchThicknessProperty =
+            DependencyProperty.Register("SwitchThickness", typeof(double), typeof(SwitchVisual),
+            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnSwitchThicknessChanged));
+
+        private static void OnSwitchThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var switchVisual = d as SwitchVisual;
+            if (switchVisual == null) return;
+
+            if (!PropertiesAreSet(switchVisual))
+            {
+                return;
+            }
+
+            switchVisual.SetupResources();
+            switchVisual.DrawVisual();
+        }
+
+        #endregion
+
+        static bool PropertiesAreSet(SwitchVisual switchVisual)
+        {
+            if (switchVisual.KeyCount == DefaultKeyCount) return false;
+            if (switchVisual.KeyPair == null) return false;
+            if (switchVisual.LineBrushes.Count == 0) return false;
+            if (switchVisual.SwitchThickness == 0) return false;
+            if (switchVisual.LineThickness == 0) return false;
+            if (switchVisual.SwitchBrush == null) return false;
+            return true;
+        }
     }
 }

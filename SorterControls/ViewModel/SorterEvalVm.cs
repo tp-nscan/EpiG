@@ -13,21 +13,40 @@ namespace SorterControls.ViewModel
         {
             _sorterEval = sorterEval;
 
-            //foreach (var keyPair in SorterEval.Sorter.KeyPairs)
-            //{
-            //    SwitchVms.Add(new SwitchVm(keyPair, SorterEval.Sorter.KeyCount, lineBrushes) { SwitchBrush = Brushes.Red} );
-            //}
-
             for (var i = 0; i < sorterEval.Sorter.KeyPairCount; i++)
             {
+                if (sorterEval.SwitchUseList[i] == 0)
+                {
+                    continue;
+                }
+
                 var keyPair = sorterEval.Sorter.KeyPair(i);
-                var switchBrushIndex = (sorterEval.SwitchUseList[i] * switchBrushes.Count) / sorterEval.SwitchableGroupCount;
+                var switchBrushIndex = Math.Ceiling(
+                        (sorterEval.SwitchUseList[i] * switchBrushes.Count) 
+                            / 
+                        sorterEval.SwitchableGroupCount
+                    );
 
                 SwitchVms.Add(new SwitchVm(keyPair, SorterEval.Sorter.KeyCount, lineBrushes)
                 {
                     SwitchBrush = switchBrushes[(int) switchBrushIndex]
                 });
             }
+        }
+
+        public int SwitchesUsed
+        {
+            get { return SwitchVms.Count; }
+        }
+
+        public bool Success
+        {
+            get { return SorterEval.Success; }
+        }
+
+        public int KeyCount
+        {
+            get { return SorterEval.Sorter.KeyCount; }
         }
 
         private readonly ISorterEval _sorterEval;

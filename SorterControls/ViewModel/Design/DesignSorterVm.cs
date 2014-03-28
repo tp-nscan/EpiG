@@ -8,7 +8,7 @@ namespace SorterControls.ViewModel.Design
         public DesignSorterVm()
             : base
             (
-                Sorters.TestSorter(KeyCount, 50), 
+                Sorters.TestSorter(KeyCount, 1234, 50), 
                 LineBrushFactory.GradedBlueBrushes(KeyCount)
             )
         {

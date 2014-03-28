@@ -11,7 +11,8 @@ namespace EpiG
         {
             InitializeComponent();
             //DataContext = new DesignSwitchVm();
-            DataContext = new DesignSorterEvalVm();
+            DataContext = new DesignSorterEvalVms();
+            //DataContext = new DesignSorterVm();
         }
     }
 }

@@ -4,9 +4,9 @@ namespace Sorting.TestData
 {
     public static class SorterEvals
     {
-        public static ISorterEval TestSorterEval(int keyCount, int keyPairCount)
+        public static ISorterEval TestSorterEval(int keyCount, int seed, int keyPairCount)
         {
-            return Sorters.TestSorter(keyCount, keyPairCount).ToSorterEval();
+            return Sorters.TestSorter(keyCount, seed, keyPairCount).ToSorterEval();
         }
     }
 }

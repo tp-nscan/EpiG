@@ -6,9 +6,9 @@ namespace Sorting.TestData
 {
     public static class Sorters
     {
-        public static ISorter TestSorter(int keyCount, int keyPairCount)
+        public static ISorter TestSorter(int keyCount, int seed, int keyPairCount)
         {
-            return Rando.Fast(212).ToSorter(keyCount, keyPairCount, Guid.NewGuid());
+            return Rando.Fast(seed).ToSorter(keyCount, keyPairCount, Guid.NewGuid());
         }
     }
 }

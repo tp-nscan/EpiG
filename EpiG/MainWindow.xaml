@@ -28,29 +28,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:design="clr-namespace:SorterControls.ViewModel.Design;assembly=SorterControls"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance design:DesignSorterEvalVm, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance design:DesignSorterEvalVms, IsDesignTimeCreatable=True}"
         Title="MainWindow"
         Background="Black">
 
-    <ListView ItemsSource="{Binding SwitchVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
 
-        <ListView.Resources>
-            <DataTemplate x:Key="SwitchTemplate">
-                <view:SwitchVisual Margin="-5,0" 
-                                   KeyPair="{Binding KeyPair, Mode=OneWay}" 
-                                   KeyCount="{Binding KeyCount, Mode=OneWay}" 
-                                   LineBrushes ="{Binding LineBrushes}"
-                                   SwitchBrush ="{Binding SwitchBrush}"
-                                   Height="200" Width="10"/>
-            </DataTemplate>
-        </ListView.Resources>
+    <Grid>
+    
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" 
+					        Height="3" Margin="2,0" Background="#8FFF" />
 
-        <ListView.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"></StackPanel>
-            </ItemsPanelTemplate>
-        </ListView.ItemsPanel>
 
-    </ListView>
+        
+        <view:SorterControl/>-->
 
+        <ListView ItemsSource="{Binding SorterEvalVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
+
+            <ListView.Resources>
+                <DataTemplate x:Key="SwitchTemplate">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Padding="2" Margin="2" Background="#7FFF" CornerRadius="4">
+                            <StackPanel>
+                                <TextBlock Text="{Binding SwitchesUsed}" />
+                                <TextBlock Text="{Binding Success}" />
+                            </StackPanel>
+                        </Border>
+                        <view:SorterControl Height="150"/>
+                        
+
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.Resources>
+
+        </ListView>
+
+    </Grid>
 </Window>

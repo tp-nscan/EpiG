@@ -10,22 +10,28 @@
              x:Name="ControlRoot"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        
-        <ListView ItemsSource="{Binding SwitchVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
 
-            <ListView.Resources>
+        <ItemsControl ItemsSource="{Binding SwitchVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
+
+            <ItemsControl.Resources>
                 <DataTemplate x:Key="SwitchTemplate">
-                    <view:SwitchVisual Margin="-5,0" KeyPair="{Binding KeyPair, Mode=OneWay}" KeyCount="{Binding KeyCount, Mode=OneWay}" Height="200" Width="10"/>
+                    <view:SwitchVisual KeyPair="{Binding KeyPair, Mode=OneWay}" 
+                                KeyCount="{Binding KeyCount, Mode=OneWay}" 
+                                LineBrushes ="{Binding LineBrushes}"
+                                SwitchBrush ="{Binding SwitchBrush}"
+                                LineThickness="0.1"
+                                SwitchThickness="0.4"
+                                Width="12"/>
                 </DataTemplate>
-            </ListView.Resources>
+            </ItemsControl.Resources>
 
-            <ListView.ItemsPanel>
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"></StackPanel>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+            </ItemsControl.ItemsPanel>
 
-        </ListView>
+        </ItemsControl>
 
     </Grid>
 </UserControl>

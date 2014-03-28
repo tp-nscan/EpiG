@@ -24,6 +24,11 @@ namespace SorterControls.ViewModel
             get { return _sorter; }
         }
 
+        public int KeyCount
+        {
+            get { return Sorter.KeyCount; }
+        }
+
         private ObservableCollection<SwitchVm> _switchVms = new ObservableCollection<SwitchVm>();
         public ObservableCollection<SwitchVm> SwitchVms
         {
