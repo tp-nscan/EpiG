@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using SorterControls.View;
 using Sorting.CompetePools;
@@ -67,7 +64,7 @@ namespace SorterControls.ViewModel
             {
                 var newSorterEval = Sorting.TestData.SorterEvals.TestSorterEval(KeyCount, Seed + i, KeyPairCount);
 
-                _sorterEvals.Add(newSorterEval);
+                _sorterEvals.Add(newSorterEval.ToSorterEval());
 
                 _sorterEvalVms.InsertWhen(
                         MakeSorterEvalVm(newSorterEval), ev => ev.SwitchesUsed > newSorterEval.SwitchUseCount
@@ -82,7 +79,7 @@ namespace SorterControls.ViewModel
             foreach (var sorterEval in SorterEvals.OrderBy(e=>e.SwitchUseCount))
             {
                 SorterEvalVms.Add(
-                        MakeSorterEvalVm(sorterEval)
+                        MakeSorterEvalVm(sorterEval.ToSorterEval())
                     );
             }
         }
@@ -179,7 +176,6 @@ namespace SorterControls.ViewModel
                 MakeSorterEvalVms();
             }
         }
-
 
         private bool _showUnused;
         public bool ShowUnused

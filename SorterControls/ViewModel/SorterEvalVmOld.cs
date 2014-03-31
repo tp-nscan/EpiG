@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Media;
 using Sorting.CompetePools;
 using WpfUtils;
-using Xceed.Wpf.DataGrid.FilterCriteria;
 
 namespace SorterControls.ViewModel
 {

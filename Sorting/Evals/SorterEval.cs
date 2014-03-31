@@ -18,22 +18,25 @@ namespace Sorting.Evals
 
     public static class SorterEval
     {
-        public static ISorterEval ToSorterEval(ISortResult sortResult)
+        public static ISorterEval ToSorterEval(this ISortResult sortResult)
         {
-            return new SorterEvalImpl(
-                switchEvals: Enumerable.Range(0, sortResult.Sorter.KeyPairCount) 
-                                        .Select
-                                        (
-                                            i=> new SwitchEvalImpl
-                                                (
-                                                    sortResult.Sorter.KeyPair(i), 
-                                                    sortResult.SwitchUseList[i]
-                                                )
-                                        ),
-                guid: sortResult.Sorter.Guid,
-                keyCount: sortResult.Sorter.KeyCount
+            return new SorterEvalImpl
+                (
+                    switchEvals: Enumerable.Range(0, sortResult.Sorter.KeyPairCount) 
+                                            .Select
+                                            (
+                                                i=> new SwitchEvalImpl
+                                                    (
+                                                        sortResult.Sorter.KeyPair(i), 
+                                                        sortResult.SwitchUseList[i]
+                                                    )
+                                            ),
+                    guid: sortResult.Sorter.Guid,
+                    keyCount: sortResult.Sorter.KeyCount,
+                    switchableGroupId: sortResult.SwitchableGroupGuid,
+                    switchUseCount: sortResult.SwitchUseCount,
+                    switchableGroupCount:sortResult.SwitchableGroupCount
                 );
-
         }
     }
 
