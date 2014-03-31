@@ -36,7 +36,7 @@ namespace SorterControls.View
         static List<Brush> gradedBlueBrushes;
         public static List<Brush> GradedBlueBrushes(int brushCount)
         {
-            if (gradedBlueBrushes != null)
+            if ((gradedBlueBrushes != null) && (gradedBlueBrushes.Count == brushCount))
             {
                 return gradedBlueBrushes;
             }
@@ -66,7 +66,7 @@ namespace SorterControls.View
         static List<Brush> gradedRedBrushes;
         public static List<Brush> GradedRedBrushes(int brushCount)
         {
-            if (gradedRedBrushes != null)
+            if ((gradedRedBrushes != null) && (gradedRedBrushes.Count == brushCount))
             {
                 return gradedRedBrushes;
             }

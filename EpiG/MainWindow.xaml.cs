@@ -1,4 +1,5 @@
-﻿using SorterControls.ViewModel.Design;
+﻿using SorterControls.ViewModel;
+using SorterControls.ViewModel.Design;
 
 namespace EpiG
 {
@@ -11,7 +12,7 @@ namespace EpiG
         {
             InitializeComponent();
             //DataContext = new DesignSwitchVm();
-            DataContext = new DesignSorterEvalVms();
+            DataContext = new MakeRandomSortersVm();
             //DataContext = new DesignSorterVm();
         }
     }

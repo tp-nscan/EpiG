@@ -24,35 +24,35 @@ namespace Sorting.Json.CompetePools
 
     public static class SorterEvalToJsonExt
     {
-        public static SorterEvalToJson ToJsonAdapter(this ISorterEval sorterEval)
+        public static SorterEvalToJson ToJsonAdapter(this ISortResult sortResult)
         {
             var sorterEvalToJson = new SorterEvalToJson
             {
-                SwitchableGroupGuid = sorterEval.SwitchableGroupGuid,
-                SorterToJson = sorterEval.Sorter.ToJsonAdapter(),
-                SwitchableGroupCount = sorterEval.SwitchableGroupCount,
-                Success = sorterEval.Success,
-                SwitchesUsed = sorterEval.SwitchUseCount,
-                SwitchUseList = sorterEval.SwitchUseList.ToList()
+                SwitchableGroupGuid = sortResult.SwitchableGroupGuid,
+                SorterToJson = sortResult.Sorter.ToJsonAdapter(),
+                SwitchableGroupCount = sortResult.SwitchableGroupCount,
+                Success = sortResult.Success,
+                SwitchesUsed = sortResult.SwitchUseCount,
+                SwitchUseList = sortResult.SwitchUseList.ToList()
             };
 
             return sorterEvalToJson;
         }
 
-        public static string ToJsonString(this ISorterEval sorterEval)
+        public static string ToJsonString(this ISortResult sortResult)
         {
-            return JsonConvert.SerializeObject(sorterEval.ToJsonAdapter(), Formatting.None);
+            return JsonConvert.SerializeObject(sortResult.ToJsonAdapter(), Formatting.None);
         }
 
-        public static ISorterEval ToSorterEval(this string serialized)
+        public static ISortResult ToSorterEval(this string serialized)
         {
             return JsonConvert.DeserializeObject<SorterEvalToJson>(serialized)
                               .ToSorterEval();
         }
 
-        public static ISorterEval ToSorterEval(this SorterEvalToJson sorterEvalToJson)
+        public static ISortResult ToSorterEval(this SorterEvalToJson sorterEvalToJson)
         {
-            return SorterEval.Make
+            return SortResult.Make
                 (
                     sorter: sorterEvalToJson.SorterToJson.ToSorter(),
                     switchableGroupGuid: sorterEvalToJson.SwitchableGroupGuid,

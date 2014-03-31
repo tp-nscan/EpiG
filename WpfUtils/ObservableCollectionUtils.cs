@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 
@@ -22,6 +23,19 @@ namespace WpfUtils
             {
                 collection.Add(item);
             }
+        }
+
+        public static void InsertWhen<T>(this ObservableCollection<T> collection, T item, Predicate<T> condition)
+        {
+            for (var i = 0; i < collection.Count; i++)
+            {
+                if (condition.Invoke(collection[i]))
+                {
+                    collection.Insert(i, item);
+                    return;
+                }
+            }
+            collection.Add(item);
         }
 
         public static T SelectedItem<T>(this ObservableCollection<T> collection)

@@ -71,16 +71,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompetePools\CompPool.cs" />
-    <Compile Include="CompetePools\SorterEvalSet.cs" />
+    <Compile Include="CompetePools\SorterResultSet.cs" />
+    <Compile Include="Evals\SorterEval.cs" />
+    <Compile Include="Evals\SwitchEval.cs" />
     <Compile Include="Properties\Entities\IEntityFunctionParams.cs" />
     <Compile Include="KeyPairs\KeyPairSet.cs" />
-    <Compile Include="CompetePools\SorterEval.cs" />
-    <Compile Include="Sorters\SorterStage.cs" />
-    <Compile Include="Sorters\SorterStager.cs" />
+    <Compile Include="CompetePools\SortResult.cs" />
+    <Compile Include="Stages\SorterStage.cs" />
+    <Compile Include="Stages\SorterStager.cs" />
     <Compile Include="Sorters\SortingFunctions.cs" />
-    <Compile Include="Sorters\StagedSorter.cs" />
-    <Compile Include="Sorters\StageGenerators\DependentKeyPair.cs" />
-    <Compile Include="Sorters\StageGenerators\StageGenerator.cs" />
+    <Compile Include="Stages\StagedSorter.cs" />
+    <Compile Include="Stages\DependentKeyPair.cs" />
+    <Compile Include="Stages\StageGenerator.cs" />
     <Compile Include="TestData\SorterEvals.cs" />
     <Compile Include="TestData\Sorters.cs" />
     <Compile Include="TestData\Switchables.cs" />

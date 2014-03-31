@@ -11,12 +11,14 @@ namespace SorterControls.ViewModel
         (
             IKeyPair keyPair, 
             int keyCount, 
-            List<Brush> lineBrushes
+            List<Brush> lineBrushes, 
+            int width
         )
         {
             _keyPair = keyPair;
             _keyCount = keyCount;
             _lineBrushes = lineBrushes;
+            _width = width;
         }
 
         private readonly IKeyPair _keyPair;
@@ -46,6 +48,12 @@ namespace SorterControls.ViewModel
         public List<Brush> LineBrushes
         {
             get { return _lineBrushes; }
+        }
+
+        private readonly int _width;
+        public int Width
+        {
+            get { return _width; }
         }
     }
 }

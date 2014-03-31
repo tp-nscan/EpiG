@@ -8,14 +8,15 @@ namespace SorterControls.ViewModel.Design
     {
         public DesignSwitchVm() : base(
                 keyPair: KeyPairRepository.AtIndex(5),
-                keyCount: KeyCount,
-                lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount)
+                keyCount: keyCount,
+                lineBrushes: LineBrushFactory.GradedBlueBrushes(keyCount),
+                width: 8
             )
         {
             SwitchBrush = Brushes.Red;
         }
 
-        const int KeyCount = 16;
+        const int keyCount = 16;
 
     }
 }

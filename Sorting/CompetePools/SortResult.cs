@@ -8,7 +8,7 @@ using Sorting.Switchables;
 
 namespace Sorting.CompetePools
 {
-    public interface ISorterEval
+    public interface ISortResult
     {
         ISorter Sorter { get; }
         IReadOnlyList<double> SwitchUseList { get; }
@@ -18,9 +18,9 @@ namespace Sorting.CompetePools
         bool Success { get; }
     }
 
-    public static class SorterEval
+    public static class SortResult
     {
-        public static ISorterEval ToSorterEval(this ISorter sorter)
+        public static ISortResult ToSorterEval(this ISorter sorter)
         {
             var switchables = Switchable.AllSwitchablesForKeyCount(sorter.KeyCount).ToSwitchableGroup
                 (
@@ -31,7 +31,7 @@ namespace Sorting.CompetePools
             return sorter.Sort(switchables);
         }
 
-        public static ISorterEval Make
+        public static ISortResult Make
         (
             ISorter sorter,
             Guid switchableGroupGuid,
@@ -40,7 +40,7 @@ namespace Sorting.CompetePools
             int switchableGroupCount
         )
         {
-            return new SorterEvalImpl
+            return new SortResultImpl
                 (
                     sorter: sorter,
                     switchableGroupGuid: switchableGroupGuid,
@@ -51,7 +51,7 @@ namespace Sorting.CompetePools
                 );
         }
 
-        public static ISorterEval Make
+        public static ISortResult Make
             (
                 ISorter sorter,
                 Guid switchableGroupGuid,
@@ -60,7 +60,7 @@ namespace Sorting.CompetePools
                 int switchableGroupCount
             )
         {
-            return new SorterEvalImpl
+            return new SortResultImpl
                 (
                     sorter: sorter,
                     switchableGroupGuid: switchableGroupGuid,
@@ -71,20 +71,20 @@ namespace Sorting.CompetePools
                 );    
         }
 
-        public static IEnumerable<IKeyPair> UsedKeyPairs(this ISorterEval sorterEval)
+        public static IEnumerable<IKeyPair> UsedKeyPairs(this ISortResult sortResult)
         {
-            for (var dex = 0; dex < sorterEval.Sorter.KeyPairCount; dex++)
+            for (var dex = 0; dex < sortResult.Sorter.KeyPairCount; dex++)
             {
-                if (sorterEval.SwitchUseList[dex] > 0)
+                if (sortResult.SwitchUseList[dex] > 0)
                 {
-                   yield return sorterEval.Sorter.KeyPair(dex);
+                   yield return sortResult.Sorter.KeyPair(dex);
                 }
             }
         }
 
-        public static ISorter Reduce(this ISorterEval sorterEval, Guid guid)
+        public static ISorter Reduce(this ISortResult sortResult, Guid guid)
         {
-            return sorterEval.UsedKeyPairs().ToSorter(sorterEval.Sorter.Guid, sorterEval.Sorter.KeyCount);
+            return sortResult.UsedKeyPairs().ToSorter(sortResult.Sorter.Guid, sortResult.Sorter.KeyCount);
         }
 
         public static ulong Hash(this IReadOnlyList<int> intList, int start)
@@ -105,11 +105,11 @@ namespace Sorting.CompetePools
         }
     }
 
-    public class SorterEvalImpl : ISorterEval
+    public class SortResultImpl : ISortResult
     {
         private readonly ISorter _sorter;
 
-        public SorterEvalImpl
+        public SortResultImpl
         (
             ISorter sorter,
             Guid switchableGroupGuid,

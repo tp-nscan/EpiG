@@ -11,8 +11,8 @@ namespace Sorting.CompetePools
     {
         int KeyCount { get; }
         IReadOnlyList<ISorter> Sorters { get; }
-        IEnumerable<ISorterEval> SorterEvals { get; }
-        ISorterEval SorterEval(Guid sorterEvalId);
+        IEnumerable<ISortResult> SorterEvals { get; }
+        ISortResult SorterEval(Guid sorterEvalId);
         bool ContainsSorterEval(Guid sorterEvalId);
     }
 
@@ -20,7 +20,7 @@ namespace Sorting.CompetePools
     {
         public static ICompPool MakeEmpty(int keyCount)
         {
-            return new CompPoolImpl(Enumerable.Empty<ISorterEval>(), keyCount);
+            return new CompPoolImpl(Enumerable.Empty<ISortResult>(), keyCount);
         }
 
         //public static ICompPool ToCompPoolParallel(
@@ -71,7 +71,7 @@ namespace Sorting.CompetePools
 
     class CompPoolImpl : ICompPool
     {
-        public CompPoolImpl(IEnumerable<ISorterEval> sorterEvals, int keyCount)
+        public CompPoolImpl(IEnumerable<ISortResult> sorterEvals, int keyCount)
         {
             _keyCount = keyCount;
             _sorterEvals = sorterEvals.ToDictionary(s=>s.Sorter.Guid);
@@ -90,13 +90,13 @@ namespace Sorting.CompetePools
             get { return _sorters ; }
         }
 
-        private readonly IDictionary<Guid, ISorterEval> _sorterEvals;
-        public IEnumerable<ISorterEval> SorterEvals
+        private readonly IDictionary<Guid, ISortResult> _sorterEvals;
+        public IEnumerable<ISortResult> SorterEvals
         {
             get { return _sorterEvals.Values; }
         }
 
-        public ISorterEval SorterEval(Guid sorterEvalId)
+        public ISortResult SorterEval(Guid sorterEvalId)
         {
             return _sorterEvals[sorterEvalId];
         }

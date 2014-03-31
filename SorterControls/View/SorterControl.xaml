@@ -8,30 +8,33 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance design:DesignSorterVm, IsDesignTimeCreatable=True}"
              x:Name="ControlRoot"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="200">
     <Grid>
+        
+        <Border CornerRadius="8" BorderBrush="#400F" BorderThickness="4" Background="#F000">
+            <Border Margin="6">
+                <ItemsControl ItemsSource="{Binding SwitchVms}" ItemTemplate="{DynamicResource SwitchTemplate}">
 
-        <ItemsControl ItemsSource="{Binding SwitchVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
+                    <ItemsControl.Resources>
+                        <DataTemplate x:Key="SwitchTemplate">
+                            <view:SwitchVisual KeyPair="{Binding KeyPair, Mode=OneWay}" 
+                                        KeyCount="{Binding KeyCount, Mode=OneWay}" 
+                                        LineBrushes ="{Binding LineBrushes}"
+                                        SwitchBrush ="{Binding SwitchBrush}"
+                                        LineThickness="0.1"
+                                        SwitchThickness="0.25"
+                                        Width="{Binding Width}"/>
+                        </DataTemplate>
+                    </ItemsControl.Resources>
 
-            <ItemsControl.Resources>
-                <DataTemplate x:Key="SwitchTemplate">
-                    <view:SwitchVisual KeyPair="{Binding KeyPair, Mode=OneWay}" 
-                                KeyCount="{Binding KeyCount, Mode=OneWay}" 
-                                LineBrushes ="{Binding LineBrushes}"
-                                SwitchBrush ="{Binding SwitchBrush}"
-                                LineThickness="0.1"
-                                SwitchThickness="0.4"
-                                Width="12"/>
-                </DataTemplate>
-            </ItemsControl.Resources>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"></StackPanel>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-        </ItemsControl>
-
+                </ItemsControl>
+            </Border>
+        </Border>
     </Grid>
 </UserControl>

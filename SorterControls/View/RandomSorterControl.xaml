@@ -9,6 +9,52 @@
 
     <Grid>
 
+        <Grid.Resources>
+            
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Height" Value="25" />
+                <Setter Property="Focusable" Value="True" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+
+            <Style TargetType="{x:Type ComboBox}" >
+                <Setter Property="Focusable" Value="True" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style TargetType="{x:Type CheckBox}">
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style TargetType="{x:Type xctk:IntegerUpDown}">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Height" Value="25" />
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Margin" Value="0,0,4,0" />
+            </Style>
+
+            <Style TargetType="{x:Type StackPanel}">
+                <Setter Property="Margin" Value="5,2" />
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>
+            
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Margin" Value="5,2" />
+            </Style>
+
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -21,27 +67,52 @@
          
             <WrapPanel>
                 
-                <StackPanel Orientation="Horizontal" Margin="5,2">
-                    <TextBlock Foreground="Gold" Text="Seed" Margin="0,0,2,0"/>
-                    <TextBox MinWidth="50"/>
+                <StackPanel>
+                    <TextBlock Text="Seed" />
+                    <TextBox Text="{Binding Seed}" 
+                             MinWidth="50"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="5,2">
-                    <TextBlock Foreground="Gold" Text="Key Count" Margin="0,0,2,0" />
-                    <xctk:IntegerUpDown Value="{Binding KeyCount}" Minimum="2" Maximum="20" />
+                <StackPanel>
+                    <TextBlock Text="Key Count" />
+                    <xctk:IntegerUpDown Value="{Binding KeyCount}" 
+                                        Minimum="2" 
+                                        Maximum="20" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="5,2">
-                    <TextBlock Foreground="Gold" Text="KeyPair Count" Margin="0,0,2,0" />
-                    <xctk:IntegerUpDown Value="{Binding KeyPairCount}" Minimum="50" Increment="50" Maximum="10000" />
+                <StackPanel>
+                    <TextBlock Text="KeyPair Count" />
+                    <xctk:IntegerUpDown Value="{Binding KeyPairCount}"
+                                        Minimum="0" 
+                                        Increment="50" 
+                                        Maximum="10000" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="5,2">
-                    <TextBlock Foreground="Gold" Text="Sorter Count" Margin="0,0,2,0" />
-                    <xctk:IntegerUpDown Value="{Binding SorterCount}" Minimum="5" Increment="5" Maximum="1000" />
+                <StackPanel>
+                    <TextBlock Text="Sorter Count" />
+                    <xctk:IntegerUpDown Value="{Binding SorterCount}"
+                                        Minimum="0" 
+                                        Increment="5" 
+                                        Maximum="10000" />
                 </StackPanel>
 
-                <Button Command="{Binding MakeSorters}" Margin="5,2">Make</Button>
+                <StackPanel>
+                    <TextBlock Text="Display size" />
+                    <xctk:IntegerUpDown Value="{Binding DisplaySize}" 
+                                        Minimum="1" 
+                                        Increment="1" 
+                                        Maximum="6" />
+                </StackPanel>
+
+                <StackPanel>
+                    <CheckBox IsChecked="{Binding ShowUnused}" Content="Show unused" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding ShowStages}" Content="Show stages" />
+                </StackPanel>
+
+                <Button Command="{Binding MakeSortersCommand}">Make</Button>
               
             </WrapPanel>
         </Border>
@@ -53,13 +124,13 @@
             <ListView.Resources>
                 <DataTemplate x:Key="SwitchTemplate">
                     <StackPanel Orientation="Horizontal">
-                        <Border Padding="2" Margin="2" Background="#7FFF" CornerRadius="4">
+                        <Border Padding="3" Margin="4" Background="#7FFF" CornerRadius="4">
                             <StackPanel>
                                 <TextBlock Text="{Binding SwitchesUsed}" />
                                 <TextBlock Text="{Binding Success}" />
                             </StackPanel>
                         </Border>
-                        <view:SorterControl Height="150"/>
+                        <view:SorterControl Height="{Binding Height}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.Resources>

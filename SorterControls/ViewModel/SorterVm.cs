@@ -9,12 +9,27 @@ namespace SorterControls.ViewModel
 {
     public class SorterVm : ViewModelBase
     {
-        public SorterVm(ISorter sorter, List<Brush> lineBrushes)
+        public SorterVm
+            (
+                ISorter sorter,
+                List<Brush> lineBrushes,
+                int width,
+                int height
+            )
         {
             _sorter = sorter;
             foreach (var keyPair in Sorter.KeyPairs)
             {
-                SwitchVms.Add(new SwitchVm(keyPair, sorter.KeyCount, lineBrushes) { SwitchBrush = Brushes.Red} );
+                SwitchVms.Add
+                    (
+                        new SwitchVm(
+                            keyPair, 
+                            sorter.KeyCount, 
+                            lineBrushes,
+                            width
+                        ) 
+                        { SwitchBrush = Brushes.Red} 
+                    );
             }
         }
 

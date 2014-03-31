@@ -138,10 +138,10 @@ namespace SorterControls.View
         {
             var lineHeight = HalfLineSpacing + ActualHeight * keyLineDex / KeyCount;
 
-            yield return new Point(0, lineHeight - ActualLineThickness);
+            yield return new Point(-1, lineHeight - ActualLineThickness);
             yield return new Point(ActualWidth, lineHeight - ActualLineThickness);
             yield return new Point(ActualWidth, lineHeight + ActualLineThickness);
-            yield return new Point(0, lineHeight + ActualLineThickness);
+            yield return new Point(-1, lineHeight + ActualLineThickness);
         }
 
         IEnumerable<Point> SwitchPoints
@@ -151,10 +151,10 @@ namespace SorterControls.View
                 var topLineHeight = HalfLineSpacing + ActualHeight * KeyPair.HiKey / KeyCount;
                 var bottomLineHeight = HalfLineSpacing + ActualHeight * KeyPair.LowKey / KeyCount;
 
-                yield return new Point(ActualWidth / 2 - ActualSwitchThickness, topLineHeight + ActualLineThickness);
-                yield return new Point(ActualWidth / 2 + ActualSwitchThickness, topLineHeight + ActualLineThickness);
-                yield return new Point(ActualWidth / 2 + ActualSwitchThickness, bottomLineHeight - ActualLineThickness);
-                yield return new Point(ActualWidth / 2 - ActualSwitchThickness, bottomLineHeight - ActualLineThickness);
+                yield return new Point(ActualWidth / 2 - ActualSwitchThickness, topLineHeight - ActualLineThickness);
+                yield return new Point(ActualWidth / 2 + ActualSwitchThickness, topLineHeight - ActualLineThickness);
+                yield return new Point(ActualWidth / 2 + ActualSwitchThickness, bottomLineHeight + ActualLineThickness);
+                yield return new Point(ActualWidth / 2 - ActualSwitchThickness, bottomLineHeight + ActualLineThickness);
             }
         }
 
@@ -321,7 +321,6 @@ namespace SorterControls.View
         }
 
         #endregion
-
 
         #region SwitchThickness
 

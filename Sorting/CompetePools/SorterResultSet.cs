@@ -7,44 +7,43 @@ using Sorting.Switchables;
 
 namespace Sorting.CompetePools
 {
-    public interface ISorterEvalSet
+    public interface ISorterResultSet
     {
-        IEnumerable<ISorterEval> SorterOnSwitchableGroups { get; }
-        ISorterEval SorterOnSwitchableGroup(ISwitchableGroup switchableGroup);
+        IEnumerable<ISortResult> SorterOnSwitchableGroups { get; }
+        ISortResult SorterOnSwitchableGroup(ISwitchableGroup switchableGroup);
         ISorter Sorter { get; }
         IReadOnlyList<double> SwitchUseList { get; }
         int SwitchesUsed { get; }
     }
 
-    public static class SorterEvalSet
+    public static class SorterResultSet
     {
-
-        public static ISorterEvalSet MakeSorterOnSwitchableGroups<T>
+        public static ISorterResultSet MakeSorterOnSwitchableGroups<T>
         (
             this ISorter sorter,
             IEnumerable<ISwitchableGroup<T>> switchableGroups
         )
         {
-            return new SorterEvalSetImpl
+            return new SorterResultSetImpl
                 (
                     sorter: sorter,
                     sorterOnSwitchableGroups: switchableGroups.Select(sorter.Sort)
                 );
         }
 
-        public static int UsedKeyPairHash(this ISorterEval sorterEval)
+        public static int UsedKeyPairHash(this ISortResult sortResult)
         {
             //return sorterEval.Sorter.KeyPairs.Filter(i => sorterEval.SwitchUseList[i] > 0).ToHash(k => k.Index);
-            return sorterEval.Sorter.KeyPairs.Where((t,i) => sorterEval.SwitchUseList[i] > 0).ToHash(k => k.Index);
+            return sortResult.Sorter.KeyPairs.Where((t,i) => sortResult.SwitchUseList[i] > 0).ToHash(k => k.Index);
         }
     }
 
-    public class SorterEvalSetImpl : ISorterEvalSet
+    public class SorterResultSetImpl : ISorterResultSet
     {
-        public SorterEvalSetImpl
+        public SorterResultSetImpl
         (
             ISorter sorter,
-            IEnumerable<ISorterEval> sorterOnSwitchableGroups
+            IEnumerable<ISortResult> sorterOnSwitchableGroups
         )
         {
             _sorter = sorter;
@@ -59,14 +58,14 @@ namespace Sorting.CompetePools
             get { return _sorter; }
         }
 
-        private readonly Dictionary<Guid, ISorterEval> _sorterOnSwitchableGroups;
+        private readonly Dictionary<Guid, ISortResult> _sorterOnSwitchableGroups;
 
-        public ISorterEval SorterOnSwitchableGroup(ISwitchableGroup switchableGroup)
+        public ISortResult SorterOnSwitchableGroup(ISwitchableGroup switchableGroup)
         {
             return _sorterOnSwitchableGroups[switchableGroup.Guid];
         }
 
-        public IEnumerable<ISorterEval> SorterOnSwitchableGroups
+        public IEnumerable<ISortResult> SorterOnSwitchableGroups
         {
             get { return _sorterOnSwitchableGroups.Values; }
         }

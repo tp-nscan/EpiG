@@ -7,7 +7,7 @@ namespace Sorting.Sorters
 {
     public static class SortingFunctions
     {
-        public static ISorterEval Sort<T>
+        public static ISortResult Sort<T>
             (
                 this ISorter sorter,
                 ISwitchableGroup<T> switchableGroup
@@ -46,7 +46,7 @@ namespace Sorting.Sorters
                 totalSuccess &= sortSuccess;
             }
 
-            return SorterEval.Make(
+            return SortResult.Make(
                 sorter: sorter,
                 switchableGroupGuid: switchableGroup.Guid,
                 success: totalSuccess,
@@ -55,7 +55,7 @@ namespace Sorting.Sorters
                 );
         }
 
-        public static ISorterEval FullTest(this ISorter sorter)
+        public static ISortResult FullTest(this ISorter sorter)
         {
             return sorter.Sort(Switchable.AllSwitchablesForKeyCount(sorter.KeyCount)
                 .ToSwitchableGroup(

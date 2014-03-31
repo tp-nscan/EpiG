@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WpfUtils.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class ObservableCollectionUtilsFixture
     {
         [TestMethod]
         public void TestReplace()
@@ -24,10 +24,19 @@ namespace WpfUtils.Test
         }
 
         [TestMethod]
-        public void TestReplace2()
+        public void TestInsertWhen()
         {
-            var foo = "hi";
-            var res = foo.CompareTo("there");
+            var testColl = new ObservableCollection<int>();
+            var a = 1;
+            testColl.InsertWhen(a, t => t > a);
+            a = 26;
+            testColl.InsertWhen(a, t => t > a);
+            a = 4;
+            testColl.InsertWhen(a, t => t > a);
+            a = 19;
+            testColl.InsertWhen(a, t => t > a);
+            a = 7;
+            testColl.InsertWhen(a, t => t > a);
         }
 
     }

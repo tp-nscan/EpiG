@@ -10,17 +10,21 @@ namespace SorterControls.ViewModel.Design
     {
         public DesignSorterEvalVm()
             : base(
-                    DesignSorterEval(), 
-                    LineBrushFactory.GradedBlueBrushes(KeyCount),
-                    LineBrushFactory.GradedRedBrushes(KeyCount)
-            )
+                        sortResult: DesignSorterEval(),
+                        lineBrushes: LineBrushFactory.GradedBlueBrushes(keyCount),
+                        switchBrushes: LineBrushFactory.GradedRedBrushes(keyCount),
+                        width: 8,
+                        height: 150,
+                        showUnusedSwitches: false,
+                        showStages: false
+                 )
         {
         }
 
-        private const int KeyCount = 16;
-        private static ISorterEval DesignSorterEval()
+        private const int keyCount = 16;
+        private static ISortResult DesignSorterEval()
         {
-            return SorterEvals.TestSorterEval(KeyCount, 123, 800);
+            return SorterEvals.TestSorterEval(keyCount, 123, 800);
         }
     }
 
@@ -28,17 +32,18 @@ namespace SorterControls.ViewModel.Design
     {
         public DesignSorterEvalVms()
         {
-                    //            DesignSorterEval(),
-                    //LineBrushFactory.GradedBlueBrushes(KeyCount),
-                    //LineBrushFactory.GradedRedBrushes(KeyCount)
-
             for (var i = 0; i < 200; i++)
             {
                 _sorterEvalVms.Add(
-                    new SorterEvalVm(
-                            SorterEvals.TestSorterEval(KeyCount, 1323 + i, 700),
-                            LineBrushFactory.GradedBlueBrushes(KeyCount),
-                            LineBrushFactory.GradedRedBrushes(KeyCount)
+                    new SorterEvalVm
+                        (
+                            sortResult: SorterEvals.TestSorterEval(KeyCount, 1323 + i, 700),
+                            lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
+                            switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
+                            width: 8,
+                            height: 150,
+                            showUnusedSwitches: false,
+                            showStages: false
                         )
                     );
             }

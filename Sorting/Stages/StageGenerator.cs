@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Sorting.KeyPairs;
 using Sorting.Switchables;
 using Sorting.SwitchFunctionSets;
 
-namespace Sorting.Sorters.StageGenerators
+namespace Sorting.Sorters.Stages
 {
     public interface IStageGenerator<T>
     {

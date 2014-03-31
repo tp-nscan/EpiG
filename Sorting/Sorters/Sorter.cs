@@ -4,7 +4,7 @@ using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
 using Sorting.KeyPairs;
-using Sorting.Sorters.StageGenerators;
+using Sorting.Sorters.Stages;
 using Sorting.Switchables;
 
 namespace Sorting.Sorters

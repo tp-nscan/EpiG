@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Sorting.KeyPairs;
 
-namespace Sorting.Sorters
+namespace Sorting.Sorters.Stages
 {
     public interface ISorterStage
     {

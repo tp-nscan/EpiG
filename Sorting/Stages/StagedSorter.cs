@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sorting.KeyPairs;
 
-namespace Sorting.Sorters
+namespace Sorting.Sorters.Stages
 {
     public interface IStagedSorter : ISorter
     {
