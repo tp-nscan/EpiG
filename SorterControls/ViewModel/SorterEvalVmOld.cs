@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media;
-using Sorting.Evals;
+using Sorting.CompetePools;
+using WpfUtils;
+using Xceed.Wpf.DataGrid.FilterCriteria;
 
 namespace SorterControls.ViewModel
 {
-    public class SorterEvalVm
+    public class SorterEvalVmOld : ViewModelBase
     {
-        public SorterEvalVm(
-            ISorterEval sorterEval, 
+        public SorterEvalVmOld(
+            ISortResult sortResult, 
             List<Brush> lineBrushes,
             List<Brush> switchBrushes,
             int width,
@@ -18,7 +21,7 @@ namespace SorterControls.ViewModel
             bool showStages
          )
         {
-            _sorterEval = sorterEval;
+            _sortResult = sortResult;
             LineBrushes = lineBrushes;
             SwitchBrushes = switchBrushes;
             _height = height;
@@ -43,21 +46,21 @@ namespace SorterControls.ViewModel
 
         void SetUnstagedSwitchVms()
         {
-            for (var i = 0; i < SorterEval.KeyPairCount; i++)
+            for (var i = 0; i < SortResult.Sorter.KeyPairCount; i++)
             {
-                if ((SorterEval.SwitchEvals[i].UseCount == 0) && !ShowUnusedSwitches)
+                if ((SortResult.SwitchUseList[i] == 0) && !ShowUnusedSwitches)
                 {
                     continue;
                 }
 
-                var keyPair = SorterEval.KeyPair(i);
+                var keyPair = SortResult.Sorter.KeyPair(i);
                 var switchBrushIndex = Math.Ceiling(
-                        (SorterEval.SwitchEvals[i].UseCount * SwitchBrushes.Count)
+                        (SortResult.SwitchUseList[i] * SwitchBrushes.Count)
                             /
-                        SorterEval.SwitchableGroupCount
+                        SortResult.SwitchableGroupCount
                     );
 
-                SwitchVms.Add(new SwitchVm(keyPair, SorterEval.KeyCount, LineBrushes, Width)
+                SwitchVms.Add(new SwitchVm(keyPair, SortResult.Sorter.KeyCount, LineBrushes, Width)
                 {
                     SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
                 });
@@ -97,12 +100,12 @@ namespace SorterControls.ViewModel
 
         public int SwitchesUsed
         {
-            get { return SorterEval.SwitchUseCount; }
+            get { return SortResult.SwitchUseCount; }
         }
 
         public bool Success
         {
-            get { return SorterEval.Success; }
+            get { return SortResult.Success; }
         }
 
         private readonly int _height;
@@ -119,13 +122,13 @@ namespace SorterControls.ViewModel
 
         public int KeyCount
         {
-            get { return SorterEval.KeyCount; }
+            get { return SortResult.Sorter.KeyCount; }
         }
 
-        private readonly ISorterEval _sorterEval;
-        ISorterEval SorterEval
+        private readonly ISortResult _sortResult;
+        ISortResult SortResult
         {
-            get { return _sorterEval; }
+            get { return _sortResult; }
         }
 
         private ObservableCollection<SwitchVm> _switchVms = new ObservableCollection<SwitchVm>();

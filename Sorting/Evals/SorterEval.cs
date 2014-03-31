@@ -10,6 +10,10 @@ namespace Sorting.Evals
     public interface ISorterEval : ISorter
     {
         IReadOnlyList<ISwitchEval> SwitchEvals { get; }
+        bool Success { get; }
+        int SwitchableGroupCount { get; }
+        Guid SwitchableGroupId { get; }
+        int SwitchUseCount { get; }
     }
 
     public static class SorterEval
@@ -39,11 +43,18 @@ namespace Sorting.Evals
             (
                 IEnumerable<ISwitchEval> switchEvals, 
                 Guid guid, 
-                int keyCount
+                int keyCount, 
+                Guid switchableGroupId, 
+                int switchUseCount,
+                int switchableGroupCount
             )
         {
             _guid = guid;
             _keyCount = keyCount;
+            _switchableGroupId = switchableGroupId;
+            _switchUseCount = switchUseCount;
+            _switchableGroupCount = switchableGroupCount;
+            _switchableGroupCount = switchableGroupCount;
             _switchEvals = switchEvals.ToList();
         }
 
@@ -85,6 +96,30 @@ namespace Sorting.Evals
         public IReadOnlyList<ISwitchEval> SwitchEvals
         {
             get { return _switchEvals; }
+        }
+
+        private bool _success;
+        public bool Success
+        {
+            get { return _success; }
+        }
+
+        private readonly int _switchableGroupCount;
+        public int SwitchableGroupCount
+        {
+            get { return _switchableGroupCount; }
+        }
+
+        private readonly Guid _switchableGroupId;
+        public Guid SwitchableGroupId
+        {
+            get { return _switchableGroupId; }
+        }
+
+        private readonly int _switchUseCount;
+        public int SwitchUseCount
+        {
+            get { return _switchUseCount; }
         }
     }
 }

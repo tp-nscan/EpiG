@@ -6,7 +6,7 @@ using Sorting.TestData;
 
 namespace SorterControls.ViewModel.Design
 {
-    public class DesignSorterEvalVm : SorterEvalVm
+    public class DesignSorterEvalVm : SorterEvalVmOld
     {
         public DesignSorterEvalVm()
             : base(
@@ -35,7 +35,7 @@ namespace SorterControls.ViewModel.Design
             for (var i = 0; i < 200; i++)
             {
                 _sorterEvalVms.Add(
-                    new SorterEvalVm
+                    new SorterEvalVmOld
                         (
                             sortResult: SorterEvals.TestSorterEval(KeyCount, 1323 + i, 700),
                             lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
@@ -48,14 +48,14 @@ namespace SorterControls.ViewModel.Design
                     );
             }
 
-            _sorterEvalVms = new ObservableCollection<SorterEvalVm>(_sorterEvalVms.OrderBy(e => e.SwitchesUsed));
+            _sorterEvalVms = new ObservableCollection<SorterEvalVmOld>(_sorterEvalVms.OrderBy(e => e.SwitchesUsed));
         }
 
         private const int KeyCount = 8;
 
-        private ObservableCollection<SorterEvalVm> _sorterEvalVms
-                = new ObservableCollection<SorterEvalVm>();
-        public ObservableCollection<SorterEvalVm> SorterEvalVms
+        private ObservableCollection<SorterEvalVmOld> _sorterEvalVms
+                = new ObservableCollection<SorterEvalVmOld>();
+        public ObservableCollection<SorterEvalVmOld> SorterEvalVms
         {
             get { return _sorterEvalVms; }
             set { _sorterEvalVms = value; }

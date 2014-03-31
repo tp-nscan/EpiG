@@ -68,6 +68,8 @@
     <Compile Include="ViewModel\Design\DesignSorterEvalVm.cs" />
     <Compile Include="ViewModel\Design\DesignSwitchVm.cs" />
     <Compile Include="ViewModel\MakeRandomSortersVm.cs" />
+    <Compile Include="ViewModel\MakeRandomSortersVmOld.cs" />
+    <Compile Include="ViewModel\SorterEvalVm.cs" />
     <Compile Include="View\LineBrushFactory.cs" />
     <Compile Include="View\RandomSorterControl.xaml.cs">
       <DependentUpon>RandomSorterControl.xaml</DependentUpon>
@@ -82,7 +84,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ViewModel\Design\DesignSorterVm.cs" />
-    <Compile Include="ViewModel\SorterEvalVm.cs" />
+    <Compile Include="ViewModel\SorterEvalVmOld.cs" />
     <Compile Include="ViewModel\SorterVm.cs" />
     <Compile Include="ViewModel\SwitchVm.cs" />
     <Compile Include="View\SorterControl.xaml.cs">

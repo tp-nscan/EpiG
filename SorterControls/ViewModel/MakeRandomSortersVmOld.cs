@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using SorterControls.View;
 using Sorting.CompetePools;
-using Sorting.Evals;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
-    public class MakeRandomSortersVm : ViewModelBase
+    public class MakeRandomSortersVmOld : ViewModelBase
     {
-        public MakeRandomSortersVm()
+        public MakeRandomSortersVmOld()
         {
             _sorterCount = 10;
             _showUnused = false;
@@ -51,8 +47,8 @@ namespace SorterControls.ViewModel
             return true;
         }
 
-        private List<ISorterEval> _sorterEvals = new List<ISorterEval>();
-        private List<ISorterEval> SorterEvals
+        private List<ISortResult> _sorterEvals = new List<ISortResult>();
+        private List<ISortResult> SorterEvals
         {
             get { return _sorterEvals; }
             set { _sorterEvals = value; }

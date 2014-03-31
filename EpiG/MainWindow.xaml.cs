@@ -12,7 +12,7 @@ namespace EpiG
         {
             InitializeComponent();
             //DataContext = new DesignSwitchVm();
-            DataContext = new MakeRandomSortersVm();
+            DataContext = new MakeRandomSortersVmOld();
             //DataContext = new DesignSorterVm();
         }
     }
