@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sorting.KeyPairs;
+using Sorting.Sorters;
 
-namespace Sorting.Sorters.Stages
+namespace Sorting.Stages
 {
     public interface IStagedSorter : ISorter
     {

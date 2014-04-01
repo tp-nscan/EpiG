@@ -4,7 +4,7 @@ using Sorting.KeyPairs;
 using Sorting.Switchables;
 using Sorting.SwitchFunctionSets;
 
-namespace Sorting.Sorters.Stages
+namespace Sorting.Stages
 {
     public interface IStageGenerator<T>
     {

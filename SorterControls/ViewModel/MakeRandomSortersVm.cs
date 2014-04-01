@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using MathUtils;
 using SorterControls.View;
 using Sorting.CompetePools;
 using Sorting.Evals;
@@ -84,23 +85,23 @@ namespace SorterControls.ViewModel
             }
         }
 
-        SorterEvalVmOld MakeSorterEvalVm(ISortResult sortResult)
+        SorterEvalVm MakeSorterEvalVm(ISortResult sortResult)
         {
-            return new SorterEvalVmOld
-                (
-                    sortResult: sortResult,
-                    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
-                    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
-                    width: DisplaySizeToSwitchWith(DisplaySize),
-                    height: DisplaySizeToHeight(DisplaySize),
-                    showUnusedSwitches: ShowUnused,
-                    showStages: ShowStages
-                );
+            return new SorterEvalVm
+            (
+                sorterEval: sortResult.ToSorterEval(),
+                lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
+                switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
+                width: DisplaySizeToSwitchWith(DisplaySize),
+                height: DisplaySizeToHeight(DisplaySize),
+                showUnusedSwitches: ShowUnused,
+                showStages: ShowStages
+            );
         }
 
-        private ObservableCollection<SorterEvalVmOld> _sorterEvalVms
-                    = new ObservableCollection<SorterEvalVmOld>();
-        public ObservableCollection<SorterEvalVmOld> SorterEvalVms
+        private ObservableCollection<SorterEvalVm> _sorterEvalVms
+                    = new ObservableCollection<SorterEvalVm>();
+        public ObservableCollection<SorterEvalVm> SorterEvalVms
         {
             get { return _sorterEvalVms; }
             set
