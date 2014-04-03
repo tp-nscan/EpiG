@@ -20,7 +20,7 @@ namespace Sorting.CompetePools
 
     public static class SortResult
     {
-        public static ISortResult ToSorterEval(this ISorter sorter)
+        public static ISortResult ToSorterResult(this ISorter sorter)
         {
             var switchables = Switchable.AllSwitchablesForKeyCount(sorter.KeyCount).ToSwitchableGroup
                 (

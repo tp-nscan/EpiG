@@ -1,144 +1,144 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
-using Sorting.CompetePools;
-using WpfUtils;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Collections.ObjectModel;
+//using System.Windows.Media;
+//using Sorting.CompetePools;
+//using WpfUtils;
 
-namespace SorterControls.ViewModel
-{
-    public class SorterEvalVmOld : ViewModelBase
-    {
-        public SorterEvalVmOld(
-            ISortResult sortResult, 
-            List<Brush> lineBrushes,
-            List<Brush> switchBrushes,
-            int width,
-            int height,
-            bool showUnusedSwitches,
-            bool showStages
-         )
-        {
-            _sortResult = sortResult;
-            LineBrushes = lineBrushes;
-            SwitchBrushes = switchBrushes;
-            _height = height;
-            _width = width;
-            ShowUnusedSwitches = showUnusedSwitches;
-            ShowStages = showStages;
-            SetSwitchVms();
-        }
+//namespace SorterControls.ViewModel
+//{
+//    public class SorterEvalVmOld : ViewModelBase
+//    {
+//        public SorterEvalVmOld(
+//            ISortResult sortResult, 
+//            List<Brush> lineBrushes,
+//            List<Brush> switchBrushes,
+//            int width,
+//            int height,
+//            bool showUnusedSwitches,
+//            bool showStages
+//         )
+//        {
+//            _sortResult = sortResult;
+//            LineBrushes = lineBrushes;
+//            SwitchBrushes = switchBrushes;
+//            _height = height;
+//            _width = width;
+//            ShowUnusedSwitches = showUnusedSwitches;
+//            ShowStages = showStages;
+//            SetSwitchVms();
+//        }
 
-        void SetSwitchVms()
-        {
-            _switchVms.Clear();
+//        void SetSwitchVms()
+//        {
+//            _switchVms.Clear();
 
-            if (ShowStages)
-            {
-                SetStagedSwitchVms();
-                return;
-            }
+//            if (ShowStages)
+//            {
+//                SetStagedSwitchVms();
+//                return;
+//            }
 
-            SetUnstagedSwitchVms();
-        }
+//            SetUnstagedSwitchVms();
+//        }
 
-        void SetUnstagedSwitchVms()
-        {
-            for (var i = 0; i < SortResult.Sorter.KeyPairCount; i++)
-            {
-                if ((SortResult.SwitchUseList[i] == 0) && !ShowUnusedSwitches)
-                {
-                    continue;
-                }
+//        void SetUnstagedSwitchVms()
+//        {
+//            for (var i = 0; i < SortResult.Sorter.KeyPairCount; i++)
+//            {
+//                if ((SortResult.SwitchUseList[i] == 0) && !ShowUnusedSwitches)
+//                {
+//                    continue;
+//                }
 
-                var keyPair = SortResult.Sorter.KeyPair(i);
-                var switchBrushIndex = Math.Ceiling(
-                        (SortResult.SwitchUseList[i] * SwitchBrushes.Count)
-                            /
-                        SortResult.SwitchableGroupCount
-                    );
+//                var keyPair = SortResult.Sorter.KeyPair(i);
+//                var switchBrushIndex = Math.Ceiling(
+//                        (SortResult.SwitchUseList[i] * SwitchBrushes.Count)
+//                            /
+//                        SortResult.SwitchableGroupCount
+//                    );
 
-                SwitchVms.Add(new SwitchVm(keyPair, SortResult.Sorter.KeyCount, LineBrushes, Width)
-                {
-                    SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
-                });
-            }
-        }
+//                SwitchVms.Add(new SwitchVm(keyPair, SortResult.Sorter.KeyCount, LineBrushes, Width)
+//                {
+//                    SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
+//                });
+//            }
+//        }
 
-        void SetStagedSwitchVms()
-        {
-            //for (var i = 0; i < SorterEval.Reduce(); i++)
-            //{
-            //    if ((SorterEval.SwitchUseList[i] == 0) && !ShowUnusedSwitches)
-            //    {
-            //        continue;
-            //    }
+//        void SetStagedSwitchVms()
+//        {
+//            //for (var i = 0; i < SorterEval.Reduce(); i++)
+//            //{
+//            //    if ((SorterEval.SwitchUseList[i] == 0) && !ShowUnusedSwitches)
+//            //    {
+//            //        continue;
+//            //    }
 
-            //    var keyPair = SorterEval.Sorter.KeyPair(i);
-            //    var switchBrushIndex = Math.Ceiling(
-            //            (SorterEval.SwitchUseList[i] * SwitchBrushes.Count)
-            //                /
-            //            SorterEval.SwitchableGroupCount
-            //        );
+//            //    var keyPair = SorterEval.Sorter.KeyPair(i);
+//            //    var switchBrushIndex = Math.Ceiling(
+//            //            (SorterEval.SwitchUseList[i] * SwitchBrushes.Count)
+//            //                /
+//            //            SorterEval.SwitchableGroupCount
+//            //        );
 
-            //    SwitchVms.Add(new SwitchVm(keyPair, SorterEval.Sorter.KeyCount, LineBrushes, Width)
-            //    {
-            //        SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
-            //    });
-            //}
-        }
+//            //    SwitchVms.Add(new SwitchVm(keyPair, SorterEval.Sorter.KeyCount, LineBrushes, Width)
+//            //    {
+//            //        SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
+//            //    });
+//            //}
+//        }
 
-        bool ShowUnusedSwitches { get; set; }
+//        bool ShowUnusedSwitches { get; set; }
 
-        bool ShowStages { get; set; }
+//        bool ShowStages { get; set; }
 
-        private List<Brush> LineBrushes { get; set; }
+//        private List<Brush> LineBrushes { get; set; }
 
-        private List<Brush> SwitchBrushes { get; set; }
+//        private List<Brush> SwitchBrushes { get; set; }
 
-        public int SwitchesUsed
-        {
-            get { return SortResult.SwitchUseCount; }
-        }
+//        public int SwitchesUsed
+//        {
+//            get { return SortResult.SwitchUseCount; }
+//        }
 
-        public bool Success
-        {
-            get { return SortResult.Success; }
-        }
+//        public bool Success
+//        {
+//            get { return SortResult.Success; }
+//        }
 
-        private readonly int _height;
-        public int Height
-        {
-            get { return _height; }
-        }
+//        private readonly int _height;
+//        public int Height
+//        {
+//            get { return _height; }
+//        }
 
-        private readonly int _width;
-        public int Width
-        {
-            get { return _width; }
-        }
+//        private readonly int _width;
+//        public int Width
+//        {
+//            get { return _width; }
+//        }
 
-        public int KeyCount
-        {
-            get { return SortResult.Sorter.KeyCount; }
-        }
+//        public int KeyCount
+//        {
+//            get { return SortResult.Sorter.KeyCount; }
+//        }
 
-        private readonly ISortResult _sortResult;
-        ISortResult SortResult
-        {
-            get { return _sortResult; }
-        }
+//        private readonly ISortResult _sortResult;
+//        ISortResult SortResult
+//        {
+//            get { return _sortResult; }
+//        }
 
-        private ObservableCollection<SwitchVm> _switchVms = new ObservableCollection<SwitchVm>();
-        public ObservableCollection<SwitchVm> SwitchVms
-        {
-            get { return _switchVms; }
-            set { _switchVms = value; }
-        }
+//        private ObservableCollection<SwitchVm> _switchVms = new ObservableCollection<SwitchVm>();
+//        public ObservableCollection<SwitchVm> SwitchVms
+//        {
+//            get { return _switchVms; }
+//            set { _switchVms = value; }
+//        }
 
-        public string StringValue
-        {
-            get { return String.Empty; }
-        }
-    }
-}
+//        public string StringValue
+//        {
+//            get { return String.Empty; }
+//        }
+//    }
+//}

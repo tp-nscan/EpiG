@@ -6,6 +6,7 @@ using MathUtils;
 using SorterControls.View;
 using Sorting.CompetePools;
 using Sorting.Evals;
+using Sorting.Sorters;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
@@ -65,7 +66,7 @@ namespace SorterControls.ViewModel
             {
                 var newSorterEval = Sorting.TestData.SorterEvals.TestSorterEval(KeyCount, Seed + i, KeyPairCount);
 
-                _sorterEvals.Add(newSorterEval.ToSorterEval());
+                _sorterEvals.Add(newSorterEval);
 
                 _sorterEvalVms.InsertWhen(
                         MakeSorterEvalVm(newSorterEval), ev => ev.SwitchesUsed > newSorterEval.SwitchUseCount
@@ -80,16 +81,16 @@ namespace SorterControls.ViewModel
             foreach (var sorterEval in SorterEvals.OrderBy(e=>e.SwitchUseCount))
             {
                 SorterEvalVms.Add(
-                        MakeSorterEvalVm(sorterEval.ToSorterEval())
+                        MakeSorterEvalVm(sorterEval)
                     );
             }
         }
 
-        SorterEvalVm MakeSorterEvalVm(ISortResult sortResult)
+        SorterEvalVm MakeSorterEvalVm(ISorterEval sorterEval)
         {
             return new SorterEvalVm
             (
-                sorterEval: sortResult.ToSorterEval(),
+                sorterEval: sorterEval,
                 lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
                 switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
                 width: DisplaySizeToSwitchWith(DisplaySize),

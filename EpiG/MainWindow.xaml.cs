@@ -11,9 +11,7 @@ namespace EpiG
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = new DesignSwitchVm();
-            DataContext = new MakeRandomSortersVmOld();
-            //DataContext = new DesignSorterVm();
+            DataContext = new MakeRandomSortersVm();
         }
     }
 }
