@@ -1,4 +1,7 @@
-﻿using SorterControls.ViewModel;
+﻿using System;
+using System.Linq;
+using EpiG.Data;
+using SorterControls.ViewModel;
 using SorterControls.ViewModel.Design;
 
 namespace EpiG
@@ -11,6 +14,11 @@ namespace EpiG
         public MainWindow()
         {
             InitializeComponent();
+            var context = new EpiGContext();
+            context.Sorters.Add(new Sorter() { Created = DateTime.Now });
+            context.SaveChanges();
+            Title = context.Sorters.Count().ToString();
+
             DataContext = new MakeRandomSortersVm();
         }
     }

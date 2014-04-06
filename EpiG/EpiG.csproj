@@ -34,7 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -113,6 +120,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EpiG.Data\EpiG.Data.csproj">
+      <Project>{7bc4c08f-9376-40a3-966a-9106599cf6fc}</Project>
+      <Name>EpiG.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Genomic\Genomic.csproj">
       <Project>{d2f5b40c-8c15-42d6-8549-2f8695ae91a9}</Project>
       <Name>Genomic</Name>

@@ -28,4 +28,10 @@
 		</TaggedOutputs> -->
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
+	<ItemGroup>
+		<ProjectReference Include="..\EpiG\EpiG.csproj">
+			<Name>EpiG</Name>
+			<Project>{DF060057-17D3-41C6-9637-04EA4BD8DFAC}</Project>
+		</ProjectReference>
+	</ItemGroup>
 </Project>
