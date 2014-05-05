@@ -35,10 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -57,13 +62,14 @@
   <ItemGroup>
     <Compile Include="CompetePool\SorterEvalFixture.cs" />
     <Compile Include="CompetePool\SorterOnCompParaPoolFixture.cs" />
-    <Compile Include="CompetePool\CompParaPoolFixture.cs" />
     <Compile Include="KeyPairSetFixture.cs" />
+    <Compile Include="KeyPairs\KeyPairsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sorters\SortingFunctionsFixture.cs" />
     <Compile Include="Sorters\SorterFixture.cs" />
-    <Compile Include="Sorters\StagedSorterFixture.cs" />
-    <Compile Include="Sorters\StageGeneratorFixture.cs" />
+    <Compile Include="StagesOld\StagedSorterFixture.cs" />
+    <Compile Include="StagesOld\StageGeneratorFixture.cs" />
+    <Compile Include="Stages\SorterStageFixture.cs" />
     <Compile Include="Switchables\SwitchableFixture.cs" />
     <Compile Include="Switchables\SwitchableGroupFixture.cs" />
     <Compile Include="SwitchFunctionSets\SortedNumberEvalFixture.cs" />

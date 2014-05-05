@@ -11,58 +11,25 @@ namespace Sorting.Stages
         int KeyPairCount { get; }
         IKeyPair KeyPair(int index);
         IReadOnlyList<IKeyPair> KeyPairs { get; }
-        ISorterStage AppendKeyPair(IKeyPair keyPair);
     }
 
     public static class SorterStage
     {
-        static readonly ISorterStage emptySorterStage = new SorterStageImpl(0, Enumerable.Empty<IKeyPair>().ToList());
-
-        public static ISorterStage Empty
+        public static ISorterStage ToSorterStage(this IEnumerable<IKeyPair> keyPairs, int keyCount)
         {
-            get { return emptySorterStage; }
+            return new SorterStageImpl(keyCount, keyPairs.OrderBy(kp => kp.Index).ToList());
         }
-
-        public static ISorterStage Make(int keyCount, IReadOnlyList<IKeyPair> keyPairs)
-        {
-            return new SorterStageImpl(keyCount, keyPairs);
-        }
-
-        public static IReadOnlyList<ISorterStage> ToSorterStages(this IReadOnlyList<IKeyPair> keyPairs, int keyCount)
-        {
-            var retSorterStages = new List<ISorterStage>();
-            var sorterStager = SorterStager.Empty;
-
-            for (var i = 0; i < keyPairs.Count; i++)
-            {
-                sorterStager = sorterStager.AppendKeyPair(keyPairs[i]);
-                if (sorterStager.Current == Empty)
-                {
-                    retSorterStages.Add(sorterStager.Previous);
-                    sorterStager = SorterStager.Empty.AppendKeyPair(keyPairs[i]);
-                }
-            }
-            if (sorterStager.Current != Empty)
-            {
-                retSorterStages.Add(sorterStager.Current);
-            }
-            return retSorterStages;
-        }
-
     }
 
     class SorterStageImpl : ISorterStage
     {
-        private readonly int _keyCount;
-        private readonly IImmutableList<IKeyPair> _keyPairs 
-            = ImmutableList<IKeyPair>.Empty;
-
         public SorterStageImpl(int keyCount, IReadOnlyList<IKeyPair> keyPairs)
         {
             _keyCount = keyCount;
             _keyPairs =  _keyPairs.AddRange(keyPairs.OrderBy(kp=>kp.Index));
         }
 
+        private readonly int _keyCount;
         public int KeyCount
         {
             get { return _keyCount; }
@@ -83,9 +50,6 @@ namespace Sorting.Stages
             get { return _keyPairs; }
         }
 
-        public ISorterStage AppendKeyPair(IKeyPair keyPair)
-        {
-            return new SorterStageImpl(KeyCount, _keyPairs.Add(keyPair));
-        }
+        private readonly IImmutableList<IKeyPair> _keyPairs = ImmutableList<IKeyPair>.Empty;
     }
 }

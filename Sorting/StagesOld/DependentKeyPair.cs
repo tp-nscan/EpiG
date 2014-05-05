@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sorting.KeyPairs;
 
-namespace Sorting.Stages
+namespace Sorting.StagesOld
 {
     public static class DependentKeyPairEx
     {

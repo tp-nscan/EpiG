@@ -35,8 +35,23 @@ namespace Sorting.Evals
                     keyCount: sortResult.Sorter.KeyCount,
                     switchableGroupId: sortResult.SwitchableGroupGuid,
                     switchUseCount: sortResult.SwitchUseCount,
-                    switchableGroupCount:sortResult.SwitchableGroupCount
+                    switchableGroupCount:sortResult.SwitchableGroupCount,
+                    success: sortResult.Success
                 );
+        }
+
+        public static IEnumerable<ISwitchEval> ToUsedSwitchEvals(this ISortResult sortResult)
+        {
+            for (var i = 0; i < sortResult.Sorter.KeyPairCount; i++)
+            {
+                if (sortResult.SwitchUseList[i] > 0)
+                {
+                    yield return new SwitchEvalImpl(
+                            sortResult.Sorter.KeyPair(i),
+                            sortResult.SwitchUseList[i]
+                        );
+                }
+            }
         }
     }
 
@@ -49,14 +64,16 @@ namespace Sorting.Evals
                 int keyCount, 
                 Guid switchableGroupId, 
                 int switchUseCount,
-                int switchableGroupCount
-            )
+                int switchableGroupCount, 
+                bool success
+         )
         {
             _guid = guid;
             _keyCount = keyCount;
             _switchableGroupId = switchableGroupId;
             _switchUseCount = switchUseCount;
             _switchableGroupCount = switchableGroupCount;
+            _success = success;
             _switchableGroupCount = switchableGroupCount;
             _switchEvals = switchEvals.ToList();
         }
@@ -101,7 +118,7 @@ namespace Sorting.Evals
             get { return _switchEvals; }
         }
 
-        private bool _success;
+        private readonly bool _success;
         public bool Success
         {
             get { return _success; }

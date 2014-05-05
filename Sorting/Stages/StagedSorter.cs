@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Sorting.KeyPairs;
 using Sorting.Sorters;
 
@@ -29,9 +30,37 @@ namespace Sorting.Stages
                 (
                     guid: sorter.Guid,
                     keyCount: sorter.KeyCount,
-                    sorterStages: sorter.KeyPairs.ToSorterStages(sorter.KeyCount)
+                    sorterStages: sorter.KeyPairs.ToSorterStages(sorter.KeyCount).ToList()
                 );
         }
+
+        public static string DebugFormat(this IStagedSorter stagedSorter)
+        {
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < stagedSorter.KeyCount; i++)
+            {
+                foreach (var sorterStage in stagedSorter.SorterStages)
+                {
+                    foreach (var keyPair in sorterStage.KeyPairs)
+                    {
+                        sb.Append
+                            (
+                                ((keyPair.LowKey == i) || (keyPair.HiKey == i)) 
+                                ?
+                                "*\t" : "\t"
+                                    
+                            );
+                    }
+                    sb.Append("|\t");
+                }
+                sb.Append("\n");
+            }
+
+            return sb.ToString();
+
+        }
+
     }
 
     class StagedSorterImpl : IStagedSorter
@@ -43,7 +72,7 @@ namespace Sorting.Stages
         public StagedSorterImpl
             (
                 Guid guid, 
-                int keyCount, 
+                int keyCount,
                 IReadOnlyList<ISorterStage> sorterStages
             )
         {

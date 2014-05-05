@@ -2,11 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using MathUtils;
 using SorterControls.View;
-using Sorting.CompetePools;
 using Sorting.Evals;
-using Sorting.Sorters;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
@@ -220,42 +217,42 @@ namespace SorterControls.ViewModel
             }
             if (displaySize == 3)
             {
-                return 6;
+                return 5;
             }
             if (displaySize == 4)
             {
-                return 8;
+                return 7;
             }
             if (displaySize == 5)
             {
-                return 10;
+                return 9;
             }
-            return 12;
+            return 11;
         }
 
         static int DisplaySizeToHeight(int displaySize)
         {
             if (displaySize == 1)
             {
-                return 40;
+                return 80;
             }
             if (displaySize == 2)
             {
-                return 80;
+                return 120;
             }
             if (displaySize == 3)
             {
-                return 120;
+                return 160;
             }
             if (displaySize == 4)
             {
-                return 160;
+                return 200;
             }
             if (displaySize == 5)
             {
-                return 200;
+                return 240;
             }
-            return 240;
+            return 280;
         }
     }
 }
