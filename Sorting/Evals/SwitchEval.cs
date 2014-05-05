@@ -2,7 +2,7 @@
 
 namespace Sorting.Evals
 {
-    public interface ISwitchEval
+    public interface ISwitchEval : IKeyPair
     {
         double UseCount { get; }
         IKeyPair KeyPair { get; }
@@ -43,9 +43,25 @@ namespace Sorting.Evals
         }
 
         private readonly IKeyPair _keyPair;
+
         public IKeyPair KeyPair
         {
             get { return _keyPair; }
+        }
+
+        public int LowKey
+        {
+            get { return _keyPair.LowKey; }
+        }
+
+        public int HiKey
+        {
+            get { return _keyPair.HiKey; }
+        }
+
+        public int Index
+        {
+            get { return _keyPair.Index; }
         }
     }
 }

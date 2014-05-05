@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using MathUtils.Collections;
 using MathUtils.Rand;
 
 namespace Sorting.KeyPairs
@@ -15,14 +15,39 @@ namespace Sorting.KeyPairs
     public static class KeyPairRepository
     {
         private static readonly List<KeyPairSet> keyPairSets = Enumerable.Repeat<KeyPairSet>(null, 64).ToList();
-
-        public static IEnumerable<IKeyPair> RandomKeyPairs(int keyCount, int numKeyPairs, int seed)
+        public static IEnumerable<IKeyPair> RandomKeyPairs(this IRando rando, int keyCount)
         {
-            var rando = Rando.Fast(seed);
-            for (var i = 0; i < numKeyPairs; i++)
+            while (true)
             {
                 yield return AtIndex(rando.NextInt(KeyPairSetSizeForKeyCount(keyCount)));
             }
+        }
+
+        public static IEnumerable<IKeyPair> RandomKeyPairsFullStage(this IRando rando, int keyCount)
+        {
+            return rando.RandomFullStages(keyCount).SelectMany(kps => kps);
+        }
+
+        public static IEnumerable<List<IKeyPair>> RandomFullStages(this IRando rando, int keyCount)
+        {
+            IReadOnlyList<int> keys = Enumerable.Range(0, keyCount).ToList();
+            while (true)
+            {
+                yield return keys.RandomFullStage(rando);
+            }
+        }
+
+        public static List<IKeyPair> RandomFullStage(this IReadOnlyList<int> singles, IRando rando)
+        {
+            var listRet = new List<IKeyPair>();
+            var scrambles = singles.FisherYatesShuffle(rando);
+            for (var i = 0; i < scrambles.Count(); i+=2)
+            {
+                var a = scrambles[i];
+                var b = scrambles[i + 1];
+                listRet.Add((a < b) ? ForKeys(a, b) : ForKeys(b, a)); 
+            }
+            return listRet;
         }
 
         static KeyPairRepository()

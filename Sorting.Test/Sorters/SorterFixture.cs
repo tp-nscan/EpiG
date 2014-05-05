@@ -5,6 +5,7 @@ using MathUtils.Collections;
 using MathUtils.Rand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sorting.Sorters;
+using Sorting.StagesOld;
 
 namespace Sorting.Test.Sorters
 {

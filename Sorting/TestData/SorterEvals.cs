@@ -1,5 +1,8 @@
-﻿using Sorting.CompetePools;
+﻿using System;
+using MathUtils.Rand;
+using Sorting.CompetePools;
 using Sorting.Evals;
+using Sorting.Sorters;
 
 namespace Sorting.TestData
 {
@@ -7,8 +10,8 @@ namespace Sorting.TestData
     {
         public static ISorterEval TestSorterEval(int keyCount, int seed, int keyPairCount)
         {
-            return Sorters.TestSorter(keyCount, seed, keyPairCount).ToSorterResult() 
-                .ToSorterEval();
+            return Rando.Fast(seed).ToSorter(keyCount, keyPairCount, Guid.NewGuid())
+                        .ToSorterResult().ToSorterEval();
         }
     }
 }

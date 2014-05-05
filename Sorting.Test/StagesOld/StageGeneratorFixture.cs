@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using MathUtils.Collections;
 using MathUtils.Rand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sorting.KeyPairs;
-using Sorting.Sorters.StageGenerators;
+using Sorting.StagesOld;
 using Sorting.Switchables;
 
-namespace Sorting.Test.Sorters
+namespace Sorting.Test.StagesOld
 {
     [TestClass]
     public class StageGeneratorFixture
@@ -35,7 +32,8 @@ namespace Sorting.Test.Sorters
                 for (var numSwitchables = 10; numSwitchables < 100; numSwitchables+=10)
                 {
                     var rando = Rando.Fast(numSwitchables + 377);
-                    IReadOnlyList<IKeyPair> sorterStage = KeyPairRepository.RandomKeyPairs(13, numKeyPairs, rando.NextInt()).ToList();
+                    IReadOnlyList<IKeyPair> sorterStage = rando.Spawn().RandomKeyPairs(13)
+                                                                       .Take(numKeyPairs).ToList();
                     for (var rep = 0; rep < 10; rep++)
                     {
                         var reducedSorterStage =

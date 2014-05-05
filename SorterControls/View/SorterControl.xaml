@@ -22,7 +22,7 @@
                                         LineBrushes ="{Binding LineBrushes}"
                                         SwitchBrush ="{Binding SwitchBrush}"
                                         LineThickness="0.1"
-                                        SwitchThickness="0.25"
+                                        SwitchThickness="0.35"
                                         Width="{Binding Width}"/>
                         </DataTemplate>
                     </ItemsControl.Resources>

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media;
 using Sorting.Evals;
+using Sorting.Stages;
+using Sorting.StagesOld;
 
 namespace SorterControls.ViewModel
 {
@@ -66,25 +69,24 @@ namespace SorterControls.ViewModel
 
         void SetStagedSwitchVms()
         {
-            //for (var i = 0; i < SorterEval.Reduce(); i++)
-            //{
-            //    if ((SorterEval.SwitchUseList[i] == 0) && !ShowUnusedSwitches)
-            //    {
-            //        continue;
-            //    }
+            var stagedKeyPairs = SorterEval.SwitchEvals
+                                   .ToSorterStages(SorterEval.KeyPairCount)
+                                   .SelectMany(st => st.KeyPairs)
+                                   .Cast<ISwitchEval>();
 
-            //    var keyPair = SorterEval.Sorter.KeyPair(i);
-            //    var switchBrushIndex = Math.Ceiling(
-            //            (SorterEval.SwitchUseList[i] * SwitchBrushes.Count)
-            //                /
-            //            SorterEval.SwitchableGroupCount
-            //        );
+            foreach (var stagedKeyPair in stagedKeyPairs)
+            {
+                var switchBrushIndex = Math.Ceiling(
+                        (stagedKeyPair.UseCount * SwitchBrushes.Count)
+                            /
+                        SorterEval.SwitchableGroupCount
+                    );
 
-            //    SwitchVms.Add(new SwitchVm(keyPair, SorterEval.Sorter.KeyCount, LineBrushes, Width)
-            //    {
-            //        SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
-            //    });
-            //}
+                SwitchVms.Add(new SwitchVm(stagedKeyPair, SorterEval.KeyCount, LineBrushes, Width)
+                {
+                    SwitchBrush = SwitchBrushes[(int)switchBrushIndex]
+                });
+            }
         }
 
         bool ShowUnusedSwitches { get; set; }

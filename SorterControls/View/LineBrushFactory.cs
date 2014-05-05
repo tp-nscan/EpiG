@@ -71,7 +71,7 @@ namespace SorterControls.View
                 return gradedRedBrushes;
             }
 
-            const float baseValue = (float)0.02;
+            const float baseValue = (float)0.1;
             var increment = (float)((1.0 - baseValue) / brushCount);
 
             gradedRedBrushes = new List<Brush>();
