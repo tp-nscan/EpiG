@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Media;
 using Sorting.Evals;
 using Sorting.Stages;
-using Sorting.StagesOld;
 
 namespace SorterControls.ViewModel
 {
@@ -26,8 +25,8 @@ namespace SorterControls.ViewModel
             SwitchBrushes = switchBrushes;
             _height = height;
             _width = width;
-            ShowUnusedSwitches = showUnusedSwitches;
-            ShowStages = showStages;
+            _showUnusedSwitches = showUnusedSwitches;
+            _showStages = showStages;
             SetSwitchVms();
         }
 
@@ -69,10 +68,29 @@ namespace SorterControls.ViewModel
 
         void SetStagedSwitchVms()
         {
-            var stagedKeyPairs = SorterEval.SwitchEvals
-                                   .ToSorterStages(SorterEval.KeyPairCount)
-                                   .SelectMany(st => st.KeyPairs)
-                                   .Cast<ISwitchEval>();
+            var stagedKeyPairs = new List<ISwitchEval>();
+
+            if (ShowUnusedSwitches)
+            {
+
+                stagedKeyPairs = SorterEval.SwitchEvals
+                    .ToList()
+                    .ToSorterStages(SorterEval.KeyPairCount)
+                    .SelectMany(st => st.KeyPairs)
+                    .Cast<ISwitchEval>()
+                    .ToList();
+            }
+            else
+            {
+                stagedKeyPairs = SorterEval.SwitchEvals
+                    .Where(ev => ev.UseCount > 0)
+                    .ToList()
+                    .ToSorterStages(SorterEval.KeyPairCount)
+                    .SelectMany(st => st.KeyPairs)
+                    .Cast<ISwitchEval>()
+                    .ToList();
+            }
+
 
             foreach (var stagedKeyPair in stagedKeyPairs)
             {
@@ -88,10 +106,17 @@ namespace SorterControls.ViewModel
                 });
             }
         }
+        private readonly bool _showUnusedSwitches;
+        private bool ShowUnusedSwitches
+        {
+            get { return _showUnusedSwitches; }
+        }
 
-        bool ShowUnusedSwitches { get; set; }
-
-        bool ShowStages { get; set; }
+        private readonly bool _showStages;
+        private bool ShowStages
+        {
+            get { return _showStages; }
+        }
 
         private List<Brush> LineBrushes { get; set; }
 

@@ -159,20 +159,53 @@ namespace SorterControls.ViewModel
             }
         }
 
+        //private bool _showStages;
+        //public bool ShowStages
+        //{
+        //    get { return _showStages; }
+        //    set
+        //    {
+        //        if (value)
+        //        {
+        //            _showUnused = false;
+        //            OnPropertyChanged("ShowUnused");
+        //        }
+        //        _showStages = value;
+        //        OnPropertyChanged("ShowStages");
+        //        MakeSorterEvalVms();
+        //    }
+        //}
+
+        //private bool _showUnused;
+        //public bool ShowUnused
+        //{
+        //    get { return _showUnused; }
+        //    set
+        //    {
+        //        if (value)
+        //        {
+        //            _showStages = false;
+        //            OnPropertyChanged("ShowStages");
+        //        }
+        //        _showUnused = value;
+        //        OnPropertyChanged("ShowUnused");
+        //        MakeSorterEvalVms();
+        //    }
+        //}
+
         private bool _showStages;
         public bool ShowStages
         {
             get { return _showStages; }
             set
             {
-                if (value)
+                if (_showStages == value)
                 {
-                    _showUnused = false;
-                    OnPropertyChanged("ShowUnused");
+                    return;
                 }
                 _showStages = value;
-                OnPropertyChanged("ShowStages");
                 MakeSorterEvalVms();
+                OnPropertyChanged("ShowStages");
             }
         }
 
@@ -182,14 +215,13 @@ namespace SorterControls.ViewModel
             get { return _showUnused; }
             set
             {
-                if (value)
+                if (_showUnused == value)
                 {
-                    _showStages = false;
-                    OnPropertyChanged("ShowStages");
+                    return;
                 }
                 _showUnused = value;
-                OnPropertyChanged("ShowUnused");
                 MakeSorterEvalVms();
+                OnPropertyChanged("ShowUnused");
             }
         }
 
