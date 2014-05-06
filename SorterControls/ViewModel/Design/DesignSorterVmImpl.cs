@@ -3,15 +3,14 @@ using Sorting.TestData;
 
 namespace SorterControls.ViewModel.Design
 {
-    public class DesignSorterVm : SorterVm
+    public class DesignSorterVmImpl : SorterVmImpl
     {
-        public DesignSorterVm()
+        public DesignSorterVmImpl()
             : base
             (
                 sorter: Sorters.TestSorter(keyCount, 1234, 50),
                 lineBrushes: LineBrushFactory.GradedBlueBrushes(keyCount),
-                width: 8,
-                height: 150
+                width: 8
             )
         { }
 

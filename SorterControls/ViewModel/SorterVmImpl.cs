@@ -7,14 +7,26 @@ using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
-    public class SorterVm : ViewModelBase
+    public interface ISorterVm
     {
-        public SorterVm
+        SorterVmType SorterVmType { get; }
+    }
+
+    public static class SorterVm
+    {
+        public static ISorterVm ToSorterVm(this ISorter sorter)
+        {
+            return null;
+        }
+    }
+
+    public class SorterVmImpl : ViewModelBase, ISorterVm
+    {
+        public SorterVmImpl
             (
                 ISorter sorter,
                 List<Brush> lineBrushes,
-                int width,
-                int height
+                int width
             )
         {
             _sorter = sorter;
@@ -54,6 +66,11 @@ namespace SorterControls.ViewModel
         public string StringValue
         {
             get { return String.Empty; }
+        }
+
+        public SorterVmType SorterVmType
+        {
+            get { return SorterVmType.Unstaged; }
         }
     }
 }
