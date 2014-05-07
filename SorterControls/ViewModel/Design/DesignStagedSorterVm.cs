@@ -1,5 +1,4 @@
 ﻿using SorterControls.View;
-using Sorting.Stages;
 using Sorting.TestData;
 
 namespace SorterControls.ViewModel.Design
@@ -9,12 +8,13 @@ namespace SorterControls.ViewModel.Design
         public DesignStagedSorterVm() 
             : base
             (
-                stagedSorter: Sorters.TestSorter(KeyCount, 1234, 50).ToStagedSorter(),
-                lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
+                sorterEval: SorterEvals.TestSorterEval(__keyCount, 123, 800),
+                lineBrushes: LineBrushFactory.GradedBlueBrushes(__keyCount),
                 width: 8
             )
         {
         }
-        private const int KeyCount = 16;
+
+        private const int __keyCount = 16;
     }
 }

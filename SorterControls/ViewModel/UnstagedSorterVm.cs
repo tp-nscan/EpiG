@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using Sorting.Evals;
 using Sorting.Sorters;
 using WpfUtils;
 
@@ -8,11 +9,11 @@ namespace SorterControls.ViewModel
 {
     public static class UnStagedSorterVm
     {
-        public static ISorterVm ToSorterVm(this ISorter sorter)
+        public static ISorterVm ToSorterVm(this ISorterEval sorterEval)
         {
             return new UnstagedSorterVmImpl
                 (
-                    sorter: sorter,
+                    sorterEval: sorterEval,
                     lineBrushes: null,
                     width: 0
                 );
@@ -23,20 +24,20 @@ namespace SorterControls.ViewModel
     {
         public UnstagedSorterVmImpl
             (
-                ISorter sorter,
+                ISorterEval sorterEval,
                 List<Brush> lineBrushes,
                 int width
             )
         {
-            _sorter = sorter;
-            foreach (var keyPair in Sorter.KeyPairs)
+            _sorterEval = sorterEval;
+            foreach (var keyPair in SorterEval.KeyPairs)
             {
                 SwitchVms.Add
                 (
                     new SwitchVm
                     (
                         keyPair,
-                        Sorter.KeyCount,
+                        SorterEval.KeyCount,
                         lineBrushes,
                         width
                     ) { SwitchBrush = Brushes.Red }
@@ -44,10 +45,10 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private readonly ISorter _sorter;
-        ISorter Sorter
+        private readonly ISorterEval _sorterEval;
+        ISorterEval SorterEval
         {
-            get { return _sorter; }
+            get { return _sorterEval; }
         }
 
         private ObservableCollection<SwitchVm> _switchVms = new ObservableCollection<SwitchVm>();
@@ -58,5 +59,15 @@ namespace SorterControls.ViewModel
         }
 
         public SorterVmType SorterVmType { get { return SorterVmType.Unstaged; } }
+
+        public int SwitchesUsed
+        {
+            get { return SorterEval.SwitchUseCount; }
+        }
+
+        public bool Success
+        {
+            get { return SorterEval.Success; }
+        }
     }
 }

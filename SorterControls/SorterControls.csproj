@@ -114,7 +114,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ViewModel\Design\DesignSorterVmImpl.cs" />
-    <Compile Include="ViewModel\SorterVmImpl.cs" />
+    <Compile Include="ViewModel\SorterVm.cs" />
     <Compile Include="ViewModel\SwitchVm.cs" />
     <Compile Include="View\UnstagedSorterControl.xaml.cs">
       <DependentUpon>UnstagedSorterControl.xaml</DependentUpon>

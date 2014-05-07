@@ -57,7 +57,7 @@ namespace SorterControls.ViewModel
         void MakeSorterEvals()
         {
             _sorterEvals.Clear();
-            _sorterEvalVms.Clear();
+            _sorterVms.Clear();
 
             for (var i = 0; i < SorterCount; i++)
             {
@@ -65,7 +65,7 @@ namespace SorterControls.ViewModel
 
                 _sorterEvals.Add(newSorterEval);
 
-                _sorterEvalVms.InsertWhen(
+                _sorterVms.InsertWhen(
                         MakeSorterEvalVm(newSorterEval), ev => ev.SwitchesUsed > newSorterEval.SwitchUseCount
                     );
             }
@@ -73,38 +73,38 @@ namespace SorterControls.ViewModel
 
         void MakeSorterEvalVms()
         {
-            _sorterEvalVms.Clear();
+            _sorterVms.Clear();
 
             foreach (var sorterEval in SorterEvals.OrderBy(e=>e.SwitchUseCount))
             {
-                SorterEvalVms.Add(
+                SorterVms.Add(
                         MakeSorterEvalVm(sorterEval)
                     );
             }
         }
 
-        SorterEvalVm MakeSorterEvalVm(ISorterEval sorterEval)
+        ISorterVm MakeSorterEvalVm(ISorterEval sorterEval)
         {
-            return new SorterEvalVm
-            (
-                sorterEval: sorterEval,
-                lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
-                switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
-                width: DisplaySizeToSwitchWith(DisplaySize),
-                height: DisplaySizeToHeight(DisplaySize),
-                showUnusedSwitches: ShowUnused,
-                showStages: ShowStages
-            );
+            return sorterEval.ToSorterVm();
+            //return new SorterEvalVm
+            //(
+            //    sorterEval: sorterEval,
+            //    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
+            //    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
+            //    width: DisplaySizeToSwitchWith(DisplaySize),
+            //    height: DisplaySizeToHeight(DisplaySize),
+            //    showUnusedSwitches: ShowUnused,
+            //    showStages: ShowStages
+            //);
         }
 
-        private ObservableCollection<SorterEvalVm> _sorterEvalVms
-                    = new ObservableCollection<SorterEvalVm>();
-        public ObservableCollection<SorterEvalVm> SorterEvalVms
+        private ObservableCollection<ISorterVm> _sorterVms = new ObservableCollection<ISorterVm>();
+        public ObservableCollection<ISorterVm> SorterVms
         {
-            get { return _sorterEvalVms; }
+            get { return _sorterVms; }
             set
             {
-                _sorterEvalVms = value;
+                _sorterVms = value;
                 OnPropertyChanged("SorterEvalVms");
             }
         }

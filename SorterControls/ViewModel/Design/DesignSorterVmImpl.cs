@@ -8,12 +8,12 @@ namespace SorterControls.ViewModel.Design
         public DesignSorterVmImpl()
             : base
             (
-                sorter: Sorters.TestSorter(keyCount, 1234, 50),
-                lineBrushes: LineBrushFactory.GradedBlueBrushes(keyCount),
+                sorterEval: SorterEvals.TestSorterEval(__keyCount, 123, 800),
+                lineBrushes: LineBrushFactory.GradedBlueBrushes(__keyCount),
                 width: 8
             )
         { }
 
-        private const int keyCount = 16;
+        private const int __keyCount = 16;
     }
 }

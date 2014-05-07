@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using Sorting.Evals;
 using Sorting.Stages;
 using WpfUtils;
 
@@ -10,14 +11,14 @@ namespace SorterControls.ViewModel
     {
         public static ISorterVm ToSorterVm
             (
-                this IStagedSorter stagedSorter,
+                this ISorterEval sorterEval,
                 List<Brush> lineBrushes,
                 int width
             )
         {
             return new StagedSorterVmImpl
                 (
-                    stagedSorter: stagedSorter,
+                    sorterEval: sorterEval,
                     lineBrushes: lineBrushes,
                     width: width
                 );
@@ -28,12 +29,15 @@ namespace SorterControls.ViewModel
     {
         public StagedSorterVmImpl
             (
-                IStagedSorter stagedSorter,
+                ISorterEval sorterEval,
                 List<Brush> lineBrushes,
                 int width
             )
         {
-            _stagedSorter = stagedSorter;
+            _sorterEval = sorterEval;
+
+            _stagedSorter = sorterEval.ToStagedSorter();
+
             foreach (var sorterStage in StagedSorter.SorterStages)
             {
                 SorterStageVms.Add
@@ -63,6 +67,27 @@ namespace SorterControls.ViewModel
         public SorterVmType SorterVmType
         {
             get { return SorterVmType.Staged;}
+        }
+
+        private readonly ISorterEval _sorterEval;
+        ISorterEval SorterEval
+        {
+            get { return _sorterEval; }
+        }
+
+        public int KeyCount
+        {
+            get { return SorterEval.KeyCount; }
+        }
+
+        public int SwitchesUsed
+        {
+            get { return SorterEval.SwitchUseCount; }
+        }
+
+        public bool Success
+        {
+            get { return SorterEval.Success; }
         }
     }
 
