@@ -4,8 +4,8 @@
                     xmlns:view="clr-namespace:SorterControls.View">
 
 
-    <DataTemplate x:Key="SorterTemplate">
-        <view:SorterControl/>
+    <DataTemplate x:Key="UnstagedSorterTemplate">
+        <view:UnstagedSorterControl/>
     </DataTemplate>
 
     <DataTemplate x:Key="DefaultTemplate">
@@ -17,8 +17,8 @@
     </DataTemplate>
 
 
-    <templateSelectors:SorterSelector x:Key ="ScreenSelector"
-        SorterTemplate ="{StaticResource SorterTemplate}"
+    <templateSelectors:SorterSelector x:Key ="SorterSelector"
+        UnstagedSorterTemplate ="{StaticResource UnstagedSorterTemplate}"
         DefaultTemplate ="{StaticResource DefaultTemplate}"
         StagedSorterTemplate="{StaticResource StagedSorterTemplate}"
     />

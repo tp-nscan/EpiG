@@ -85,6 +85,9 @@
       <DependentUpon>StagedSorterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SwitchVisual.cs" />
+    <Compile Include="View\SorterControl.xaml.cs">
+      <DependentUpon>SorterControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="TemplateSelectors\SorterSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,18 +100,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SorterControl.xaml">
+    <Page Include="View\UnstagedSorterControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ViewModel\Design\DesignSorterVmImpl.cs" />
     <Compile Include="ViewModel\SorterVmImpl.cs" />
     <Compile Include="ViewModel\SwitchVm.cs" />
-    <Compile Include="View\SorterControl.xaml.cs">
-      <DependentUpon>SorterControl.xaml</DependentUpon>
+    <Compile Include="View\UnstagedSorterControl.xaml.cs">
+      <DependentUpon>UnstagedSorterControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\StagedSorterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SorterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,7 +7,7 @@ namespace SorterControls.TemplateSelectors
 {
     public class SorterSelector : DataTemplateSelector
     {
-        public DataTemplate SorterTemplate { get; set; }
+        public DataTemplate UnstagedSorterTemplate { get; set; }
 
         public DataTemplate StagedSorterTemplate { get; set; }
 
@@ -22,7 +22,7 @@ namespace SorterControls.TemplateSelectors
                 switch (screenVm.SorterVmType)
                 {
                     case SorterVmType.Unstaged:
-                        return SorterTemplate;
+                        return UnstagedSorterTemplate;
                     case SorterVmType.Staged:
                         return StagedSorterTemplate;
                     default:

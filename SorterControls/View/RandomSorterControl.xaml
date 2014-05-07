@@ -130,7 +130,7 @@
                                 <TextBlock Text="{Binding Success}" />
                             </StackPanel>
                         </Border>
-                        <view:SorterControl Height="{Binding Height}"/>
+                        <view:UnstagedSorterControl Height="{Binding Height}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.Resources>
