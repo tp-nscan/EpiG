@@ -67,19 +67,24 @@
   <ItemGroup>
     <Compile Include="TemplateSelectors\SorterSelector.cs" />
     <Compile Include="ViewModel\Design\DesignSorterEvalVm.cs" />
-    <Compile Include="ViewModel\Design\DesignStagedSorterVmImpl.cs" />
+    <Compile Include="ViewModel\Design\DesignStagedSorterVm.cs" />
     <Compile Include="ViewModel\Design\DesignSwitchVm.cs" />
     <Compile Include="ViewModel\MakeRandomSortersVm.cs" />
+    <Compile Include="ViewModel\MakeRandomSortersVmOld.cs" />
     <Compile Include="ViewModel\SorterEvalVm.cs" />
     <Compile Include="ViewModel\SorterStageVm.cs" />
     <Compile Include="ViewModel\SorterVmType.cs" />
-    <Compile Include="ViewModel\StagedSorterVmImpl.cs" />
+    <Compile Include="ViewModel\StagedSorterVm.cs" />
+    <Compile Include="ViewModel\UnstagedSorterVm.cs" />
     <Compile Include="View\DefaultControl.xaml.cs">
       <DependentUpon>DefaultControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LineBrushFactory.cs" />
-    <Compile Include="View\RandomSorterControl.xaml.cs">
-      <DependentUpon>RandomSorterControl.xaml</DependentUpon>
+    <Compile Include="View\MakeRandomSorterControlOld.xaml.cs">
+      <DependentUpon>MakeRandomSorterControlOld.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MakeRandomSortersControl.xaml.cs">
+      <DependentUpon>MakeRandomSortersControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StagedSorterControl.xaml.cs">
       <DependentUpon>StagedSorterControl.xaml</DependentUpon>
@@ -96,7 +101,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RandomSorterControl.xaml">
+    <Page Include="View\MakeRandomSorterControlOld.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MakeRandomSortersControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

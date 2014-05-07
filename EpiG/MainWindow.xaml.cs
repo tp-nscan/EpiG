@@ -19,7 +19,7 @@ namespace EpiG
             context.SaveChanges();
             Title = context.Sorters.Count().ToString();
 
-            DataContext = new MakeRandomSortersVm();
+            DataContext = new MakeRandomSortersVmOld();
         }
     }
 }

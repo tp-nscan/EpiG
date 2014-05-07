@@ -5,8 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--<ResourceDictionary Source="/SorterControls/TemplateSelectors/SorterSelector.xaml"/>-->
-
+                <ResourceDictionary Source="/SorterControls;component/TemplateSelectors/SorterSelector.xaml" />                
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

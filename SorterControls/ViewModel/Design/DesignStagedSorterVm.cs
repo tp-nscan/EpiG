@@ -4,9 +4,9 @@ using Sorting.TestData;
 
 namespace SorterControls.ViewModel.Design
 {
-    public class DesignStagedSorterVmImpl : StagedSorterVmImpl
+    public class DesignStagedSorterVm : StagedSorterVmImpl
     {
-        public DesignStagedSorterVmImpl() 
+        public DesignStagedSorterVm() 
             : base
             (
                 stagedSorter: Sorters.TestSorter(KeyCount, 1234, 50).ToStagedSorter(),

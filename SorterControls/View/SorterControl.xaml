@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:design="clr-namespace:SorterControls.ViewModel.Design"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance design:DesignSorterVmImpl, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance design:DesignStagedSorterVm, IsDesignTimeCreatable=True}"
              x:Name="ControlRoot"
              d:DesignHeight="200">
 

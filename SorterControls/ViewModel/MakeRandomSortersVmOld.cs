@@ -8,9 +8,9 @@ using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
-    public class MakeRandomSortersVm : ViewModelBase
+    public class MakeRandomSortersVmOld : ViewModelBase
     {
-        public MakeRandomSortersVm()
+        public MakeRandomSortersVmOld()
         {
             _sorterCount = 10;
             _showUnused = false;

@@ -8,13 +8,23 @@ namespace SorterControls.ViewModel
 {
     public static class StagedSorterVm
     {
-        public static ISorterVm ToSorterVm(this IStagedSorter sorter)
+        public static ISorterVm ToSorterVm
+            (
+                this IStagedSorter stagedSorter,
+                List<Brush> lineBrushes,
+                int width
+            )
         {
-            return null;
+            return new StagedSorterVmImpl
+                (
+                    stagedSorter: stagedSorter,
+                    lineBrushes: lineBrushes,
+                    width: width
+                );
         }
     }
 
-    public class StagedSorterVmImpl : ViewModelBase
+    public class StagedSorterVmImpl : ViewModelBase, ISorterVm
     {
         public StagedSorterVmImpl
             (
@@ -50,6 +60,10 @@ namespace SorterControls.ViewModel
             set { _sorterStageVms = value; }
         }
 
+        public SorterVmType SorterVmType
+        {
+            get { return SorterVmType.Staged;}
+        }
     }
 
 }

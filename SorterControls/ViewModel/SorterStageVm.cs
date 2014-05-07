@@ -19,16 +19,15 @@ namespace SorterControls.ViewModel
             foreach (var keyPair in SorterStage.KeyPairs)
             {
                 SwitchVms.Add
-                    (
-                        new SwitchVm(
-                            keyPair,
-                            SorterStage.KeyCount,
-                            lineBrushes,
-                            width
-                        ) { SwitchBrush = Brushes.Red }
-                    );
+                (
+                    new SwitchVm(
+                        keyPair,
+                        SorterStage.KeyCount,
+                        lineBrushes,
+                        width
+                    ) { SwitchBrush = Brushes.Red }
+                );
             }
-
         }
 
         private readonly ISorterStage _sorterStage;

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SorterControls.View
 {
     /// <summary>
-    /// Interaction logic for RandomSorterControl.xaml
+    /// Interaction logic for MakeRandomSortersControl.xaml
     /// </summary>
-    public partial class RandomSorterControl : UserControl
+    public partial class MakeRandomSortersControl : UserControl
     {
-        public RandomSorterControl()
+        public MakeRandomSortersControl()
         {
             InitializeComponent();
         }
