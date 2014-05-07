@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:templateSelectors="clr-namespace:SorterControls.TemplateSelectors"
+                    xmlns:view="clr-namespace:SorterControls.View">
+
+
+    <DataTemplate x:Key="SorterTemplate">
+        <view:SorterControl/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultTemplate">
+        <view:DefaultControl/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="StagedSorterTemplate">
+        <view:StagedSorterControl/>
+    </DataTemplate>
+
+
+    <templateSelectors:SorterSelector x:Key ="ScreenSelector"
+        SorterTemplate ="{StaticResource SorterTemplate}"
+        DefaultTemplate ="{StaticResource DefaultTemplate}"
+        StagedSorterTemplate="{StaticResource StagedSorterTemplate}"
+    />
+
+</ResourceDictionary>

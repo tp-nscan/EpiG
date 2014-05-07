@@ -106,6 +106,7 @@ namespace SorterControls.ViewModel
                 });
             }
         }
+
         private readonly bool _showUnusedSwitches;
         private bool ShowUnusedSwitches
         {
