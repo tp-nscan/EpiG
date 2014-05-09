@@ -121,7 +121,7 @@
 
         <ListView Grid.Row="1"
             
-            ItemsSource="{Binding SorterEvalVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
+            ItemsSource="{Binding SorterVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
             <ListView.Resources>
                 <DataTemplate x:Key="SwitchTemplate">
                     <StackPanel Orientation="Horizontal">

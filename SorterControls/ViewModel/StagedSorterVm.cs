@@ -13,14 +13,20 @@ namespace SorterControls.ViewModel
             (
                 this ISorterEval sorterEval,
                 List<Brush> lineBrushes,
-                int width
+                List<Brush> switchBrushes,
+                int width,
+                int height,
+                bool showUnusedSwitches
             )
         {
             return new StagedSorterVmImpl
                 (
                     sorterEval: sorterEval,
                     lineBrushes: lineBrushes,
-                    width: width
+                    switchBrushes: switchBrushes,
+                    width: width,
+                    height: height,
+                    showUnusedSwitches: showUnusedSwitches
                 );
         }
     }
@@ -31,7 +37,10 @@ namespace SorterControls.ViewModel
             (
                 ISorterEval sorterEval,
                 List<Brush> lineBrushes,
-                int width
+                List<Brush> switchBrushes,
+                int width,
+                int height,
+                bool showUnusedSwitches
             )
         {
             _sorterEval = sorterEval;

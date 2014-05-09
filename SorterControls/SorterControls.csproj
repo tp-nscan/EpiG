@@ -113,7 +113,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ViewModel\Design\DesignSorterVmImpl.cs" />
+    <Compile Include="ViewModel\Design\DesignSorterVm.cs" />
     <Compile Include="ViewModel\SorterVm.cs" />
     <Compile Include="ViewModel\SwitchVm.cs" />
     <Compile Include="View\UnstagedSorterControl.xaml.cs">

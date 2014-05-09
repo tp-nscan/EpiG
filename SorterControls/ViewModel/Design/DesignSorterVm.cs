@@ -3,9 +3,9 @@ using Sorting.TestData;
 
 namespace SorterControls.ViewModel.Design
 {
-    public class DesignSorterVmImpl : SorterVmImpl
+    public class DesignSorterVm : SorterVmImpl
     {
-        public DesignSorterVmImpl()
+        public DesignSorterVm()
             : base
             (
                 sorterEval: SorterEvals.TestSorterEval(__keyCount, 123, 800),

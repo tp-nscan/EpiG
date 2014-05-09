@@ -6,7 +6,7 @@
              xmlns:view="clr-namespace:SorterControls.View"
              xmlns:design="clr-namespace:SorterControls.ViewModel.Design"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance design:DesignSorterVmImpl, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance design:DesignSorterVm, IsDesignTimeCreatable=True}"
              x:Name="ControlRoot"
              d:DesignHeight="200">
     <Grid>

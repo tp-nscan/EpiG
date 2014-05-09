@@ -2,20 +2,30 @@
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Sorting.Evals;
-using Sorting.Sorters;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
     public static class UnStagedSorterVm
     {
-        public static ISorterVm ToSorterVm(this ISorterEval sorterEval)
+        public static ISorterVm ToSorterVm
+            (
+                this ISorterEval sorterEval,
+                List<Brush> lineBrushes,
+                List<Brush> switchBrushes,
+                int width,
+                int height,
+                bool showUnusedSwitches
+            )
         {
             return new UnstagedSorterVmImpl
                 (
                     sorterEval: sorterEval,
-                    lineBrushes: null,
-                    width: 0
+                    lineBrushes: lineBrushes,
+                    switchBrushes: switchBrushes,
+                    width: width,
+                    height: height,
+                    showUnusedSwitches: showUnusedSwitches
                 );
         }
     }
@@ -26,7 +36,10 @@ namespace SorterControls.ViewModel
             (
                 ISorterEval sorterEval,
                 List<Brush> lineBrushes,
-                int width
+                List<Brush> switchBrushes,
+                int width,
+                int height,
+                bool showUnusedSwitches
             )
         {
             _sorterEval = sorterEval;
