@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media;
 using Sorting.Evals;
 using Sorting.Stages;
@@ -9,7 +10,7 @@ namespace SorterControls.ViewModel
 {
     public static class StagedSorterVm
     {
-        public static ISorterVm ToSorterVm
+        public static ISorterVm ToStagedSorterVm
             (
                 this ISorterEval sorterEval,
                 List<Brush> lineBrushes,
@@ -44,24 +45,50 @@ namespace SorterControls.ViewModel
             )
         {
             _sorterEval = sorterEval;
-
-            _stagedSorter = sorterEval.ToStagedSorter();
+            _stagedSorter = sorterEval.ToStagedSorter(showUnused: showUnusedSwitches);
+            _lineBrushes = lineBrushes;
+            _switchBrushes = switchBrushes;
+            _showUnusedSwitches = showUnusedSwitches;
+            _height = height;
+            _width = width;
 
             foreach (var sorterStage in StagedSorter.SorterStages)
             {
                 SorterStageVms.Add
                     (
-                        new SorterStageVm(
-                            sorterStage,
-                            lineBrushes,
-                            width
-                        )
+                        new SorterStageVm
+                            (
+                                sorterStage: sorterStage,
+                                lineBrushes: LineBrushes,
+                                switchBrushes: SwitchBrushes,
+                                showUnusedSwitches: ShowUnusedSwitches,
+                                width: Width,
+                                switchableGroupCount: SorterEval.SwitchableGroupCount
+                            )
                     );
             }
         }
 
-        private readonly IStagedSorter _stagedSorter;
-        IStagedSorter StagedSorter
+        private readonly List<Brush> _lineBrushes;
+        private List<Brush> LineBrushes
+        {
+            get { return _lineBrushes; }
+        }
+
+        private readonly int _height;
+        public int Height
+        {
+            get { return _height; }
+        }
+
+        private readonly bool _showUnusedSwitches;
+        public bool ShowUnusedSwitches
+        {
+            get { return _showUnusedSwitches; }
+        }
+
+        private readonly IStagedSorter<ISwitchEval> _stagedSorter;
+        IStagedSorter<ISwitchEval> StagedSorter
         {
             get { return _stagedSorter; }
         }
@@ -84,6 +111,12 @@ namespace SorterControls.ViewModel
             get { return _sorterEval; }
         }
 
+        private readonly List<Brush> _switchBrushes;
+        private List<Brush> SwitchBrushes
+        {
+            get { return _switchBrushes; }
+        }
+
         public int KeyCount
         {
             get { return SorterEval.KeyCount; }
@@ -98,6 +131,13 @@ namespace SorterControls.ViewModel
         {
             get { return SorterEval.Success; }
         }
+
+        private readonly int _width;
+        public int Width
+        {
+            get { return _width; }
+        }
+
     }
 
 }

@@ -7,7 +7,7 @@ namespace Sorting.Stages
 {
     public static class SorterStager
     {
-        public static IEnumerable<ISorterStage> ToSorterStages<T>(this IReadOnlyList<T> keyPairs, int keyCount)
+        public static IEnumerable<ISorterStage<T>> ToSorterStages<T>(this IReadOnlyList<T> keyPairs, int keyCount)
             where T : IKeyPair
         {
             var stageMold = keyPairs.CollectStage(keyCount);
@@ -18,20 +18,18 @@ namespace Sorting.Stages
             }
         }
 
-        public static SorterStageMold CollectStage<T>(this IReadOnlyList<T> keyPairs, int keyCount)
+        public static SorterStageMold<T> CollectStage<T>(this IReadOnlyList<T> keyPairs, int keyCount)
             where T : IKeyPair
         {
-            IImmutableList<IKeyPair> remainingKeyPairs = ImmutableList<IKeyPair>.Empty;
-            IImmutableList<IKeyPair> stageKeyPairs = ImmutableList<IKeyPair>.Empty;
+            IImmutableList<T> remainingKeyPairs = ImmutableList<T>.Empty;
+            IImmutableList<T> stageKeyPairs = ImmutableList<T>.Empty;
 
             var keyUsed = new bool[keyCount];
-            var keysRemaining = keyCount;
             foreach (var keyPair in keyPairs)
             {
                 if (keyUsed[keyPair.LowKey])
                 {
                     keyUsed[keyPair.HiKey] = true;
-                    keysRemaining--;
                     remainingKeyPairs = remainingKeyPairs.Add(keyPair);
                     continue;
                 }
@@ -39,7 +37,6 @@ namespace Sorting.Stages
                 if (keyUsed[keyPair.HiKey])
                 {
                     keyUsed[keyPair.LowKey] = true;
-                    keysRemaining--;
                     remainingKeyPairs = remainingKeyPairs.Add(keyPair);
                     continue;
                 }
@@ -47,12 +44,10 @@ namespace Sorting.Stages
                 stageKeyPairs = stageKeyPairs.Add(keyPair);
                 keyUsed[keyPair.LowKey] = true;
                 keyUsed[keyPair.HiKey] = true;
-                keysRemaining--;
-                keysRemaining--;
 
             }
 
-            return new SorterStageMold
+            return new SorterStageMold<T>
             (
                 keyCount: keyCount,
                 stageKeyPairs: stageKeyPairs,
@@ -63,20 +58,20 @@ namespace Sorting.Stages
 
     }
 
-    public class SorterStageMold
+    public class SorterStageMold<T> where T : IKeyPair
     {
-        public SorterStageMold(int keyCount, IEnumerable<IKeyPair> stageKeyPairs, IReadOnlyList<IKeyPair> remainingKeyPairs)
+        public SorterStageMold(int keyCount, IEnumerable<T> stageKeyPairs, IReadOnlyList<T> remainingKeyPairs)
         {
             _keyCount = keyCount;
             _stageKeyPairs = stageKeyPairs.ToList();
             _remainingKeyPairs = _remainingKeyPairs.AddRange(remainingKeyPairs);
         }
 
-        private readonly IReadOnlyList<IKeyPair> _stageKeyPairs;
-        public IEnumerable<IKeyPair> StageKeyPairs { get { return _stageKeyPairs; } }
+        private readonly IReadOnlyList<T> _stageKeyPairs;
+        public IEnumerable<T> StageKeyPairs { get { return _stageKeyPairs; } }
 
-        private readonly IImmutableList<IKeyPair> _remainingKeyPairs = ImmutableList<IKeyPair>.Empty;
-        public IReadOnlyList<IKeyPair> RemainingKeyPairs { get { return _remainingKeyPairs; } }
+        private readonly IImmutableList<T> _remainingKeyPairs = ImmutableList<T>.Empty;
+        public IReadOnlyList<T> RemainingKeyPairs { get { return _remainingKeyPairs; } }
 
 
         private readonly int _keyCount;

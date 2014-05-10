@@ -8,6 +8,7 @@ using Sorting.Stages;
 
 namespace SorterControls.ViewModel
 {
+
     public class SorterEvalVm
     {
         public SorterEvalVm(
@@ -77,7 +78,6 @@ namespace SorterControls.ViewModel
                     .ToList()
                     .ToSorterStages(SorterEval.KeyPairCount)
                     .SelectMany(st => st.KeyPairs)
-                    .Cast<ISwitchEval>()
                     .ToList();
             }
             else
@@ -87,7 +87,6 @@ namespace SorterControls.ViewModel
                     .ToList()
                     .ToSorterStages(SorterEval.KeyPairCount)
                     .SelectMany(st => st.KeyPairs)
-                    .Cast<ISwitchEval>()
                     .ToList();
             }
 

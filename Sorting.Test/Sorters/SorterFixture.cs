@@ -37,35 +37,35 @@ namespace Sorting.Test.Sorters
             Debug.WriteLine("Time(ms): {0}", stopwatch.ElapsedMilliseconds);
         }
 
-        [TestMethod]
-        public void TestSorterSpeed()
-        {
-            var stopwatch = new Stopwatch();
-            const int keyCount = 16;
-            const int keyPairCount = 6400;
-            const int sorterCount = 6000;
-            const int switchableCount = 100;
-            const int switchableGroupCount = 40;
+        //[TestMethod]
+        //public void TestSorterSpeed()
+        //{
+        //    var stopwatch = new Stopwatch();
+        //    const int keyCount = 16;
+        //    const int keyPairCount = 6400;
+        //    const int sorterCount = 6000;
+        //    const int switchableCount = 100;
+        //    const int switchableGroupCount = 40;
 
 
-            var rando = Rando.Fast(1243);
+        //    var rando = Rando.Fast(1243);
 
-            //var sorter = Rando.Fast(1243).ToRandomEnumerator()
-            //    .Select(t => t.ToSorter(keyCount, keyPairCount, Guid.NewGuid()))
-            //    .First();
+        //    //var sorter = Rando.Fast(1243).ToRandomEnumerator()
+        //    //    .Select(t => t.ToSorter(keyCount, keyPairCount, Guid.NewGuid()))
+        //    //    .First();
 
-            stopwatch.Start();
+        //    stopwatch.Start();
 
-            for (var i = 0; i < 10; i++)
-            {
-                var sorter = rando.Spawn().ToSorter2(keyCount, keyPairCount, Guid.NewGuid());
-            }
+        //    for (var i = 0; i < 10; i++)
+        //    {
+        //        var sorter = rando.Spawn().ToSorter2(keyCount, keyPairCount, Guid.NewGuid());
+        //    }
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
 
-            Debug.WriteLine("Time(ms): {0}", stopwatch.ElapsedMilliseconds);
-        }
+        //    Debug.WriteLine("Time(ms): {0}", stopwatch.ElapsedMilliseconds);
+        //}
 
 
 

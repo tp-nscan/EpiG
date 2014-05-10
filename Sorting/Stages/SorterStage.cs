@@ -5,25 +5,26 @@ using Sorting.KeyPairs;
 
 namespace Sorting.Stages
 {
-    public interface ISorterStage
+    public interface ISorterStage<T> where T: IKeyPair
     {
         int KeyCount { get; }
         int KeyPairCount { get; }
-        IKeyPair KeyPair(int index);
-        IReadOnlyList<IKeyPair> KeyPairs { get; }
+        T KeyPair(int index);
+        IReadOnlyList<T> KeyPairs { get; }
     }
 
     public static class SorterStage
     {
-        public static ISorterStage ToSorterStage(this IEnumerable<IKeyPair> keyPairs, int keyCount)
+        public static ISorterStage<T> ToSorterStage<T>(this IEnumerable<T> keyPairs, int keyCount)
+            where T : IKeyPair
         {
-            return new SorterStageImpl(keyCount, keyPairs.OrderBy(kp => kp.Index).ToList());
+            return new SorterStageImpl<T>(keyCount, keyPairs.OrderBy(kp => kp.Index).ToList());
         }
     }
 
-    class SorterStageImpl : ISorterStage
+    class SorterStageImpl<T> : ISorterStage<T> where T: IKeyPair
     {
-        public SorterStageImpl(int keyCount, IReadOnlyList<IKeyPair> keyPairs)
+        public SorterStageImpl(int keyCount, IReadOnlyList<T> keyPairs)
         {
             _keyCount = keyCount;
             _keyPairs =  _keyPairs.AddRange(keyPairs.OrderBy(kp=>kp.Index));
@@ -40,16 +41,16 @@ namespace Sorting.Stages
             get { return _keyPairs.Count; }
         }
 
-        public IKeyPair KeyPair(int index)
+        public T KeyPair(int index)
         {
             return _keyPairs[index];
         }
 
-        public IReadOnlyList<IKeyPair> KeyPairs
+        public IReadOnlyList<T> KeyPairs
         {
             get { return _keyPairs; }
         }
 
-        private readonly IImmutableList<IKeyPair> _keyPairs = ImmutableList<IKeyPair>.Empty;
+        private readonly IImmutableList<T> _keyPairs = ImmutableList<T>.Empty;
     }
 }

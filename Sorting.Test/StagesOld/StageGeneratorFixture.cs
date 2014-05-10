@@ -13,10 +13,10 @@ namespace Sorting.Test.StagesOld
     public class StageGeneratorFixture
     {
         [TestMethod]
-        public void TestMethod1()
-        {
-            var sorterStage = TestKeyPairList().ToReducedSorterStage(Sorting.TestData.Switchables.SwitchableSet);
-        }
+        //public void TestMethod1()
+        //{
+        //    var sorterStage = TestKeyPairList().ToReducedSorterStage(Sorting.TestData.Switchables.SwitchableSet);
+        //}
 
         IReadOnlyList<IKeyPair> TestKeyPairList()
         {
@@ -24,38 +24,38 @@ namespace Sorting.Test.StagesOld
         }
 
         [TestMethod]
-        public void TestMethod2()
-        {
-            const int keyCount = 13;
-            for (var numKeyPairs = 4; numKeyPairs < 30; numKeyPairs+=2)
-            {
-                for (var numSwitchables = 10; numSwitchables < 100; numSwitchables+=10)
-                {
-                    var rando = Rando.Fast(numSwitchables + 377);
-                    IReadOnlyList<IKeyPair> sorterStage = rando.Spawn().RandomKeyPairs(13)
-                                                                       .Take(numKeyPairs).ToList();
-                    for (var rep = 0; rep < 10; rep++)
-                    {
-                        var reducedSorterStage =
-                            sorterStage.ToReducedSorterStage(
-                            rando.Spawn().ToSwitchableGroup<uint>(Guid.NewGuid(), keyCount, numSwitchables)
-                            );
-                        //if (reducedSorterStage.KeyPairs.Count > 6)
-                        //{
-                        //    System.Diagnostics.Debug.WriteLine(sorterStage.Aggregate("\n", (o, n) => o + " [" + n.LowKey + "," + n.HiKey + "]"));
-                        //    System.Diagnostics.Debug.WriteLine(reducedSorterStage.KeyPairs.Aggregate(String.Empty, (o,n)=> o + " [" + n.LowKey + "," + n.HiKey + "]" ));
-                        //}
-                        System.Diagnostics.Debug.WriteLine(String.Format("{0}\t{1}\t{2}\t{3}\t{4}", 
-                            numKeyPairs, 
-                            numSwitchables, 
-                            reducedSorterStage.KeyPairs.Count,
-                            sorterStage.Aggregate("", (o, n) => o + " [" + n.LowKey + "," + n.HiKey + "]"),
-                            reducedSorterStage.KeyPairs.Aggregate(String.Empty, (o, n) => o + " [" + n.LowKey + "," + n.HiKey + "]")
-                            ));
-                    }
-                }
-            }
-        }
+        //public void TestMethod2()
+        //{
+        //    const int keyCount = 13;
+        //    for (var numKeyPairs = 4; numKeyPairs < 30; numKeyPairs+=2)
+        //    {
+        //        for (var numSwitchables = 10; numSwitchables < 100; numSwitchables+=10)
+        //        {
+        //            var rando = Rando.Fast(numSwitchables + 377);
+        //            IReadOnlyList<IKeyPair> sorterStage = rando.Spawn().RandomKeyPairs(13)
+        //                                                               .Take(numKeyPairs).ToList();
+        //            for (var rep = 0; rep < 10; rep++)
+        //            {
+        //                var reducedSorterStage =
+        //                    sorterStage.ToReducedSorterStage(
+        //                    rando.Spawn().ToSwitchableGroup<uint>(Guid.NewGuid(), keyCount, numSwitchables)
+        //                    );
+        //                //if (reducedSorterStage.KeyPairs.Count > 6)
+        //                //{
+        //                //    System.Diagnostics.Debug.WriteLine(sorterStage.Aggregate("\n", (o, n) => o + " [" + n.LowKey + "," + n.HiKey + "]"));
+        //                //    System.Diagnostics.Debug.WriteLine(reducedSorterStage.KeyPairs.Aggregate(String.Empty, (o,n)=> o + " [" + n.LowKey + "," + n.HiKey + "]" ));
+        //                //}
+        //                System.Diagnostics.Debug.WriteLine(String.Format("{0}\t{1}\t{2}\t{3}\t{4}", 
+        //                    numKeyPairs, 
+        //                    numSwitchables, 
+        //                    reducedSorterStage.KeyPairs.Count,
+        //                    sorterStage.Aggregate("", (o, n) => o + " [" + n.LowKey + "," + n.HiKey + "]"),
+        //                    reducedSorterStage.KeyPairs.Aggregate(String.Empty, (o, n) => o + " [" + n.LowKey + "," + n.HiKey + "]")
+        //                    ));
+        //            }
+        //        }
+        //    }
+        //}
 
         IEnumerable<IKeyPair> TestKeyPairs()
         {

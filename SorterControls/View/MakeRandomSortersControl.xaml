@@ -120,21 +120,10 @@
 
 
         <ListView Grid.Row="1"
-            
-            ItemsSource="{Binding SorterVms}" ItemTemplate="{DynamicResource SwitchTemplate}" Background="#2FFF">
-            <ListView.Resources>
-                <DataTemplate x:Key="SwitchTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <Border Padding="3" Margin="4" Background="#7FFF" CornerRadius="4">
-                            <StackPanel>
-                                <TextBlock Text="{Binding SwitchesUsed}" />
-                                <TextBlock Text="{Binding Success}" />
-                            </StackPanel>
-                        </Border>
-                        <view:UnstagedSorterControl Height="{Binding Height}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.Resources>
+            ItemsSource="{Binding SorterVms}" 
+            Background="#2FFF" 
+            ItemTemplateSelector="{DynamicResource SorterSelector}">
+
         </ListView>
 
     </Grid>

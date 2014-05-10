@@ -5,7 +5,15 @@
 
 
     <DataTemplate x:Key="UnstagedSorterTemplate">
-        <view:UnstagedSorterControl/>
+        <StackPanel Orientation="Horizontal">
+            <Border Padding="3" Margin="4" Background="#7FFF" CornerRadius="4">
+                <StackPanel>
+                    <TextBlock Text="{Binding SwitchesUsed}" />
+                    <TextBlock Text="{Binding Success}" />
+                </StackPanel>
+            </Border>
+            <view:UnstagedSorterControl Height="{Binding Height}"/>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="DefaultTemplate">
@@ -13,7 +21,15 @@
     </DataTemplate>
 
     <DataTemplate x:Key="StagedSorterTemplate">
-        <view:StagedSorterControl/>
+        <StackPanel Orientation="Horizontal">
+            <Border Padding="3" Margin="4" Background="#7FFF" CornerRadius="4">
+                <StackPanel>
+                    <TextBlock Text="{Binding SwitchesUsed}" />
+                    <TextBlock Text="{Binding Success}" />
+                </StackPanel>
+            </Border>
+            <view:StagedSorterControl Height="{Binding Height}"/>
+        </StackPanel>
     </DataTemplate>
 
 

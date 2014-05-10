@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Sorting.Sorters;
 using Sorting.Stages;
-using Sorting.StagesOld;
 
 namespace Sorting.Test.StagesOld
 {

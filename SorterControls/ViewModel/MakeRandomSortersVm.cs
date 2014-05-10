@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using SorterControls.View;
 using Sorting.Evals;
 using WpfUtils;
 
@@ -84,17 +85,27 @@ namespace SorterControls.ViewModel
 
         ISorterVm MakeSorterEvalVm(ISorterEval sorterEval)
         {
-            return sorterEval.ToSorterVm();
-            //return new SorterEvalVm
-            //(
-            //    sorterEval: sorterEval,
-            //    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
-            //    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
-            //    width: DisplaySizeToSwitchWith(DisplaySize),
-            //    height: DisplaySizeToHeight(DisplaySize),
-            //    showUnusedSwitches: ShowUnused,
-            //    showStages: ShowStages
-            //);
+            if (ShowStages)
+            {
+                return sorterEval.ToStagedSorterVm
+                (
+                    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
+                    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
+                    width: DisplaySizeToSwitchWith(DisplaySize),
+                    height: DisplaySizeToHeight(DisplaySize),
+                    showUnusedSwitches: ShowUnused
+                );
+            }
+
+            return sorterEval.ToUnStagedSorterVm
+            (
+                    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
+                    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
+                    width: DisplaySizeToSwitchWith(DisplaySize),
+                    height: DisplaySizeToHeight(DisplaySize),
+                    showUnusedSwitches: ShowUnused
+            );
+
         }
 
         private ObservableCollection<ISorterVm> _sorterVms = new ObservableCollection<ISorterVm>();
