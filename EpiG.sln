@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiG.Data", "EpiG.Data\EpiG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sorting.Test", "Sorting.Test\Sorting.Test.csproj", "{8C799F84-3313-4C97-B0F3-953FBBF3A74D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -180,6 +182,16 @@ Global
 		{8C799F84-3313-4C97-B0F3-953FBBF3A74D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C799F84-3313-4C97-B0F3-953FBBF3A74D}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{8C799F84-3313-4C97-B0F3-953FBBF3A74D}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

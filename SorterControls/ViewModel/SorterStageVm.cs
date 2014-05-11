@@ -37,7 +37,7 @@ namespace SorterControls.ViewModel
                 }
 
                 var switchBrushIndex = Math.Ceiling(
-                        (keyPair.UseCount * SwitchBrushes.Count)
+                        (keyPair.UseCount * (SwitchBrushes.Count -1))
                             /
                         SwitchableGroupCount
                     );

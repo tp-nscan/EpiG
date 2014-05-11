@@ -41,7 +41,7 @@ namespace Sorting.KeyPairs
         {
             var listRet = new List<IKeyPair>();
             var scrambles = singles.FisherYatesShuffle(rando);
-            for (var i = 0; i < scrambles.Count(); i+=2)
+            for (var i = 0; i < scrambles.Count()-1; i+=2)
             {
                 var a = scrambles[i];
                 var b = scrambles[i + 1];

@@ -59,7 +59,7 @@ namespace SorterControls.ViewModel
 
                 var keyPair = SorterEval.KeyPair(i);
                 var switchBrushIndex = Math.Ceiling(
-                        (SorterEval.SwitchEvals[i].UseCount * SwitchBrushes.Count)
+                        (SorterEval.SwitchEvals[i].UseCount * (SwitchBrushes.Count -1))
                             /
                         SorterEval.SwitchableGroupCount
                     );

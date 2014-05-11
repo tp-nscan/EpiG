@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using SorterControls.View;
 using Sorting.Evals;
+using Utils.BackgroundWorkers;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
@@ -37,14 +41,60 @@ namespace SorterControls.ViewModel
             }
         }
 
-        protected void OnMakeSortersCommand()
+        async void OnMakeSortersCommand()
         {
-            MakeSorterEvals();
+            IsBusy = true;
+            await MakeSorterEvals();
+            IsBusy = false;
         }
 
         bool CanMakeSortersCommand()
         {
+            return !isBusy;
+        }
+
+        #endregion // MakeSortersCommand
+
+
+        #region CancelMakeSortersCommand
+
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        RelayCommand _cancelMakeSortersCommand;
+        public ICommand CancelMakeSortersCommand
+        {
+            get
+            {
+                return _cancelMakeSortersCommand ?? (_cancelMakeSortersCommand
+                    = new RelayCommand
+                        (
+                            param => OnCancelMakeSortersCommand(),
+                            param => CanCancelMakeSortersCommand()
+                        ));
+            }
+        }
+
+        void OnCancelMakeSortersCommand()
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
+        bool CanCancelMakeSortersCommand()
+        {
             return true;
+        }
+
+        #endregion // CancelMakeSortersCommand
+
+        private bool isBusy = false;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged("IsBusy");
+            }
         }
 
         private List<ISorterEval> _sorterEvals = new List<ISorterEval>();
@@ -54,21 +104,73 @@ namespace SorterControls.ViewModel
             set { _sorterEvals = value; }
         }
 
-        void MakeSorterEvals()
+        private IEnumerativeBackgroundWorker<int, ISorterEval> _sorterEvalBackgroundWorker;
+        private IDisposable _updateSubscription;
+        private IEnumerativeBackgroundWorker<int, ISorterEval> SorterEvalBackgroundWorker
         {
-            _sorterEvals.Clear();
-            _sorterVms.Clear();
-
-            for (var i = 0; i < SorterCount; i++)
+            get
             {
-                var newSorterEval = Sorting.TestData.SorterEvals.TestSorterEval(KeyCount, Seed + i, KeyPairCount);
+                if (_sorterEvalBackgroundWorker == null)
+                {
 
-                _sorterEvals.Add(newSorterEval);
+                    _sorterEvalBackgroundWorker = EnumerativeBackgroundWorker.Make(
+                            inputs: Enumerable.Range(0, SorterCount),
+                            mapper: (i, c) => IterationResult.Make
+                                (
+                                    Sorting.TestData.SorterEvals.TestSorterEval(KeyCount, Seed + i, KeyPairCount), 
+                                    ProgressStatus.StepComplete
+                                )
+                        );
 
+                    _updateSubscription = _sorterEvalBackgroundWorker.OnIterationResult.Subscribe(UpdateSorterResults);
+                }
+
+                return _sorterEvalBackgroundWorker;
+            }
+        }
+
+        void UpdateSorterResults(IIterationResult<ISorterEval> result)
+        {
+            if (result.ProgressStatus == ProgressStatus.StepComplete)
+            {
+                _sorterEvals.Add(result.Data);
                 _sorterVms.InsertWhen(
-                        MakeSorterEvalVm(newSorterEval), ev => ev.SwitchesUsed > newSorterEval.SwitchUseCount
+                        MakeSorterEvalVm(result.Data), ev => ev.SwitchesUsed > result.Data.SwitchUseCount
                     );
             }
+        }
+
+        void Reset()
+        {
+            if (_updateSubscription != null)
+            {
+                _updateSubscription.Dispose();
+            }
+            _sorterEvalBackgroundWorker = null;
+            _sorterEvals.Clear();
+            _sorterVms.Clear();
+            _cancellationTokenSource = new CancellationTokenSource();
+        }
+
+        async Task MakeSorterEvals()
+        {
+            IsBusy = true;
+            Reset();
+
+            await SorterEvalBackgroundWorker.Start(_cancellationTokenSource);
+            IsBusy = false;
+
+
+            //for (var i = 0; i < SorterCount; i++)
+            //{
+            //    var newSorterEval = Sorting.TestData.SorterEvals.TestSorterEval(KeyCount, Seed + i, KeyPairCount);
+
+            //    _sorterEvals.Add(newSorterEval);
+
+            //    _sorterVms.InsertWhen(
+            //            MakeSorterEvalVm(newSorterEval), ev => ev.SwitchesUsed > newSorterEval.SwitchUseCount
+            //        );
+            //}
         }
 
         void MakeSorterEvalVms()
@@ -119,7 +221,6 @@ namespace SorterControls.ViewModel
             }
         }
 
-        #endregion // MakeSortersCommand
 
         private int _displaySize;
         public int DisplaySize
@@ -141,7 +242,7 @@ namespace SorterControls.ViewModel
             {
                 _keyCount = value;
                 OnPropertyChanged("KeyCount");
-                MakeSorterEvals();
+                //OnMakeSortersCommand();
             }
         }
 
@@ -153,7 +254,7 @@ namespace SorterControls.ViewModel
             {
                 _keyPairCount = value;
                 OnPropertyChanged("KeyPairCount");
-                MakeSorterEvals();
+                //OnMakeSortersCommand();
             }
         }
 
@@ -165,7 +266,7 @@ namespace SorterControls.ViewModel
             {
                 _seed = value;
                 OnPropertyChanged("Seed");
-                MakeSorterEvals();
+               // OnMakeSortersCommand();
             }
         }
 
@@ -202,6 +303,8 @@ namespace SorterControls.ViewModel
         }
 
         private int _sorterCount;
+        private bool _isBusy;
+
         public int SorterCount
         {
             get { return _sorterCount; }
@@ -209,7 +312,7 @@ namespace SorterControls.ViewModel
             {
                 _sorterCount = value;
                 OnPropertyChanged("SorterCount");
-                MakeSorterEvals();
+                //OnMakeSortersCommand();
             }
         }
 
