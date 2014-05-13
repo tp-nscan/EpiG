@@ -137,6 +137,14 @@
       <Project>{bba3806d-5798-4bff-9c0f-ed99de8780f3}</Project>
       <Name>SorterControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SorterGenome.Json\SorterGenome.Json.csproj">
+      <Project>{2623d0f6-3e27-43ff-8c42-9d4783904c0d}</Project>
+      <Name>SorterGenome.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SorterGenome\SorterGenome.csproj">
+      <Project>{78481af4-8d78-4bf1-a1aa-a2228f8a0d56}</Project>
+      <Name>SorterGenome</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sorting.Json\Sorting.Json.csproj">
       <Project>{55a66926-6f0e-4423-92d2-913e039ef3cf}</Project>
       <Name>Sorting.Json</Name>

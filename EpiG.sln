@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiG", "EpiG\EpiG.csproj", "{DF060057-17D3-41C6-9637-04EA4BD8DFAC}"
 EndProject
@@ -32,6 +32,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sorting.Test", "Sorting.Test\Sorting.Test.csproj", "{8C799F84-3313-4C97-B0F3-953FBBF3A74D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SorterGenome", "SorterGenome\SorterGenome.csproj", "{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SorterGenome.Test", "SorterGenome.Test\SorterGenome.Test.csproj", "{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SorterGenome.Json.Test", "SorterGenome.Json.Test\SorterGenome.Json.Test.csproj", "{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SorterGenome.Json", "SorterGenome.Json\SorterGenome.Json.csproj", "{2623D0F6-3E27-43FF-8C42-9D4783904C0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,6 +200,46 @@ Global
 		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{31DB7822-1F4A-44F1-91FD-2A016BAA1B87}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{78481AF4-8D78-4BF1-A1AA-A2228F8A0D56}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{F575AAE1-A7C1-4665-B8F2-4B780117DDA0}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{E50FCB73-3F84-42F0-88A4-BC69FB71E24D}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{2623D0F6-3E27-43FF-8C42-9D4783904C0D}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
