@@ -1,13 +1,9 @@
-﻿using System;
-using MathUtils.Collections;
-
-namespace Genomic.Genomes
+﻿namespace Genomic.Genomes
 {
-    public interface IGenomeEval<TG> : IGuid
-                                       where TG : IGenome
+    public interface IOrgEval<TG> where TG : class, IGenome
     {
         int Generation { get; }
-        TG Genome { get; }
+        IOrg<TG> Org { get; }
         /// <summary>
         /// Low scores are better
         /// </summary>
@@ -15,19 +11,19 @@ namespace Genomic.Genomes
         bool Success { get; }
     }
 
-    public static class GenomeEval
+    public static class OrgEval
     {
-        public static IGenomeEval<TG> Make<TG>
+        public static IOrgEval<TG> Make<TG>
         (
-            TG genome,
+            IOrg<TG> genome,
             double score,
             int generation,
             bool success
-        ) where TG : IGenome
+        ) where TG : class, IGenome
         {
-            return new GenomeEvalImpl<TG>
+            return new OrgEvalImpl<TG>
                 (
-                    genome: genome,
+                    org: genome,
                     score: score,
                     generation: generation,
                     success: success
@@ -35,14 +31,13 @@ namespace Genomic.Genomes
         }
     }
 
-    class GenomeEvalImpl<TG> : IGenomeEval<TG> where TG : IGenome
+    class OrgEvalImpl<TG> : IOrgEval<TG> where TG : class, IGenome
     {
-        private readonly TG _genome;
         private readonly double _score;
 
-        public GenomeEvalImpl(TG genome, double score, int generation, bool success)
+        public OrgEvalImpl(IOrg<TG> org, double score, int generation, bool success)
         {
-            _genome = genome;
+            _org = org;
             _score = score;
             _generation = generation;
             _success = success;
@@ -54,9 +49,10 @@ namespace Genomic.Genomes
             get { return _generation; }
         }
 
-        public TG Genome
+        private readonly IOrg<TG> _org;
+        public IOrg<TG> Org
         {
-            get { return _genome; }
+            get { return _org; }
         }
 
         public double Score
@@ -68,11 +64,6 @@ namespace Genomic.Genomes
         public bool Success
         {
             get { return _success; }
-        }
-
-        public Guid Guid
-        {
-            get { return _genome.Guid; }
         }
     }
 }

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
-using MathUtils.Collections;
 using MathUtils.Rand;
 
 namespace Genomic.Layers
 {
-    public interface ILayer<out TG> where TG : IGenome
+    public interface ILayer<TG> where TG : class, IGenome
     {
         int Generation { get; }
-        IReadOnlyList<TG> Genomes { get; }
-        TG GetGenome(Guid genomeId);
+        IReadOnlyList<IOrg<TG>> Orgs { get; }
+        IOrg<TG> GetOrg(Guid orgId);
     }
 
     public static class Layer
@@ -19,99 +18,99 @@ namespace Genomic.Layers
         public static ILayer<TG> Create<TG>
             (
                 int seed,
-                Func<int, TG> createFunc,
+                Func<int, IOrg<TG>> createFunc,
                 int genomeCount
-            ) where TG : IGenome
+            ) where TG : class, IGenome
         {
             var randy = Rando.Fast(seed);
             return Make
                 (
                     generation: 0,
-                    genomes: Enumerable.Range(0, genomeCount)
+                    orgs: Enumerable.Range(0, genomeCount)
                                        .Select(i => createFunc(randy.NextInt()))
                 );
         }
 
-        public static ILayer<TG> Multiply<TG>
-        (
-            this ILayer<TG> layer,
-            Func<TG, int, Guid, TG> genomeReproFunc,
-            int newGenomeCount,
-            int seed
-        ) where TG : IGenome
-        {
-            var randy = Rando.Fast(seed);
+        //public static ILayer<TG> Multiply<TG>
+        //(
+        //    this ILayer<TG> layer,
+        //    Func<TG, int, Guid, TG> genomeReproFunc,
+        //    int newGenomeCount,
+        //    int seed
+        //) where TG : IGenome
+        //{
+        //    var randy = Rando.Fast(seed);
 
-            return Make(
-                    generation: layer.Generation,
-                    genomes: layer.Genomes
-                             .Repeat().Take(newGenomeCount)
-                             .Select(g => genomeReproFunc(g, randy.NextInt(), randy.NextGuid()))
-                );
-        }
+        //    return Make(
+        //            generation: layer.Generation,
+        //            orgs: layer.Orgs
+        //                     .Repeat().Take(newGenomeCount)
+        //                     .Select(g => genomeReproFunc(g, randy.NextInt(), randy.NextGuid()))
+        //        );
+        //}
 
-        public static ILayer<TG> MultiplyPreserveParents<TG>
-            (
-                this ILayer<TG> layer,
-                Func<TG, int, Guid, TG> genomeReproFunc,
-                int newGenomeCount,
-                int seed
-            ) where TG : IGenome
-        {
-            var randy = Rando.Fast(seed);
+        //public static ILayer<TG> MultiplyPreserveParents<TG>
+        //    (
+        //        this ILayer<TG> layer,
+        //        Func<TG, int, Guid, TG> genomeReproFunc,
+        //        int newGenomeCount,
+        //        int seed
+        //    ) where TG : IGenome
+        //{
+        //    var randy = Rando.Fast(seed);
 
-            return Make(
-                    generation: layer.Generation,
-                    genomes: layer.Genomes.Concat
-                    (
-                        layer.Genomes
-                             .Repeat().Take(newGenomeCount - layer.Genomes.Count)
-                             .Select(g => genomeReproFunc(g, randy.NextInt(), randy.NextGuid()))
-                    )
-                );
-        }
+        //    return Make(
+        //            generation: layer.Generation,
+        //            orgs: layer.Orgs.Concat
+        //            (
+        //                layer.Orgs
+        //                     .Repeat().Take(newGenomeCount - layer.Orgs.Count)
+        //                     .Select(g => genomeReproFunc(g, randy.NextInt(), randy.NextGuid()))
+        //            )
+        //        );
+        //}
 
-        public static ILayer<TG> NextGen<TG>
-            (
-                this ILayer<TG> layer,
-                int seed,
-                IReadOnlyList<Tuple<Guid, double>> scores,
-                int newGenomeCount
-            ) where TG : IGenome
-        {
-            return Make(
-                    generation: layer.Generation + 1,
-                    genomes: scores.OrderByDescending(t => t.Item2)
-                                   .Take(newGenomeCount)
-                                   .Select(p => layer.GetGenome(p.Item1))
-                                   .ToList()
-                );
-        }
+        //public static ILayer<TG> NextGen<TG>
+        //    (
+        //        this ILayer<TG> layer,
+        //        int seed,
+        //        IReadOnlyList<Tuple<Guid, double>> scores,
+        //        int newGenomeCount
+        //    ) where TG : IGenome
+        //{
+        //    return Make(
+        //            generation: layer.Generation + 1,
+        //            orgs: scores.OrderByDescending(t => t.Item2)
+        //                           .Take(newGenomeCount)
+        //                           .Select(p => layer.GetOrg(p.Item1))
+        //                           .ToList()
+        //        );
+        //}
 
         public static ILayer<TG> Make<TG>
             (
                 int generation,
-                IEnumerable<TG> genomes
-            ) where TG : IGenome
+                IEnumerable<IOrg<TG>> orgs
+            ) where TG : class, IGenome
         {
             return new LayerImpl<TG>
                 (
                     generation,
-                    genomes
+                    orgs
                 );
         }
 
     }
 
-    public class LayerImpl<TG> : ILayer<TG> where TG : IGenome
+    public class LayerImpl<TG> : ILayer<TG> where TG : class, IGenome
     {
         private readonly int _generation;
-        private readonly IReadOnlyDictionary<Guid, TG> _genomes;
+        private readonly IReadOnlyDictionary<Guid, IOrg<TG>> _orgs;
 
-        public LayerImpl(int generation, IEnumerable<TG> genomes)
+        public LayerImpl(int generation, IEnumerable<IOrg<TG>> orgs)
         {
             _generation = generation;
-            _genomes = genomes.ToDictionary(t => t.Guid);
+            _orgs = orgs.ToDictionary(t => t.Guid);
         }
 
         public int Generation
@@ -119,15 +118,15 @@ namespace Genomic.Layers
             get { return _generation; }
         }
 
-        private List<TG> _genomesList; 
-        public IReadOnlyList<TG> Genomes
+        private List<IOrg<TG>> _genomesList;
+        public IReadOnlyList<IOrg<TG>> Orgs
         {
-            get { return _genomesList ?? (_genomesList = new List<TG>(_genomes.Values)); }
+            get { return _genomesList ?? (_genomesList = new List<IOrg<TG>>(_orgs.Values)); }
         }
 
-        public TG GetGenome(Guid genomeId)
+        public IOrg<TG> GetOrg(Guid orgId)
         {
-            return _genomes.ContainsKey(genomeId) ? _genomes[genomeId] : default(TG);
+            return _orgs.ContainsKey(orgId) ? _orgs[orgId] : default(IOrg<TG>);
         }
     }
 }

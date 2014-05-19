@@ -44,9 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Genomes\Genome.cs" />
-    <Compile Include="Genomes\GenomeEval.cs" />
+    <Compile Include="Genomes\GenomeBuilderType.cs" />
+    <Compile Include="Genomes\GenomeParser.cs" />
+    <Compile Include="Genomes\GenomeParserType.cs" />
+    <Compile Include="Genomes\OrgEval.cs" />
+    <Compile Include="Genomes\GenomeBuilder.cs" />
+    <Compile Include="Genomes\SequenceBlock.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Org.cs" />
+    <Compile Include="Population.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
