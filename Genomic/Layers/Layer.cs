@@ -15,19 +15,60 @@ namespace Genomic.Layers
 
     public static class Layer
     {
-        public static ILayer<TG> Create<TG>
+        public static ILayer<IGenome> CreateSimpleRandomLayer
             (
                 int seed,
-                Func<int, IOrg<TG>> createFunc,
-                int genomeCount
-            ) where TG : class, IGenome
+                uint symbolCount,
+                int sequenceLength,
+                int orgCount
+            )
+        {
+            var randy = Rando.Fast(seed);
+
+            var genomeBuilders = Enumerable.Range(0, orgCount)
+                .Select(i => GenomeBuilder.MakeGenerator(
+                    symbolCount: symbolCount,
+                    sequenceLength: sequenceLength,
+                    seed: randy.NextInt(),
+                    guid: randy.NextGuid()));
+
+            return Create
+                (
+                    Enumerable.Range(0, orgCount)
+                        .Select(i => GenomeBuilder.MakeGenerator(
+                            symbolCount: symbolCount,
+                            sequenceLength: sequenceLength,
+                            seed: randy.NextInt(),
+                            guid: randy.NextGuid()))
+                );
+        }
+
+        public static ILayer<TG> Create<TG>
+        (
+            IEnumerable<IGenomeBuilder<TG>> createFuncs
+        ) where TG : class, IGenome
+        {
+            return Make
+            (
+                generation: 0,
+                orgs: createFuncs
+                                .Select(cf=>Org.Make(cf,cf.Make()))
+            );
+        }
+
+        public static ILayer<TG> Create<TG>
+        (
+            int seed,
+            Func<int, IOrg<TG>> createFunc,
+            int orgCount
+        ) where TG : class, IGenome
         {
             var randy = Rando.Fast(seed);
             return Make
                 (
                     generation: 0,
-                    orgs: Enumerable.Range(0, genomeCount)
-                                       .Select(i => createFunc(randy.NextInt()))
+                    orgs: Enumerable.Range(0, orgCount)
+                                    .Select(i => createFunc(randy.NextInt()))
                 );
         }
 

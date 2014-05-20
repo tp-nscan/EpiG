@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,6 +36,16 @@ namespace MathUtils.Tests.Rand
             var avg = Rando.Fast(8823).ToUlongEnumerator(maxVal).Take(10000).Average(t => (long) t);
             Assert.IsTrue(avg < (maxVal * 0.53));
             Assert.IsTrue(avg > (maxVal * 0.47));
+        }
+
+        [TestMethod]
+        public void TestRandomGuid()
+        {
+            var d = new Dictionary<Guid, int>();
+
+            var randy = Rando.Fast(123);
+
+
         }
     }
 }

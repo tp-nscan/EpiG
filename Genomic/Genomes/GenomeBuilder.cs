@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using MathUtils.Collections;
+using MathUtils.Rand;
 
 namespace Genomic.Genomes
 {
@@ -7,28 +9,49 @@ namespace Genomic.Genomes
     {
         G Make();
         GenomeBuilderType GenomeBuilderType { get; }
+        int Seed { get; }
     }
 
     public interface ISingleGenomeMutator<G> : IGenomeBuilder<G> where G : class, IGenome
     {
         G SourceGenome { get; }
+        uint SymbolCount { get; }
     }
 
     public static class GenomeBuilder
     {
+        public static IGenomeBuilder<IGenome> MakeGenerator
+            (
+                uint symbolCount,
+                int sequenceLength,
+                int seed,
+                Guid guid
+            )
+        {
+            return new GenomeGenerator
+                (
+                    symbolCount: symbolCount,
+                    sequenceLength: sequenceLength,
+                    seed: seed,
+                    guid: guid
+                );
+        }
+
         public static ISingleGenomeMutator<IGenome> MakeMutator
             (
+                Guid guid,
                 IGenome sourceGenome,
+                uint symbolCount,
                 int seed,
                 double deletionRate,
                 double insertionRate,
-                double mutationRate,
-                Guid guid
+                double mutationRate
             )
         {
             {
                 return new GenomeMutatorImpl
                     (
+                        symbolCount: symbolCount,
                         sourceGenome: sourceGenome,
                         seed: seed,
                         deletionRate: deletionRate,
@@ -44,12 +67,13 @@ namespace Genomic.Genomes
     {
         public GenomeMutatorImpl
             (
-                IGenome sourceGenome, 
+                Guid guid,
+                IGenome sourceGenome,
+                uint symbolCount, 
                 int seed, 
                 double deletionRate, 
                 double insertionRate, 
-                double mutationRate, 
-                Guid guid
+                double mutationRate
             )
         {
             _sourceGenome = sourceGenome;
@@ -58,6 +82,7 @@ namespace Genomic.Genomes
             _insertionRate = insertionRate;
             _mutationRate = mutationRate;
             _guid = guid;
+            _symbolCount = symbolCount;
         }
 
         private readonly IGenome _sourceGenome;
@@ -66,9 +91,16 @@ namespace Genomic.Genomes
             get { return _sourceGenome; }
         }
 
+        private readonly uint _symbolCount;
+        public uint SymbolCount
+        {
+            get { return _symbolCount; }
+        }
+
         public IGenome Make()
         {
-            return Genome.Make(
+            return Genome.Make
+                (
                     sequence: SourceGenome.Sequence
                 );
         }
@@ -112,20 +144,25 @@ namespace Genomic.Genomes
     public class GenomeGenerator : IGenomeBuilder<IGenome>
     {
         public GenomeGenerator
-            (
-                int symbolCount, 
-                int sequenceLength, 
-                int seed
-            )
+        (
+            uint symbolCount,
+            int sequenceLength, 
+            int seed, 
+            Guid guid
+        )
         {
             _symbolCount = symbolCount;
             _sequenceLength = sequenceLength;
             _seed = seed;
+            _guid = guid;
         }
 
         public IGenome Make()
         {
-            throw new NotImplementedException();
+            var randy = Rando.Fast(Seed);
+            return Genome.Make(
+                sequence: Enumerable.Range(0, SequenceLength).Select(i=> randy.NextUint(SymbolCount)).ToList()
+                );
         }
 
         private readonly int _seed;
@@ -140,8 +177,8 @@ namespace Genomic.Genomes
             get { return _sequenceLength; }
         }
 
-        private readonly int _symbolCount;
-        public int SymbolCount
+        private readonly uint _symbolCount;
+        public uint SymbolCount
         {
             get { return _symbolCount; }
         }
@@ -151,7 +188,7 @@ namespace Genomic.Genomes
             get { return GenomeBuilderType.SimpleRandom; }
         }
 
-        private Guid _guid;
+        private readonly Guid _guid;
         public Guid Guid
         {
             get { return _guid; }

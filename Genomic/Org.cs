@@ -36,6 +36,7 @@ namespace Genomic
             );
         }
 
+
     }
 
     public class OrgImpl<G> : IOrg<G> where G : class,  IGenome

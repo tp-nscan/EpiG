@@ -54,6 +54,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ChromosomeFixture.cs" />
+    <Compile Include="Genomes\GenomeBuilderFixture.cs" />
+    <Compile Include="Layers\LayerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChromosomeBlockFixture.cs" />
   </ItemGroup>
@@ -70,6 +72,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
