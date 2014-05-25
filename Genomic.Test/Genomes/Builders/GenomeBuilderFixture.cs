@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Genomic.Genomes;
+using Genomic.Genomes.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Genomic.Test.Genomes

@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Genomic.Test.Layers
+namespace Genomic.Test.Genomes.Layers
 {
     [TestClass]
     public class LayerFixture

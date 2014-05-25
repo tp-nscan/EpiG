@@ -77,13 +77,9 @@
     <Compile Include="Properties\Entities\IEntityFunctionParams.cs" />
     <Compile Include="KeyPairs\KeyPairSet.cs" />
     <Compile Include="CompetePools\SortResult.cs" />
-    <Compile Include="StagesOld\SorterStageOld.cs" />
     <Compile Include="Stages\SorterStage.cs" />
-    <Compile Include="StagesOld\SorterStager.cs" />
     <Compile Include="Sorters\SortingFunctions.cs" />
     <Compile Include="Stages\StagedSorter.cs" />
-    <Compile Include="StagesOld\DependentKeyPair.cs" />
-    <Compile Include="StagesOld\StageGenerator.cs" />
     <Compile Include="Stages\SorterStageMold.cs" />
     <Compile Include="TestData\SorterEvals.cs" />
     <Compile Include="TestData\Sorters.cs" />

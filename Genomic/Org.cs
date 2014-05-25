@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Genomic.Genomes;
+using Genomic.Genomes.Builders;
 using MathUtils.Collections;
 
 namespace Genomic

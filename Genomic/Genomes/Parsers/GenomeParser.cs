@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Genomic.Genomes
+namespace Genomic.Genomes.Parsers
 {
     public interface IGenomeParser<T, G>  where G : class, IGenome
     {

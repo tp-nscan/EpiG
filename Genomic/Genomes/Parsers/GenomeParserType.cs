@@ -1,4 +1,4 @@
-﻿namespace Genomic.Genomes
+﻿namespace Genomic.Genomes.Parsers
 {
     public enum GenomeParserType
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
 
-namespace Genomic.Genomes
+namespace Genomic.Genomes.Builders
 {
     public interface IGenomeBuilder<G> : IGuid where G : class, IGenome
     {
@@ -28,7 +28,7 @@ namespace Genomic.Genomes
                 Guid guid
             )
         {
-            return new GenomeGenerator
+            return new GenomeBuilderRandom
                 (
                     symbolCount: symbolCount,
                     sequenceLength: sequenceLength,
@@ -49,7 +49,7 @@ namespace Genomic.Genomes
             )
         {
             {
-                return new GenomeMutatorImpl
+                return new GenomeBuilderMutator
                     (
                         symbolCount: symbolCount,
                         sourceGenome: sourceGenome,
@@ -63,9 +63,9 @@ namespace Genomic.Genomes
         }
     }
 
-    public class GenomeMutatorImpl : ISingleGenomeMutator<IGenome>
+    public class GenomeBuilderMutator : ISingleGenomeMutator<IGenome>
     {
-        public GenomeMutatorImpl
+        public GenomeBuilderMutator
             (
                 Guid guid,
                 IGenome sourceGenome,
@@ -141,9 +141,9 @@ namespace Genomic.Genomes
         }
     }
 
-    public class GenomeGenerator : IGenomeBuilder<IGenome>
+    public class GenomeBuilderRandom : IGenomeBuilder<IGenome>
     {
-        public GenomeGenerator
+        public GenomeBuilderRandom
         (
             uint symbolCount,
             int sequenceLength, 

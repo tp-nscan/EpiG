@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
+using Genomic.Genomes.Builders;
 using MathUtils.Rand;
 
 namespace Genomic.Layers

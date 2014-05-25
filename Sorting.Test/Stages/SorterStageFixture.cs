@@ -70,8 +70,6 @@ namespace Sorting.Test.Stages
                 ).CollectStage(keyCount);
 
             Assert.AreEqual(keyPairCount, stage.StageKeyPairs.Count() + stage.RemainingKeyPairs.Count());
-            Assert.AreEqual(0, stage.RemainingKeyPairs.Count());
-
         }
 
         public static IEnumerable<IKeyPair> SingleKeyPair
