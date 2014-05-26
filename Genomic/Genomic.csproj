@@ -48,13 +48,16 @@
     <Compile Include="Genomes\Builders\GenomeBuilderType.cs" />
     <Compile Include="Genomes\Parsers\GenomeParser.cs" />
     <Compile Include="Genomes\Parsers\GenomeParserType.cs" />
-    <Compile Include="Genomes\OrgEval.cs" />
+    <Compile Include="Layers\OrgEval.cs" />
     <Compile Include="Genomes\Builders\GenomeBuilder.cs" />
     <Compile Include="Genomes\Parsers\PermutationGenomeParser.cs" />
     <Compile Include="Genomes\PermutationGenome.cs" />
     <Compile Include="Genomes\SequenceBlock.cs" />
     <Compile Include="Layers\Layer.cs" />
-    <Compile Include="Org.cs" />
+    <Compile Include="Layers\Org.cs" />
+    <Compile Include="Layers\Phenotype.cs" />
+    <Compile Include="Layers\PhenotypeEval.cs" />
+    <Compile Include="Layers\Workflow.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

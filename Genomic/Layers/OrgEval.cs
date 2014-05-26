@@ -1,4 +1,6 @@
-﻿namespace Genomic.Genomes
+﻿using Genomic.Genomes;
+
+namespace Genomic.Layers
 {
     public interface IOrgEval<TG> where TG : class, IGenome
     {

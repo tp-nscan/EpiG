@@ -4,9 +4,14 @@ using Genomic.Genomes;
 using Genomic.Genomes.Builders;
 using MathUtils.Collections;
 
-namespace Genomic
+namespace Genomic.Layers
 {
-    public interface IOrg<G> : IGuid where G : class, IGenome
+    public interface IOrg : IGuid
+    {
+        
+    }
+
+    public interface IOrg<G> : IOrg where G : class, IGenome
     {
         IGenomeBuilder<G> Builder { get; }
         G Genome { get; }
@@ -36,8 +41,6 @@ namespace Genomic
                 genome: genome
             );
         }
-
-
     }
 
     public class OrgImpl<G> : IOrg<G> where G : class,  IGenome
