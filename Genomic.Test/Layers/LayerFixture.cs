@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Genomic.Layers;
+using Genomic.Workflows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Genomic.Test.Layers
@@ -26,6 +28,23 @@ namespace Genomic.Test.Layers
             Assert.AreEqual(lowVal, sortedList[0]);
             Assert.AreEqual(medVal, sortedList[1]);
             Assert.AreEqual(hiVal, sortedList[2]);
+        }
+
+        [TestMethod]
+        public void TestWorkflow()
+        {
+            const int seed = 123;
+
+            var rwb = RecursiveWorkflowBuilder.Make<int>
+                (
+                    workflowBuilderType: "Test Recursive",
+                    seed: seed,
+                    initialWorkflow: null,
+                    updateFunc: (i, j) => i + 1,
+                    guid: Guid.Empty
+                );
+
+            var result = rwb.Make();
         }
     }
 }

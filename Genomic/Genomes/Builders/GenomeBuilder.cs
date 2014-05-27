@@ -24,7 +24,7 @@ namespace Genomic.Genomes.Builders
             (
                 uint symbolCount,
                 int sequenceLength,
-                int seed,
+                int seed, 
                 Guid guid
             )
         {
