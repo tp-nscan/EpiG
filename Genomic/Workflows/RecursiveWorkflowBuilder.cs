@@ -63,7 +63,13 @@ namespace Genomic.Workflows
         private readonly string _workflowBuilderType;
         IRecursiveWorkflow<T> IRecursiveWorkflowBuilder<T>.Make()
         {
-            return null;
+            return 
+                RecursiveWorkflow.Make
+                (
+                    guid: Guid,
+                    recursiveWorkflowBuilder: this,
+                    result: UpdateFunc(InitialWorkflow.Result, Seed)
+                );
         }
 
         public string WorkflowBuilderType

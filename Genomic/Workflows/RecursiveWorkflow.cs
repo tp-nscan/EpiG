@@ -19,7 +19,6 @@ namespace Genomic.Workflows
         {
             return new RecursiveWorkflowImpl<T>
                 (
-                    guid:  guid,
                     recursiveWorkflowBuilder:  recursiveWorkflowBuilder,
                     result: result
                 );
@@ -30,20 +29,17 @@ namespace Genomic.Workflows
     {
         public RecursiveWorkflowImpl
             (
-                Guid guid, 
                 IRecursiveWorkflowBuilder<T> recursiveWorkflowBuilder, 
                 T result
             )
         {
-            _guid = guid;
             _recursiveWorkflowBuilder = recursiveWorkflowBuilder;
             _result = result;
         }
 
-        private readonly Guid _guid;
         public Guid Guid
         {
-            get { return _guid; }
+            get { return RecursiveWorkflowBuilder.Guid; }
         }
 
         private readonly IRecursiveWorkflowBuilder<T> _recursiveWorkflowBuilder;

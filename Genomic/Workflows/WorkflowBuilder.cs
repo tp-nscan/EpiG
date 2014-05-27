@@ -1,3 +1,4 @@
+using System;
 using MathUtils.Collections;
 
 namespace Genomic.Workflows
@@ -11,12 +12,86 @@ namespace Genomic.Workflows
 
     public static class WorkflowBuilder
     {
-
+        public static IWorkflowBuilder<T> MakePassthrough<T>
+            (
+                Guid guid,
+                string workflowBuilderType,
+                int seed,
+                T result
+            )
+        {
+            return new WorkflowBuilderPassThrough<T>
+                (
+                    guid: guid,
+                    workflowBuilderType: workflowBuilderType,
+                    seed: seed,
+                    result: result
+                );
+        }
     }
 
-    public class WorkflowBuilderImpl
+    public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T>
     {
+        public WorkflowBuilderPassThrough
+            (
+                Guid guid, 
+                string workflowBuilderType, 
+                int seed, 
+                T result
+            ) 
+            : base(guid, workflowBuilderType, seed)
+        {
+            _result = result;
+        }
 
+        private readonly T _result;
+        public T Result
+        {
+            get { return _result; }
+        }
+
+        public override IWorkflow<T> Make()
+        {
+            return new WorkflowImpl<T>(
+                    workflowBuilder: this,
+                    result: Result
+                );
+        }
+    }
+
+    public abstract class WorkflowBuilderBase<T> : IWorkflowBuilder<T>
+    {
+        protected WorkflowBuilderBase
+            (
+                Guid guid, 
+                string workflowBuilderType, 
+                int seed
+            )
+        {
+            _guid = guid;
+            _workflowBuilderType = workflowBuilderType;
+            _seed = seed;
+        }
+
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
+        }
+
+        public abstract IWorkflow<T> Make();
+
+        private readonly string _workflowBuilderType;
+        public string WorkflowBuilderType
+        {
+            get { return _workflowBuilderType; }
+        }
+
+        private readonly int _seed;
+        public int Seed
+        {
+            get { return _seed; }
+        }
     }
 
     //public interface IWorkflowBuilder : IGuid
