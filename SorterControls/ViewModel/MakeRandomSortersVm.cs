@@ -86,6 +86,7 @@ namespace SorterControls.ViewModel
 
         #endregion // CancelMakeSortersCommand
 
+
         private bool isBusy = false;
         public bool IsBusy
         {
