@@ -21,12 +21,12 @@ namespace Genomic.Workflows
             )
         {
             return new WorkflowBuilderPassThrough<T>
-                (
-                    guid: guid,
-                    workflowBuilderType: workflowBuilderType,
-                    seed: seed,
-                    result: result
-                );
+            (
+                guid: guid,
+                workflowBuilderType: workflowBuilderType,
+                seed: seed,
+                result: result
+            );
         }
     }
 

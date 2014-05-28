@@ -27,12 +27,6 @@ namespace MathUtils.Tests.Bits
         }
 
         [TestMethod]
-        public void TestSwitchBits()
-        {
-            const uint tV = ((1 << 1) + 1) << 3;
-        }
-
-        [TestMethod]
         public void UshortConversions()
         {
             var randy = Rando.Fast(123);
