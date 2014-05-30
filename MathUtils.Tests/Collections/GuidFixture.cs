@@ -44,6 +44,26 @@ namespace MathUtils.Tests.Collections
         }
 
         [TestMethod]
+        public void TestGuidFromTail()
+        {
+            const int testCount = 1000;
+            var guidsAndKeys = new Dictionary<Guid, int>();
+            var randy = Rando.Fast(123);
+            var ints = new List<int>();
+
+
+            for (var i = 0; i < testCount; i++)
+            {
+                ints.Add(randy.NextInt());
+                var curGuid = ints.FromTail();
+                guidsAndKeys[curGuid] = 1;
+            }
+
+            var dupes = guidsAndKeys.Count;
+
+        }
+
+        [TestMethod]
         public void TestGuidAddGuid()
         {
             var lhs = Guid.NewGuid();

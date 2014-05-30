@@ -33,31 +33,7 @@ namespace Genomic.Test.Layers
         [TestMethod]
         public void TestWorkflow()
         {
-            const int seed = 123;
-            var initialGuid = Guid.NewGuid();
-            var nextGuid = Guid.NewGuid();
 
-            const string workflowType = "Passthrough";
-            const int initialValue = 42;
-
-            var workflow = WorkflowBuilder.MakePassthrough(
-                    guid: initialGuid,
-                    workflowBuilderType: workflowType,
-                    seed: seed,
-                    result: initialValue
-                ).Make();
-
-
-            var rwb = RecursiveWorkflowBuilder.Make
-                (
-                    workflowBuilderType: "Test Recursive",
-                    seed: seed,
-                    initialWorkflow: workflow,
-                    updateFunc: (i, j) => i + 1,
-                    guid: nextGuid
-                );
-
-            var result = rwb.Make();
         }
     }
 }

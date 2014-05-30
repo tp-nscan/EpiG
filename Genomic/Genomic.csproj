@@ -58,6 +58,7 @@
     <Compile Include="Layers\Phenotype.cs" />
     <Compile Include="Layers\PhenotypeEval.cs" />
     <Compile Include="Workflows\FunctionWorkflow.cs" />
+    <Compile Include="Workflows\IRandomWalk.cs" />
     <Compile Include="Workflows\RecursiveWorkflow.cs" />
     <Compile Include="Workflows\RecursiveWorkflowBuilder.cs" />
     <Compile Include="Workflows\Workflow.cs" />

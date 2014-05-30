@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Utils.BackgroundWorkers
 {
+
     public interface IRecursiveBackgroundWorker<T>
     {
         IObservable<IIterationResult<T>> OnIterationResult { get; }

@@ -30,6 +30,30 @@ namespace MathUtils.Collections
             return new ParentGuidImpl(guid, parentGuid);
         }
 
+        public static Guid FromTail(this IReadOnlyList<int> ints)
+        {
+            return ints.Reverse().RoundRobin(0).Take(11).ToArray().ToGuid();
+
+        }
+
+        public static Guid ToGuid(this int[] ints)
+        {
+            return new Guid
+                (
+                    (uint)ints[0],
+                    (ushort)ints[1],
+                    (ushort)ints[2],
+                    (byte)ints[3],
+                    (byte)ints[4],
+                    (byte)ints[5],
+                    (byte)ints[6],
+                    (byte)ints[7],
+                    (byte)ints[8],
+                    (byte)ints[9],
+                    (byte)ints[10]
+                );
+        }
+
         public static int ToHash(this Guid guid)
         {
             var aw = guid.ToByteArray();

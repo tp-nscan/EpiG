@@ -181,6 +181,8 @@ namespace MathUtils.Rand
         }
 
 
+
+
         public static IEnumerable<Guid> ToGuidEnumerator(this IRando rando)
         {
             while (true)

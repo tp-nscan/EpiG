@@ -7,7 +7,6 @@ namespace Genomic.Workflows
     {
         IWorkflow<T> Make();
         string WorkflowBuilderType { get; }
-        int Seed { get; }
     }
 
     public static class WorkflowBuilder
@@ -23,8 +22,6 @@ namespace Genomic.Workflows
             return new WorkflowBuilderPassThrough<T>
             (
                 guid: guid,
-                workflowBuilderType: workflowBuilderType,
-                seed: seed,
                 result: result
             );
         }
@@ -32,14 +29,14 @@ namespace Genomic.Workflows
 
     public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T>
     {
+        public static string Name = "Passthrough";
+
         public WorkflowBuilderPassThrough
             (
                 Guid guid, 
-                string workflowBuilderType, 
-                int seed, 
                 T result
-            ) 
-            : base(guid, workflowBuilderType, seed)
+            )
+            : base(guid, Name)
         {
             _result = result;
         }
@@ -64,13 +61,11 @@ namespace Genomic.Workflows
         protected WorkflowBuilderBase
             (
                 Guid guid, 
-                string workflowBuilderType, 
-                int seed
+                string workflowBuilderType
             )
         {
             _guid = guid;
             _workflowBuilderType = workflowBuilderType;
-            _seed = seed;
         }
 
         private readonly Guid _guid;
@@ -87,11 +82,6 @@ namespace Genomic.Workflows
             get { return _workflowBuilderType; }
         }
 
-        private readonly int _seed;
-        public int Seed
-        {
-            get { return _seed; }
-        }
     }
 
     //public interface IWorkflowBuilder : IGuid
