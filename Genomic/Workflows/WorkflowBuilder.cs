@@ -14,8 +14,6 @@ namespace Genomic.Workflows
         public static IWorkflowBuilder<T> MakePassthrough<T>
             (
                 Guid guid,
-                string workflowBuilderType,
-                int seed,
                 T result
             )
         {

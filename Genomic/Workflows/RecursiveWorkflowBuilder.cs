@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Linq;
 using MathUtils.Collections;
 
 namespace Genomic.Workflows
@@ -13,17 +14,29 @@ namespace Genomic.Workflows
 
     public static class RecursiveWorkflowBuilder
     {
-        public static IRecursiveWorkflowBuilder<T> ToRecursiveWorkflowBuilder<T>(
-                this Func<T, int, T> updateFunc,
-                IWorkflow<T> initialWorkflow, 
-                int seed
+        public static IRecursiveWorkflowBuilder<T> ToRecursiveFunctionWorkflowBuilder<T>
+            (
+                this IWorkflow<T> initialWorkflow, 
+                Func<T, int, T> updateFunc
             )
         {
             return new RecursiveWorkflowBuilderFunc<T>
                 (
-                    seeds: ImmutableList<int>.Empty.Add(seed), 
+                    seeds: ImmutableList<int>.Empty, 
                     initialWorkflow: initialWorkflow, 
                     updateFunc: updateFunc
+                );
+        }
+
+        public static IRecursiveWorkflowBuilder<T> ToRecursiveRandomWalkWorkflowBuilder<T>
+        (
+            this IWorkflow<T> initialWorkflow
+        ) where T : IRandomWalk<T>
+        {
+            return new RecursiveWorkflowBuilderRandomWalk<T>
+                (
+                    seeds: ImmutableList<int>.Empty,
+                    initialWorkflow: initialWorkflow
                 );
         }
 
@@ -39,7 +52,7 @@ namespace Genomic.Workflows
         {
             _seeds = seeds;
             _initialWorkflow = initialWorkflow;
-            _guid = Seeds.FromTail();
+            _guid = Seeds.Any() ? Seeds.FromTail() : Guid.Empty;
         }
 
         private readonly IImmutableList<int> _seeds;
@@ -84,9 +97,9 @@ namespace Genomic.Workflows
         public override IRecursiveWorkflowBuilder<T> Iterate(int seed)
         {
             return new RecursiveWorkflowBuilderFunc<T>(
-                seeds: Seeds.Add(seed),
-                initialWorkflow: InitialWorkflow,
-                updateFunc: UpdateFunc
+                    seeds: Seeds.Add(seed),
+                    initialWorkflow: InitialWorkflow,
+                    updateFunc: UpdateFunc
                 );
         }
         
@@ -96,29 +109,4 @@ namespace Genomic.Workflows
             get { return _updateFunc; }
         }
     }
-
-    public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T> where T : IRandomWalk<T>
-    {
-        public RecursiveWorkflowBuilderRandomWalk(
-                IImmutableList<int> seeds,
-                IWorkflow<T> initialWorkflow
-            )
-            : base(seeds, initialWorkflow)
-        {
-        }
-
-        public override T Make(T initial, int seed)
-        {
-            return initial.Step(seed);
-        }
-
-        public override IRecursiveWorkflowBuilder<T> Iterate(int seed)
-        {
-            return new RecursiveWorkflowBuilderRandomWalk<T>(
-                seeds: Seeds.Add(seed),
-                initialWorkflow: InitialWorkflow
-                );
-        }
-    }
-
 }

@@ -9,9 +9,21 @@ namespace Genomic.Workflows
         T Result { get; }
     }
 
-    //public static class Workflow
-    //{
-    //}
+    public static class Workflow
+    {
+        public static IWorkflow<T> ToPassThroughWorkflow<T>(this T item, Guid guid)
+        {
+            return new WorkflowImpl<T>
+                (
+                    workflowBuilder: WorkflowBuilder.MakePassthrough
+                    (
+                        guid: guid,
+                        result: item
+                    ),
+                    result: item
+                );
+        }
+    }
 
     public class WorkflowImpl<T> : IWorkflow<T>
     {
