@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using EpiG.Data;
-using SorterControls.ViewModel;
-using SorterControls.ViewModel.Design;
 
 namespace EpiG
 {
@@ -18,8 +16,7 @@ namespace EpiG
             context.Sorters.Add(new Sorter() { Created = DateTime.Now });
             context.SaveChanges();
             Title = context.Sorters.Count().ToString();
-
-            DataContext = new MakeRandomSortersVmOld();
+            DataContext = new EpiGAppVm();
         }
     }
 }

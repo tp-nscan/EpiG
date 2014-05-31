@@ -6,13 +6,33 @@ namespace Genomic.Workflows
     public interface IRecursiveWorkflow<T> : IGuid
     {
         IRecursiveWorkflowBuilder<T> RecursiveWorkflowBuilder { get; }
-
         T Result { get; }
     }
 
 
     public static class RecursiveWorkflow
     {
+        public static IRecursiveWorkflow<T> ToRecursiveWorkflowRw<T>(
+            this IWorkflow<T> initialWorkflow
+            ) where T : IRandomWalk<T>
+        {
+            return new RecursiveWorkflowImpl<T>(
+                result: initialWorkflow.Result,
+                recursiveWorkflowBuilder: initialWorkflow.ToRecursiveRandomWalkWorkflowBuilder()
+                );
+        }
+
+        public static IRecursiveWorkflow<T> ToRecursiveWorkflow<T>(
+                this IWorkflow<T> initialWorkflow,
+                Func<T, int, T> updateFunc
+        )
+        {
+            return new RecursiveWorkflowImpl<T>(
+                result: initialWorkflow.Result,
+                recursiveWorkflowBuilder: initialWorkflow.ToRecursiveFunctionWorkflowBuilder(updateFunc)
+                );
+        }
+
         public static IRecursiveWorkflow<T> Update<T>(
                 this IRecursiveWorkflow<T> precursor,
                 int seed

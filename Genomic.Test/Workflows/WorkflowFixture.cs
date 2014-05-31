@@ -13,8 +13,10 @@ namespace Genomic.Test.Workflows
             var guid = Guid.NewGuid();
             var item = "intital";
 
-            var recursiveWorkflowBuilder = item.ToPassThroughWorkflow(guid).ToRecursiveFunctionWorkflowBuilder(
-                updateFunc: (s, i) => s + "_" + i
+            var recursiveWorkflowBuilder = item.ToPassThroughWorkflow(guid)
+                                               .ToRecursiveFunctionWorkflowBuilder
+                (
+                    updateFunc: (s, i) => s + "_" + i
                 );
 
 

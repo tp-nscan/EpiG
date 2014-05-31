@@ -55,7 +55,6 @@ namespace SorterControls.ViewModel
 
         #endregion // MakeSortersCommand
 
-
         #region CancelMakeSortersCommand
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -85,7 +84,6 @@ namespace SorterControls.ViewModel
         }
 
         #endregion // CancelMakeSortersCommand
-
 
         private bool isBusy = false;
         public bool IsBusy
@@ -160,18 +158,6 @@ namespace SorterControls.ViewModel
 
             await SorterEvalBackgroundWorker.Start(_cancellationTokenSource);
             IsBusy = false;
-
-
-            //for (var i = 0; i < SorterCount; i++)
-            //{
-            //    var newSorterEval = Sorting.TestData.SorterEvals.TestSorterEval(KeyCount, Seed + i, KeyPairCount);
-
-            //    _sorterEvals.Add(newSorterEval);
-
-            //    _sorterVms.InsertWhen(
-            //            MakeSorterEvalVm(newSorterEval), ev => ev.SwitchesUsed > newSorterEval.SwitchUseCount
-            //        );
-            //}
         }
 
         void MakeSorterEvalVms()

@@ -16,5 +16,6 @@ namespace EpiG
             get { return _makeRandomSortersVm; }
             set { _makeRandomSortersVm = value; }
         }
+
     }
 }

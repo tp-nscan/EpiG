@@ -7,9 +7,10 @@ namespace Genomic.Workflows
 {
     public interface IRecursiveWorkflowBuilder<T> : IGuid
     {
-        IImmutableList<int> Seeds { get; }
-        T Make(T initial, int seed);
+        IWorkflow<T> InitialWorkflow { get; }
         IRecursiveWorkflowBuilder<T> Iterate(int seed);
+        T Make(T initial, int seed);
+        IImmutableList<int> Seeds { get; }
     }
 
     public static class RecursiveWorkflowBuilder

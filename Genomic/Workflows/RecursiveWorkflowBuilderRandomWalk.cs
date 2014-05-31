@@ -2,11 +2,12 @@
 
 namespace Genomic.Workflows
 {
-    public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T> where T : IRandomWalk<T>
+    public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T> 
+        where T : IRandomWalk<T>
     {
         public RecursiveWorkflowBuilderRandomWalk(
-            IImmutableList<int> seeds,
-            IWorkflow<T> initialWorkflow
+                IImmutableList<int> seeds,
+                IWorkflow<T> initialWorkflow
             )
             : base(seeds, initialWorkflow)
         {
@@ -20,8 +21,8 @@ namespace Genomic.Workflows
         public override IRecursiveWorkflowBuilder<T> Iterate(int seed)
         {
             return new RecursiveWorkflowBuilderRandomWalk<T>(
-                seeds: Seeds.Add(seed),
-                initialWorkflow: InitialWorkflow
+                    seeds: Seeds.Add(seed),
+                    initialWorkflow: InitialWorkflow
                 );
         }
     }
