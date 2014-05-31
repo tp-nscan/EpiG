@@ -187,5 +187,27 @@ namespace EpiG
                 OnPropertyChanged("IsBusy");
             }
         }
+
+        private int _seed;
+        public int Seed
+        {
+            get { return _seed; }
+            set
+            {
+                _seed = value;
+                OnPropertyChanged("Seed");
+            }
+        }
+
+        private int _sorterCount;
+        public int SorterCount
+        {
+            get { return _sorterCount; }
+            set
+            {
+                _sorterCount = value;
+                OnPropertyChanged("SorterCount");
+            }
+        }
     }
 }

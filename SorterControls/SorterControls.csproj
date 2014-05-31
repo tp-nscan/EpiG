@@ -86,6 +86,7 @@
     <Compile Include="ViewModel\Design\DesignSwitchVm.cs" />
     <Compile Include="ViewModel\MakeRandomSortersVm.cs" />
     <Compile Include="ViewModel\SorterEvalVm.cs" />
+    <Compile Include="ViewModel\SorterPoolVm.cs" />
     <Compile Include="ViewModel\SorterStageVm.cs" />
     <Compile Include="ViewModel\SorterVmType.cs" />
     <Compile Include="ViewModel\StagedSorterVm.cs" />
@@ -94,9 +95,6 @@
       <DependentUpon>DefaultControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LineBrushFactory.cs" />
-    <Compile Include="View\MakeRandomSorterControlOld.xaml.cs">
-      <DependentUpon>MakeRandomSorterControlOld.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\MakeRandomSortersControl.xaml.cs">
       <DependentUpon>MakeRandomSortersControl.xaml</DependentUpon>
     </Compile>
@@ -112,10 +110,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DefaultControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\MakeRandomSorterControlOld.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -50,7 +50,7 @@ namespace SorterControls.ViewModel
 
         bool CanMakeSortersCommand()
         {
-            return !isBusy;
+            return !_isBusy;
         }
 
         #endregion // MakeSortersCommand
@@ -85,7 +85,7 @@ namespace SorterControls.ViewModel
 
         #endregion // CancelMakeSortersCommand
 
-        private bool isBusy = false;
+        private bool _isBusy = false;
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -229,7 +229,6 @@ namespace SorterControls.ViewModel
             {
                 _keyCount = value;
                 OnPropertyChanged("KeyCount");
-                //OnMakeSortersCommand();
             }
         }
 
@@ -241,7 +240,6 @@ namespace SorterControls.ViewModel
             {
                 _keyPairCount = value;
                 OnPropertyChanged("KeyPairCount");
-                //OnMakeSortersCommand();
             }
         }
 
@@ -253,7 +251,6 @@ namespace SorterControls.ViewModel
             {
                 _seed = value;
                 OnPropertyChanged("Seed");
-               // OnMakeSortersCommand();
             }
         }
 
@@ -290,8 +287,6 @@ namespace SorterControls.ViewModel
         }
 
         private int _sorterCount;
-        private bool _isBusy;
-
         public int SorterCount
         {
             get { return _sorterCount; }
@@ -299,7 +294,6 @@ namespace SorterControls.ViewModel
             {
                 _sorterCount = value;
                 OnPropertyChanged("SorterCount");
-                //OnMakeSortersCommand();
             }
         }
 

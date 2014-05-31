@@ -70,47 +70,73 @@
         </Grid.RowDefinitions>
 
         <Border Margin="2" 
-			Padding="2"
-			CornerRadius="4" 
-			Background="#30F0">
+            Padding="2"
+            CornerRadius="4" 
+            Background="#30F0">
 
             <WrapPanel>
 
                 <StackPanel>
                     <TextBlock Text="Seed" />
                     <TextBox Text="{Binding Seed}" 
-						MinWidth="50"/>
+                        MinWidth="50"/>
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="Key Count" />
                     <xctk:IntegerUpDown Value="{Binding KeyCount}" 
-						Minimum="2" 
-						Maximum="20" />
+                        Minimum="2" 
+                        Maximum="20" />
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="KeyPair Count" />
                     <xctk:IntegerUpDown Value="{Binding KeyPairCount}"
-						Minimum="0" 
-						Increment="50" 
-						Maximum="10000" />
+                        Minimum="0" 
+                        Increment="50" 
+                        Maximum="10000" />
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="Sorter Count" />
                     <xctk:IntegerUpDown Value="{Binding SorterCount}"
-						Minimum="0" 
-						Increment="5" 
-						Maximum="10000" />
+                        Minimum="0" 
+                        Increment="5" 
+                        Maximum="10000" />
                 </StackPanel>
 
+                <Grid>
+                    <Button Command="{Binding CancelMakeSortersCommand}" Content="Cancel"/>
+                    <Button Command="{Binding MakeSortersCommand}" Content="Make" 
+                            Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
+                </Grid>
+
+
+            </WrapPanel>
+        </Border>
+
+
+        <Grid Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+
+            <Border Margin="2" 
+                Padding="2"
+                CornerRadius="4" 
+                Background="#30F0">
+                
+            <WrapPanel>
+                
                 <StackPanel>
                     <TextBlock Text="Display size" />
                     <xctk:IntegerUpDown Value="{Binding DisplaySize}" 
-						Minimum="1" 
-						Increment="1" 
-						Maximum="6" />
+                            Minimum="1" 
+                            Increment="1" 
+                            Maximum="6" />
                 </StackPanel>
 
                 <StackPanel>
@@ -121,21 +147,18 @@
                     <CheckBox IsChecked="{Binding ShowStages}" Content="Show stages" />
                 </StackPanel>
 
-                <Grid>
-                    <Button Command="{Binding CancelMakeSortersCommand}" Content="Cancel"/>
-                    <Button x:Name="button" Command="{Binding MakeSortersCommand}" Content="Make" 
-                            Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
-                </Grid>
-
-
             </WrapPanel>
-        </Border>
+
+            </Border>
+                    
+            <ListView Grid.Row="1"
+                ItemsSource="{Binding SorterVms}" 
+                Background="#2FFF" 
+                ItemTemplateSelector="{DynamicResource SorterSelector}"/>
 
 
-        <ListView Grid.Row="1"
-			ItemsSource="{Binding SorterVms}" 
-			Background="#2FFF" 
-			ItemTemplateSelector="{DynamicResource SorterSelector}"/>
+        </Grid>
+        
 
     </Grid>
 
