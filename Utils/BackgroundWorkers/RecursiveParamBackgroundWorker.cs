@@ -63,7 +63,7 @@ namespace Utils.BackgroundWorkers
         {
             _cancellationTokenSource = cancellationTokenSource;
             var keepGoing = true;
-            for (; _currentIteration < Parameters.Count; _currentIteration++)
+            for (; _currentIteration < Parameters.Count; )
             {
 
                 if (_cancellationTokenSource.IsCancellationRequested)
@@ -84,6 +84,7 @@ namespace Utils.BackgroundWorkers
                 else
                 {
                     _currentState = result.Data;
+                    _currentIteration++;
                     _onIterationResult.OnNext(result);
                 }
 

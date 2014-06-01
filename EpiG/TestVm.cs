@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Genomic.Workflows;
+using MathUtils.Rand;
 using SorterGenome;
 using Utils.BackgroundWorkers;
 using WpfUtils;
@@ -12,6 +13,11 @@ namespace EpiG
 {
     public class TestVm : ViewModelBase
     {
+        private readonly IRando _rando;
+        public TestVm()
+        {
+            _rando = Rando.Fast(123);
+        }
 
         #region MakeSortersCommand
 
@@ -35,35 +41,15 @@ namespace EpiG
         {
             get
             {
-                if (_sorterCompPoolBackgroundWorker == null)
-                {
-
-                    _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-                            parameters: Enumerable.Range(0, 40).ToList(),
-                            recursion: (w, i, c) => IterationResult.Make
-                                (
-                                    w.Update(i),
-                                    ProgressStatus.StepComplete
-                                ),
-                                initialState: SorterCompPool.Make().ToPassThroughWorkflow(Guid.NewGuid())
-                                                                   .ToRecursiveWorkflowRw()
-                        );
-
-                    if (_updateSubscription == null)
-                    {
-                        _updateSubscription = _sorterCompPoolBackgroundWorker.OnIterationResult.Subscribe(UpdateResults);
-                    }
-                }
-
                 return _sorterCompPoolBackgroundWorker;
             }
         }
 
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> MakeSorterEvalBackgroundWorker()
         {
-            return 
+            return
                     _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-                            parameters: Enumerable.Range(0, 40).ToList(),
+                            parameters: _rando.ToIntEnumerator().Take(3).ToList(),
                             recursion: (w, i, c) => IterationResult.Make
                                 (
                                     w.Update(i),
@@ -130,8 +116,11 @@ namespace EpiG
         {
             IsBusy = true;
             Reset();
-
-            await SorterEvalBackgroundWorker.Start(_cancellationTokenSource);
+            while (! _cancellationTokenSource.IsCancellationRequested)
+            {
+                Reset();
+                await SorterEvalBackgroundWorker.Start(_cancellationTokenSource);
+            }
             IsBusy = false;
         }
 

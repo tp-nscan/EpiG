@@ -35,6 +35,11 @@ namespace SorterGenome
                 seed = seed ^ i;
             }
 
+            if (Generation > 2)
+            {
+                string ss = "s";
+            }
+
             return new SorterCompPoolImpl(Generation + 1);
         }
 
