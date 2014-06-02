@@ -9,10 +9,19 @@
         Title="EpiG"
         Background="Black">
 
-    <Grid>
-
-        <view:MakeRandomSortersControl DataContext="{Binding MakeRandomSortersVm}"/>
+    <TabControl>
         
-    </Grid>
+        <TabItem Header="Random">
+            <Grid Background="#F222">
+                <view:MakeRandomSortersControl DataContext="{Binding MakeRandomSortersVm}"/>
+            </Grid>
+        </TabItem>
+        
+        <TabItem Header="Comp pool">
+            <Grid Background="#F333">
+                <view:SorterCompPoolControl DataContext="{Binding SorterCompPoolVm}"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
     
 </Window>

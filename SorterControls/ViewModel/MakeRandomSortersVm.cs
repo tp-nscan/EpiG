@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using SorterControls.View;
 using Sorting.Evals;
 using Utils.BackgroundWorkers;
 using WpfUtils;
@@ -17,12 +15,40 @@ namespace SorterControls.ViewModel
         public MakeRandomSortersVm()
         {
             _sorterCount = 10;
-            _showUnused = false;
-            _showStages = false;
             _seed = 1234;
             _keyPairCount = 100;
             _keyCount = 10;
-            _displaySize = 3;
+            SorterGalleryVm = new SorterGalleryVm
+                (
+                    keyCount: 100,
+                    sorterEvals: SorterEvals,
+                    displaySize: 3,
+                    showStages: false,
+                    showUnused: false
+                );
+        }
+    
+        void MakeSorterGalleryVm()
+        {
+            SorterGalleryVm = new SorterGalleryVm
+                (
+                    keyCount:KeyCount, 
+                    sorterEvals:SorterEvals, 
+                    displaySize:DisplaySize, 
+                    showStages:ShowStages, 
+                    showUnused:ShowUnused
+                );
+        }
+
+        private SorterGalleryVm _sorterGalleryVm;
+        public SorterGalleryVm SorterGalleryVm
+        {
+            get { return _sorterGalleryVm; }
+            set
+            {
+                _sorterGalleryVm = value;
+                OnPropertyChanged("SorterGalleryVm");
+            }
         }
 
         #region MakeSortersCommand
@@ -85,7 +111,7 @@ namespace SorterControls.ViewModel
 
         #endregion // CancelMakeSortersCommand
 
-        private bool _isBusy = false;
+        private bool _isBusy;
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -96,11 +122,31 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private List<ISorterEval> _sorterEvals = new List<ISorterEval>();
+        private readonly List<ISorterEval> _sorterEvals = new List<ISorterEval>();
         private List<ISorterEval> SorterEvals
         {
             get { return _sorterEvals; }
-            set { _sorterEvals = value; }
+        }
+
+        public int DisplaySize
+        {
+            get { return SorterGalleryVm.DisplaySize; }
+            set
+            {
+                SorterGalleryVm.DisplaySize = value;
+            }
+        }
+
+        public bool ShowStages
+        {
+            get { return SorterGalleryVm.ShowStages; }
+            set { SorterGalleryVm.ShowStages = value; }
+        }
+
+        public bool ShowUnused
+        {
+            get { return SorterGalleryVm.ShowUnused; }
+            set { SorterGalleryVm.ShowUnused = value; }
         }
 
         private IEnumerativeBackgroundWorker<int, ISorterEval> _sorterEvalBackgroundWorker;
@@ -133,9 +179,7 @@ namespace SorterControls.ViewModel
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {
                 _sorterEvals.Add(result.Data);
-                _sorterVms.InsertWhen(
-                        MakeSorterEvalVm(result.Data), ev => ev.SwitchesUsed > result.Data.SwitchUseCount
-                    );
+                _sorterGalleryVm.AddSorterEval(result.Data);
             }
         }
 
@@ -146,8 +190,8 @@ namespace SorterControls.ViewModel
                 _updateSubscription.Dispose();
             }
             _sorterEvalBackgroundWorker = null;
-            _sorterEvals.Clear();
-            _sorterVms.Clear();
+            SorterEvals.Clear();
+            MakeSorterGalleryVm();
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -160,66 +204,6 @@ namespace SorterControls.ViewModel
             IsBusy = false;
         }
 
-        void MakeSorterEvalVms()
-        {
-            _sorterVms.Clear();
-
-            foreach (var sorterEval in SorterEvals.OrderBy(e=>e.SwitchUseCount))
-            {
-                SorterVms.Add(
-                        MakeSorterEvalVm(sorterEval)
-                    );
-            }
-        }
-
-        ISorterVm MakeSorterEvalVm(ISorterEval sorterEval)
-        {
-            if (ShowStages)
-            {
-                return sorterEval.ToStagedSorterVm
-                (
-                    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
-                    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
-                    width: DisplaySizeToSwitchWith(DisplaySize),
-                    height: DisplaySizeToHeight(DisplaySize),
-                    showUnusedSwitches: ShowUnused
-                );
-            }
-
-            return sorterEval.ToUnStagedSorterVm
-            (
-                    lineBrushes: LineBrushFactory.GradedBlueBrushes(KeyCount),
-                    switchBrushes: LineBrushFactory.GradedRedBrushes(KeyCount),
-                    width: DisplaySizeToSwitchWith(DisplaySize),
-                    height: DisplaySizeToHeight(DisplaySize),
-                    showUnusedSwitches: ShowUnused
-            );
-
-        }
-
-        private ObservableCollection<ISorterVm> _sorterVms = new ObservableCollection<ISorterVm>();
-        public ObservableCollection<ISorterVm> SorterVms
-        {
-            get { return _sorterVms; }
-            set
-            {
-                _sorterVms = value;
-                OnPropertyChanged("SorterEvalVms");
-            }
-        }
-
-
-        private int _displaySize;
-        public int DisplaySize
-        {
-            get { return _displaySize; }
-            set
-            {
-                _displaySize = value;
-                OnPropertyChanged("DisplaySize");
-                MakeSorterEvalVms();
-            }
-        }
 
         private int _keyCount;
         public int KeyCount
@@ -254,37 +238,6 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private bool _showStages;
-        public bool ShowStages
-        {
-            get { return _showStages; }
-            set
-            {
-                if (_showStages == value)
-                {
-                    return;
-                }
-                _showStages = value;
-                MakeSorterEvalVms();
-                OnPropertyChanged("ShowStages");
-            }
-        }
-
-        private bool _showUnused;
-        public bool ShowUnused
-        {
-            get { return _showUnused; }
-            set
-            {
-                if (_showUnused == value)
-                {
-                    return;
-                }
-                _showUnused = value;
-                MakeSorterEvalVms();
-                OnPropertyChanged("ShowUnused");
-            }
-        }
 
         private int _sorterCount;
         public int SorterCount
@@ -297,54 +250,6 @@ namespace SorterControls.ViewModel
             }
         }
 
-        static int DisplaySizeToSwitchWith(int displaySize)
-        {
-            if (displaySize == 1)
-            {
-                return 2;
-            }
-            if (displaySize == 2)
-            {
-                return 4;
-            }
-            if (displaySize == 3)
-            {
-                return 5;
-            }
-            if (displaySize == 4)
-            {
-                return 7;
-            }
-            if (displaySize == 5)
-            {
-                return 9;
-            }
-            return 11;
-        }
 
-        static int DisplaySizeToHeight(int displaySize)
-        {
-            if (displaySize == 1)
-            {
-                return 80;
-            }
-            if (displaySize == 2)
-            {
-                return 120;
-            }
-            if (displaySize == 3)
-            {
-                return 160;
-            }
-            if (displaySize == 4)
-            {
-                return 200;
-            }
-            if (displaySize == 5)
-            {
-                return 240;
-            }
-            return 280;
-        }
     }
 }

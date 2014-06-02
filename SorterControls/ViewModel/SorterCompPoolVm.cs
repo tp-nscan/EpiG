@@ -7,9 +7,7 @@ using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
-    public class SorterPoolVm : ViewModelBase
+    public class SorterCompPoolVm : ViewModelBase
     {
-
-
     }
 }

@@ -1,0 +1,56 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    mc:Ignorable="d"
+    x:Class="SorterControls.View.SorterGalleryControl"
+    x:Name="UserControl"
+    d:DesignWidth="565.337" d:DesignHeight="41">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+
+            <Border Margin="2" 
+                Padding="2"
+                CornerRadius="4" 
+                Background="#30F0">
+                
+                <WrapPanel>
+                
+                    <StackPanel>
+                        <TextBlock Text="Display size" />
+                        <xctk:IntegerUpDown Value="{Binding DisplaySize}" 
+                            Minimum="1" 
+                            Increment="1" 
+                            Maximum="6" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <CheckBox IsChecked="{Binding ShowUnused}" Content="Show unused" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding ShowStages}" Content="Show stages" />
+                    </StackPanel>
+
+                </WrapPanel>
+
+            </Border>
+                    
+            <ListView Grid.Row="1"
+                ItemsSource="{Binding SorterEvalVms}" 
+                Background="#2FFF" 
+                ItemTemplateSelector="{DynamicResource SorterSelector}"/>
+
+
+        </Grid>
+    </Grid>
+</UserControl>

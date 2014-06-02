@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:Converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils" x:Class="SorterControls.View.MakeRandomSortersControl"
+             xmlns:Converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils" xmlns:SorterControls="clr-namespace:SorterControls"
+    xmlns:view="clr-namespace:SorterControls.View"
+    x:Class="SorterControls.View.MakeRandomSortersControl"
              mc:Ignorable="d">
 
 
@@ -108,7 +110,7 @@
                 <Grid>
                     <Button Command="{Binding CancelMakeSortersCommand}" Content="Cancel"/>
                     <Button Command="{Binding MakeSortersCommand}" Content="Make" 
-                            Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
+                        Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
                 </Grid>
 
 
@@ -116,48 +118,7 @@
         </Border>
 
 
-        <Grid Grid.Row="1">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-
-            <Border Margin="2" 
-                Padding="2"
-                CornerRadius="4" 
-                Background="#30F0">
-                
-            <WrapPanel>
-                
-                <StackPanel>
-                    <TextBlock Text="Display size" />
-                    <xctk:IntegerUpDown Value="{Binding DisplaySize}" 
-                            Minimum="1" 
-                            Increment="1" 
-                            Maximum="6" />
-                </StackPanel>
-
-                <StackPanel>
-                    <CheckBox IsChecked="{Binding ShowUnused}" Content="Show unused" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding ShowStages}" Content="Show stages" />
-                </StackPanel>
-
-            </WrapPanel>
-
-            </Border>
-                    
-            <ListView Grid.Row="1"
-                ItemsSource="{Binding SorterVms}" 
-                Background="#2FFF" 
-                ItemTemplateSelector="{DynamicResource SorterSelector}"/>
-
-
-        </Grid>
+        <view:SorterGalleryControl DataContext="{Binding SorterGalleryVm}" Grid.Row="1"/>
         
 
     </Grid>
