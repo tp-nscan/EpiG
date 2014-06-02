@@ -9,6 +9,7 @@ namespace EpiG
         {
             _makeRandomSortersVm = new MakeRandomSortersVm();
             _sorterCompPoolVm = new SorterCompPoolVm();
+            _stagedSorterCompPoolVm = new StagedSorterCompPoolVm();
         }
 
         private readonly MakeRandomSortersVm _makeRandomSortersVm;
@@ -21,6 +22,13 @@ namespace EpiG
         public SorterCompPoolVm SorterCompPoolVm
         {
             get { return _sorterCompPoolVm; }
+        }
+
+
+        private readonly StagedSorterCompPoolVm _stagedSorterCompPoolVm;
+        public StagedSorterCompPoolVm StagedSorterCompPoolVm
+        {
+            get { return _stagedSorterCompPoolVm; }
         }
     }
 }

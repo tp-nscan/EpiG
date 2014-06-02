@@ -4,9 +4,9 @@ using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
-    public class SorterCompPoolVm : ViewModelBase
+    public class StagedSorterCompPoolVm : ViewModelBase
     {
-        public SorterCompPoolVm()
+        public StagedSorterCompPoolVm()
         {
             
         }
@@ -33,14 +33,14 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private int _keyPairCount;
-        public int KeyPairCount
+        private int _stageCount;
+        public int StageCount
         {
-            get { return _keyPairCount; }
+            get { return _stageCount; }
             set
             {
-                _keyPairCount = value;
-                OnPropertyChanged("KeyPairCount");
+                _stageCount = value;
+                OnPropertyChanged("StageCount");
             }
         }
 
@@ -66,7 +66,6 @@ namespace SorterControls.ViewModel
                 OnPropertyChanged("SorterCount");
             }
         }
-
 
         #region StartSimulationCommand
 
@@ -138,6 +137,5 @@ namespace SorterControls.ViewModel
                 OnPropertyChanged("IsBusy");
             }
         }
-
     }
 }

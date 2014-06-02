@@ -48,5 +48,6 @@ namespace SorterGenome
         {
             get { return _generation; }
         }
+
     }
 }
