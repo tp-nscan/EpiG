@@ -21,7 +21,7 @@
             <Border Margin="2" 
                 Padding="2"
                 CornerRadius="4" 
-                Background="#30F0">
+                Background="#38F0">
                 
                 <WrapPanel>
                 

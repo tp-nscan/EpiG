@@ -1,5 +1,13 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Genomic.Workflows;
+using MathUtils.Rand;
+using SorterGenome;
+using Sorting.Evals;
+using System.Linq;
+using Utils.BackgroundWorkers;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
@@ -8,7 +16,20 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolVm()
         {
-            
+            _sorterCount = 10;
+            _seed = 1234;
+            _keyPairCount = 100;
+            _keyCount = 10;
+
+            SorterPoolVm = new SorterPoolVm
+                (
+                    keyCount: KeyCount,
+                    sorterEvals: Enumerable.Empty<ISorterEval>(),
+                    displaySize: 3,
+                    showStages: false,
+                    showUnused: false,
+                    generation: 0
+                );
         }
 
         private int _generationCount;
@@ -19,51 +40,6 @@ namespace SorterControls.ViewModel
             {
                 _generationCount = value;
                 OnPropertyChanged("GenerationCount");
-            }
-        }
-
-        private int _keyCount;
-        public int KeyCount
-        {
-            get { return _keyCount; }
-            set
-            {
-                _keyCount = value;
-                OnPropertyChanged("KeyCount");
-            }
-        }
-
-        private int _keyPairCount;
-        public int KeyPairCount
-        {
-            get { return _keyPairCount; }
-            set
-            {
-                _keyPairCount = value;
-                OnPropertyChanged("KeyPairCount");
-            }
-        }
-
-        private int _seed;
-        public int Seed
-        {
-            get { return _seed; }
-            set
-            {
-                _seed = value;
-                OnPropertyChanged("Seed");
-            }
-        }
-
-
-        private int _sorterCount;
-        public int SorterCount
-        {
-            get { return _sorterCount; }
-            set
-            {
-                _sorterCount = value;
-                OnPropertyChanged("SorterCount");
             }
         }
 
@@ -87,7 +63,7 @@ namespace SorterControls.ViewModel
         async void OnMakeSortersCommand()
         {
             IsBusy = true;
-            //await MakeSorterEvals();
+            await DoSorterCompPoolAsync();
             IsBusy = false;
         }
 
@@ -97,6 +73,19 @@ namespace SorterControls.ViewModel
         }
 
         #endregion // StartSimulationCommand
+
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged("IsBusy");
+            }
+        }
+
 
         #region CancelSimulationCommand
 
@@ -128,16 +117,199 @@ namespace SorterControls.ViewModel
 
         #endregion // CancelSimulationCommand
 
-        private bool _isBusy;
-        public bool IsBusy
+
+        async Task DoSorterCompPoolAsync()
         {
-            get { return _isBusy; }
-            set
+            IsBusy = true;
+            NextRound();
+            while (!_cancellationTokenSource.IsCancellationRequested)
             {
-                _isBusy = value;
-                OnPropertyChanged("IsBusy");
+                NextRound();
+                await SorterCompPoolBackgroundWorker.Start(_cancellationTokenSource);
+            }
+            IsBusy = false;
+        }
+
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
+        {
+            get
+            {
+                return _sorterCompPoolBackgroundWorker;
             }
         }
+
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> MakeSorterEvalBackgroundWorker()
+        {
+            return
+                    _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
+                            parameters: _rando.ToIntEnumerator().Take(3).ToList(),
+                            recursion: (w, i, c) => IterationResult.Make
+                                (
+                                    w.Update(i),
+                                    ProgressStatus.StepComplete
+                                ),
+                                initialState: SorterCompPool.Make().ToPassThroughWorkflow(Guid.NewGuid())
+                                                                   .ToRecursiveWorkflowRw()
+                        );
+        }
+
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
+        {
+            if (result.ProgressStatus == ProgressStatus.StepComplete)
+            {
+                Result = result.Data.Result.Generation.ToString();
+
+                //_sorterVms.InsertWhen(
+                //        MakeSorterEvalVm(result.Data), ev => ev.SwitchesUsed > result.Data.SwitchUseCount
+                //    );
+            }
+        }
+
+
+        private string _result;
+        public string Result
+        {
+            get { return _result; }
+            set
+            {
+                _result = value;
+                OnPropertyChanged("Result");
+            }
+        }
+
+        private IDisposable _updateSubscription;
+        void NextRound()
+        {
+            if (_updateSubscription != null)
+            {
+                _updateSubscription.Dispose();
+            }
+            if (
+                    (_sorterCompPoolBackgroundWorker == null)
+                    ||
+                    (_sorterCompPoolBackgroundWorker != null && _sorterCompPoolBackgroundWorker.IsComplete)
+
+                )
+            {
+                _sorterCompPoolBackgroundWorker = MakeSorterEvalBackgroundWorker();
+            }
+
+            _updateSubscription = _sorterCompPoolBackgroundWorker.OnIterationResult.Subscribe(UpdateResults);
+
+            //_sorterEvals.Clear();
+            //_sorterVms.Clear();
+            _cancellationTokenSource = new CancellationTokenSource();
+        }
+
+
+        #region Gui Binders
+
+        private int _keyCount;
+        public int KeyCount
+        {
+            get { return _keyCount; }
+            set
+            {
+                _keyCount = value;
+                OnPropertyChanged("KeyCount");
+            }
+        }
+
+        private int _keyPairCount;
+        public int KeyPairCount
+        {
+            get { return _keyPairCount; }
+            set
+            {
+                _keyPairCount = value;
+                OnPropertyChanged("KeyPairCount");
+            }
+        }
+
+
+        private IRando _rando= Rando.Fast(123);
+        private int _seed;
+        public int Seed
+        {
+            get { return _seed; }
+            set
+            {
+                _seed = value;
+                _rando = Rando.Fast(_seed);
+                OnPropertyChanged("Seed");
+            }
+        }
+
+        private int _sorterCount;
+        public int SorterCount
+        {
+            get { return _sorterCount; }
+            set
+            {
+                _sorterCount = value;
+                OnPropertyChanged("SorterCount");
+            }
+        }
+
+        #endregion
+
+
+        #region MakeSorterGallery related
+
+        void MakeSorterPoolVm(int generation)
+        {
+            SorterPoolVm = new SorterPoolVm
+                (
+                    keyCount: KeyCount,
+                    sorterEvals: Enumerable.Empty<ISorterEval>(),
+                    displaySize: DisplaySize,
+                    showStages: ShowStages,
+                    showUnused: ShowUnused,
+                    generation: generation
+                );
+        }
+
+        private SorterPoolVm _sorterPoolVm;
+        public SorterPoolVm SorterPoolVm
+        {
+            get { return _sorterPoolVm; }
+            set
+            {
+                _sorterPoolVm = value;
+                OnPropertyChanged("SorterPoolVm");
+            }
+        }
+
+        public int DisplaySize
+        {
+            get { return SorterPoolVm.SorterGalleryVm.DisplaySize; }
+            set
+            {
+                SorterPoolVm.SorterGalleryVm.DisplaySize = value;
+            }
+        }
+
+        public bool ShowStages
+        {
+            get { return SorterPoolVm.SorterGalleryVm.ShowStages; }
+            set { SorterPoolVm.SorterGalleryVm.ShowStages = value; }
+        }
+
+        public bool ShowUnused
+        {
+            get { return SorterPoolVm.SorterGalleryVm.ShowUnused; }
+            set { SorterPoolVm.SorterGalleryVm.ShowUnused = value; }
+        }
+
+        public int Generation
+        {
+            get { return SorterPoolVm.Generation; }
+            set { SorterPoolVm.Generation = value; }
+        }
+
+        #endregion
+
 
     }
 }

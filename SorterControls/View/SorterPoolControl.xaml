@@ -1,19 +1,16 @@
-﻿<UserControl x:Class="SorterControls.View.SorterCompPoolControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils"
-             xmlns:sorterControls="clr-namespace:SorterControls"
-             mc:Ignorable="d" >
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:View="clr-namespace:SorterControls.View"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    mc:Ignorable="d"
+    x:Class="SorterControls.SorterPoolControl"
+    x:Name="UserControl">
 
-    <UserControl.Resources>
-        <converters:InvBoolToVisibilityConverter x:Key="InvBoolToVisibilityConverter"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
 
-    <Grid>
         <Grid.Resources>
 
             <Style TargetType="{x:Type TextBlock}">
@@ -61,7 +58,7 @@
             </Style>
 
         </Grid.Resources>
-
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -75,45 +72,16 @@
             <WrapPanel>
 
                 <StackPanel>
-                    <TextBlock Text="Seed" />
-                    <TextBox Text="{Binding Seed}" 
+                    <TextBlock Text="Generation" />
+                    <TextBlock Text="{Binding Generation}" 
                         MinWidth="50"/>
                 </StackPanel>
-
-                <StackPanel>
-                    <TextBlock Text="Key Count" />
-                    <xctk:IntegerUpDown Value="{Binding KeyCount}" 
-                        Minimum="2" 
-                        Maximum="20" />
-                </StackPanel>
-
-                <StackPanel>
-                    <TextBlock Text="KeyPair Count" />
-                    <xctk:IntegerUpDown Value="{Binding KeyPairCount}"
-                        Minimum="0" 
-                        Increment="50" 
-                        Maximum="10000" />
-                </StackPanel>
-
-                <StackPanel>
-                    <TextBlock Text="Sorter Count" />
-                    <xctk:IntegerUpDown Value="{Binding SorterCount}"
-                        Minimum="0" 
-                        Increment="5" 
-                        Maximum="10000" />
-                </StackPanel>
-
-                <Grid>
-                    <Button Command="{Binding CancelSimulationCommand}" Content="Cancel"/>
-                    <Button Command="{Binding StartSimulationCommand}" Content="Run" 
-                        Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
-                </Grid>
 
 
             </WrapPanel>
         </Border>
+        
+        <View:SorterGalleryControl DataContext="{Binding SorterGalleryVm}" Grid.Row="1"/>
 
-        <sorterControls:SorterPoolControl DataContext="{Binding SorterPoolVm}" Grid.Row="1" />
-            
     </Grid>
 </UserControl>

@@ -1,5 +1,7 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Windows.Input;
+using Sorting.Evals;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
@@ -8,7 +10,18 @@ namespace SorterControls.ViewModel
     {
         public StagedSorterCompPoolVm()
         {
-            
+            _sorterCount = 10;
+            _seed = 1234;
+            _stageCount = 10;
+            _keyCount = 10;
+            SorterGalleryVm = new SorterGalleryVm
+                (
+                    keyCount: 100,
+                    sorterEvals: Enumerable.Empty<ISorterEval>(),
+                    displaySize: 3,
+                    showStages: false,
+                    showUnused: false
+                );
         }
 
         private int _generationCount;
@@ -19,51 +32,6 @@ namespace SorterControls.ViewModel
             {
                 _generationCount = value;
                 OnPropertyChanged("GenerationCount");
-            }
-        }
-
-        private int _keyCount;
-        public int KeyCount
-        {
-            get { return _keyCount; }
-            set
-            {
-                _keyCount = value;
-                OnPropertyChanged("KeyCount");
-            }
-        }
-
-        private int _stageCount;
-        public int StageCount
-        {
-            get { return _stageCount; }
-            set
-            {
-                _stageCount = value;
-                OnPropertyChanged("StageCount");
-            }
-        }
-
-        private int _seed;
-        public int Seed
-        {
-            get { return _seed; }
-            set
-            {
-                _seed = value;
-                OnPropertyChanged("Seed");
-            }
-        }
-
-
-        private int _sorterCount;
-        public int SorterCount
-        {
-            get { return _sorterCount; }
-            set
-            {
-                _sorterCount = value;
-                OnPropertyChanged("SorterCount");
             }
         }
 
@@ -97,6 +65,17 @@ namespace SorterControls.ViewModel
 
         #endregion // StartSimulationCommand
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged("IsBusy");
+            }
+        }
+
         #region CancelSimulationCommand
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -127,15 +106,141 @@ namespace SorterControls.ViewModel
 
         #endregion // CancelSimulationCommand
 
-        private bool _isBusy;
-        public bool IsBusy
+
+
+        #region Gui Binders
+
+        private int _lastKeyCount;
+        private int _keyCount;
+        public int KeyCount
         {
-            get { return _isBusy; }
+            get { return _keyCount; }
             set
             {
-                _isBusy = value;
-                OnPropertyChanged("IsBusy");
+                _keyCount = value;
+                OnPropertyChanged("KeyCount");
             }
         }
+
+        private int _lastStageCount;
+        private int _stageCount;
+        public int StageCount
+        {
+            get { return _stageCount; }
+            set
+            {
+                _stageCount = value;
+                OnPropertyChanged("StageCount");
+            }
+        }
+
+        private int _lastSeed;
+        private int _seed;
+        public int Seed
+        {
+            get { return _seed; }
+            set
+            {
+                _seed = value;
+                OnPropertyChanged("Seed");
+            }
+        }
+
+        private int _lastSorterCount;
+        private int _sorterCount;
+        public int SorterCount
+        {
+            get { return _sorterCount; }
+            set
+            {
+                _sorterCount = value;
+                OnPropertyChanged("SorterCount");
+            }
+        }
+
+        bool WasGuiChanged
+        {
+            get
+            {
+                if (_lastSorterCount != _sorterCount)
+                {
+                    return true;
+                }
+                if (_lastSeed != _seed)
+                {
+                    return true;
+                }
+                if (_lastStageCount != _stageCount)
+                {
+                    return true;
+                }
+                if (_lastKeyCount != _keyCount)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        void SyncGui()
+        {
+            _lastSorterCount = _sorterCount;
+            _lastSeed = _seed;
+            _lastStageCount = _stageCount;
+            _lastKeyCount = _keyCount;
+        }
+
+        #endregion
+
+
+        #region MakeSorterGallery related
+
+        void MakeSorterGalleryVm()
+        {
+            SorterGalleryVm = new SorterGalleryVm
+                (
+                    keyCount: KeyCount,
+                    sorterEvals: null,
+                    displaySize: DisplaySize,
+                    showStages: ShowStages,
+                    showUnused: ShowUnused
+                );
+        }
+
+        private SorterGalleryVm _sorterGalleryVm;
+        public SorterGalleryVm SorterGalleryVm
+        {
+            get { return _sorterGalleryVm; }
+            set
+            {
+                _sorterGalleryVm = value;
+                OnPropertyChanged("SorterGalleryVm");
+            }
+        }
+
+        public int DisplaySize
+        {
+            get { return SorterGalleryVm.DisplaySize; }
+            set
+            {
+                SorterGalleryVm.DisplaySize = value;
+            }
+        }
+
+        public bool ShowStages
+        {
+            get { return SorterGalleryVm.ShowStages; }
+            set { SorterGalleryVm.ShowStages = value; }
+        }
+
+        public bool ShowUnused
+        {
+            get { return SorterGalleryVm.ShowUnused; }
+            set { SorterGalleryVm.ShowUnused = value; }
+        }
+
+        #endregion
+
+
     }
 }

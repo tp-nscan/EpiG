@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils"
+             xmlns:view="clr-namespace:SorterControls.View"
              mc:Ignorable="d" >
     
     <UserControl.Resources>
@@ -69,7 +70,7 @@
         <Border Margin="2" 
             Padding="2"
             CornerRadius="4" 
-            Background="#300F">
+            Background="#308F">
 
             <WrapPanel>
 
@@ -113,5 +114,7 @@
         </Border>
 
 
+        <view:SorterGalleryControl DataContext="{Binding SorterGalleryVm}" Grid.Row="1"/>
+        
     </Grid>
 </UserControl>

@@ -9,12 +9,13 @@ namespace SorterControls.ViewModel
 {
     public class SorterGalleryVm : ViewModelBase
     {
-        public SorterGalleryVm(
-            int keyCount, 
-            IEnumerable<ISorterEval> sorterEvals, 
-            int displaySize, 
-            bool showStages, 
-            bool showUnused
+        public SorterGalleryVm
+            (
+                int keyCount, 
+                IEnumerable<ISorterEval> sorterEvals, 
+                int displaySize, 
+                bool showStages, 
+                bool showUnused
             )
         {
             _keyCount = keyCount;

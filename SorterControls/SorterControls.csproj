@@ -81,6 +81,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\SorterPoolVm.cs" />
+    <Compile Include="View\SorterPoolControl.xaml.cs">
+      <DependentUpon>SorterPoolControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\SorterCompPoolVm.cs" />
     <Compile Include="ViewModel\StagedSorterCompPoolVm.cs" />
     <Compile Include="View\SorterCompPoolControl.xaml.cs">
@@ -117,6 +121,10 @@
     <Compile Include="View\SorterControl.xaml.cs">
       <DependentUpon>SorterControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\SorterPoolControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\SorterCompPoolControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,9 +196,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Genomic\Genomic.csproj">
+      <Project>{d2f5b40c-8c15-42d6-8549-2f8695ae91a9}</Project>
+      <Name>Genomic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MathUtils\MathUtils.csproj">
       <Project>{45d0ac20-8adf-4830-8ce9-37749385834f}</Project>
       <Name>MathUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SorterGenome\SorterGenome.csproj">
+      <Project>{78481af4-8d78-4bf1-a1aa-a2228f8a0d56}</Project>
+      <Name>SorterGenome</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sorting\Sorting.csproj">
       <Project>{e5827c97-e3d1-4f30-b493-7bea79dbd877}</Project>

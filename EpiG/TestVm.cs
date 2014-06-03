@@ -19,7 +19,7 @@ namespace EpiG
             _rando = Rando.Fast(123);
         }
 
-        #region MakeSortersCommand
+        #region TestCommand
 
         RelayCommand _testCommand;
         public ICommand TestCommand
@@ -35,9 +35,81 @@ namespace EpiG
             }
         }
 
+        async void OnTestCommand()
+        {
+            IsBusy = true;
+            await DoTestAsync();
+            IsBusy = false;
+        }
+
+
+        bool CanTestCommand()
+        {
+            return !IsBusy;
+        }
+
+        #endregion // TestCommand
+
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged("IsBusy");
+            }
+        }
+
+
+        #region CancelTestCommand
+
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        RelayCommand _cancelTestCommand;
+        public ICommand CancelTestCommand
+        {
+            get
+            {
+                return _cancelTestCommand ?? (_cancelTestCommand
+                    = new RelayCommand
+                        (
+                            param => OnCancelTestCommand(),
+                            param => CanCancelTestCommand()
+                        ));
+            }
+        }
+
+        void OnCancelTestCommand()
+        {
+            _cancellationTokenSource.Cancel();
+            IsBusy = false;
+        }
+
+        bool CanCancelTestCommand()
+        {
+            return IsBusy;
+        }
+
+        #endregion // CancelMakeSortersCommand
+
+
+        async Task DoTestAsync()
+        {
+            IsBusy = true;
+            NextRound();
+            while (!_cancellationTokenSource.IsCancellationRequested)
+            {
+                NextRound();
+                await SorterCompPoolBackgroundWorker.Start(_cancellationTokenSource);
+            }
+            IsBusy = false;
+        }
+
+
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
-        private IDisposable _updateSubscription;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterEvalBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -72,24 +144,9 @@ namespace EpiG
             }
         }
 
-        public string Result
-        {
-            get { return _result; }
-            set
-            {
-                _result = value;
-                OnPropertyChanged("Result");
-            }
-        }
 
-        async void OnTestCommand()
-        {
-            IsBusy = true;
-            await MakeSorterEvals();
-            IsBusy = false;
-        }
-
-        void Reset()
+        private IDisposable _updateSubscription;
+        void NextRound()
         {
             if (_updateSubscription != null)
             {
@@ -112,70 +169,18 @@ namespace EpiG
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        async Task MakeSorterEvals()
-        {
-            IsBusy = true;
-            Reset();
-            while (! _cancellationTokenSource.IsCancellationRequested)
-            {
-                Reset();
-                await SorterEvalBackgroundWorker.Start(_cancellationTokenSource);
-            }
-            IsBusy = false;
-        }
 
-        bool CanTestCommand()
-        {
-            return !IsBusy;
-        }
-
-        #endregion // TestCommand
-
-
-        #region CancelMakeSortersCommand
-
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-        RelayCommand _cancelTestCommand;
-        public ICommand CancelTestCommand
-        {
-            get
-            {
-                return _cancelTestCommand ?? (_cancelTestCommand
-                    = new RelayCommand
-                        (
-                            param => OnCancelTestCommand(),
-                            param => CanCancelTestCommand()
-                        ));
-            }
-        }
-
-        void OnCancelTestCommand()
-        {
-            _cancellationTokenSource.Cancel();
-            IsBusy = false;
-        }
-
-        bool CanCancelTestCommand()
-        {
-            return IsBusy;
-        }
-
-        #endregion // CancelMakeSortersCommand
-
-
-        private bool _isBusy;
         private string _result;
-
-        public bool IsBusy
+        public string Result
         {
-            get { return _isBusy; }
+            get { return _result; }
             set
             {
-                _isBusy = value;
-                OnPropertyChanged("IsBusy");
+                _result = value;
+                OnPropertyChanged("Result");
             }
         }
+
 
         private int _seed;
         public int Seed
@@ -198,5 +203,7 @@ namespace EpiG
                 OnPropertyChanged("SorterCount");
             }
         }
+
+
     }
 }
