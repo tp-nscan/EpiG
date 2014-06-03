@@ -158,23 +158,7 @@ namespace SorterControls.ViewModel
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {
-                Result = result.Data.Result.Generation.ToString();
-
-                //_sorterVms.InsertWhen(
-                //        MakeSorterEvalVm(result.Data), ev => ev.SwitchesUsed > result.Data.SwitchUseCount
-                //    );
-            }
-        }
-
-
-        private string _result;
-        public string Result
-        {
-            get { return _result; }
-            set
-            {
-                _result = value;
-                OnPropertyChanged("Result");
+                SorterPoolVm.Generation = result.Data.Result.Generation;
             }
         }
 
@@ -255,7 +239,7 @@ namespace SorterControls.ViewModel
         #endregion
 
 
-        #region MakeSorterGallery related
+        #region MakeSorterPoolVm related
 
         void MakeSorterPoolVm(int generation)
         {
