@@ -8,8 +8,12 @@ using Sorting.Stages;
 
 namespace SorterControls.ViewModel
 {
+    public interface ISorterEvalVm : ISorterVm
+    {
+        bool Success { get; }
+    }
 
-    public class SorterEvalVm
+    public class SorterEvalVm : ISorterEvalVm
     {
         public SorterEvalVm(
             ISorterEval sorterEval, 
@@ -18,8 +22,7 @@ namespace SorterControls.ViewModel
             int width,
             int height,
             bool showUnusedSwitches,
-            bool showStages
-         )
+            bool showStages, SorterVmType sorterVmType)
         {
             _sorterEval = sorterEval;
             LineBrushes = lineBrushes;
@@ -28,6 +31,7 @@ namespace SorterControls.ViewModel
             _width = width;
             _showUnusedSwitches = showUnusedSwitches;
             _showStages = showStages;
+            _sorterVmType = sorterVmType;
             SetSwitchVms();
         }
 
@@ -121,6 +125,12 @@ namespace SorterControls.ViewModel
         private List<Brush> LineBrushes { get; set; }
 
         private List<Brush> SwitchBrushes { get; set; }
+
+        private readonly SorterVmType _sorterVmType;
+        public SorterVmType SorterVmType
+        {
+            get { return _sorterVmType; }
+        }
 
         public int SwitchesUsed
         {

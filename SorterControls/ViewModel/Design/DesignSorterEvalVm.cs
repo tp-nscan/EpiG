@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using SorterControls.View;
-using Sorting.CompetePools;
 using Sorting.Evals;
 using Sorting.TestData;
 
@@ -17,7 +16,8 @@ namespace SorterControls.ViewModel.Design
                         width: 8,
                         height: 150,
                         showUnusedSwitches: false,
-                        showStages: false
+                        showStages: false,
+                        sorterVmType: ViewModel.SorterVmType.Staged
                  )
         {
         }
@@ -44,7 +44,8 @@ namespace SorterControls.ViewModel.Design
                             width: 8,
                             height: 150,
                             showUnusedSwitches: false,
-                            showStages: false
+                            showStages: false,
+                            sorterVmType: ViewModel.SorterVmType.Staged
                         )
                     );
             }

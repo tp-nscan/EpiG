@@ -34,6 +34,14 @@
                     </StackPanel>
 
                     <StackPanel>
+                        <TextBlock Text="Display count" />
+                        <xctk:IntegerUpDown Value="{Binding SorterDisplayCount}" 
+                            Minimum="1" 
+                            Increment="10" 
+                            Maximum="1000" />
+                    </StackPanel>
+                    
+                    <StackPanel>
                         <CheckBox IsChecked="{Binding ShowUnused}" Content="Show unused" />
                     </StackPanel>
 
@@ -41,6 +49,7 @@
                         <CheckBox IsChecked="{Binding ShowStages}" Content="Show stages" />
                     </StackPanel>
 
+                    
                 </WrapPanel>
 
             </Border>

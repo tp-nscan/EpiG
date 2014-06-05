@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using SorterControls.View;
@@ -15,7 +16,8 @@ namespace SorterControls.ViewModel
                 IEnumerable<ISorterEval> sorterEvals, 
                 int displaySize, 
                 bool showStages, 
-                bool showUnused
+                bool showUnused,
+                int sorterDisplayCount
             )
         {
             _keyCount = keyCount;
@@ -23,16 +25,33 @@ namespace SorterControls.ViewModel
             _showStages = showStages;
             _showUnused = showUnused;
             _sorterEvals = sorterEvals.ToList();
-
+            _sorterDisplayCount = sorterDisplayCount;
             MakeSorterEvalVms();
         }
 
         public void AddSorterEval(ISorterEval sorterEval)
         {
             _sorterEvals.Add(sorterEval);
-            _sorterVms.InsertWhen(
-                MakeSorterEvalVm(sorterEval), ev => ev.SwitchesUsed > sorterEval.SwitchUseCount
-            );
+
+            _sorterVms.OrderedInsert(
+                item: MakeSorterEvalVm(sorterEval),
+                comparer: SorterEvalComp,
+                maxItems: SorterDisplayCount);
+        }
+
+        Func<ISorterVm, ISorterVm, bool> SorterEvalComp
+        {
+            get
+            {
+                return (a, b) =>
+                {
+                    if ((a.Success) && (! b.Success))
+                    {
+                        return true;
+                    }
+                    return a.SwitchesUsed < b.SwitchesUsed;
+                };
+            }
         }
 
         private readonly int _keyCount;
@@ -47,10 +66,12 @@ namespace SorterControls.ViewModel
             get { return _sorterEvals; }
         }
 
+
         void MakeSorterEvalVms()
         {
             SorterEvalVms.Clear();
-            foreach (var sorterEval in SorterEvals.OrderBy(e => e.SwitchUseCount))
+            foreach (var sorterEval in SorterEvals.OrderBy(e => e.SwitchUseCount)
+                                                  .Take(SorterDisplayCount) )
             {
                 SorterEvalVms.Add(
                         MakeSorterEvalVm(sorterEval)
@@ -138,6 +159,19 @@ namespace SorterControls.ViewModel
                 OnPropertyChanged("ShowUnused");
             }
         }
+
+        private int _sorterDisplayCount;
+        public int SorterDisplayCount
+        {
+            get { return _sorterDisplayCount; }
+            set
+            {
+                _sorterDisplayCount = value;
+                MakeSorterEvalVms();
+                OnPropertyChanged("SorterDisplayCount");
+            }
+        }
+
 
         static int DisplaySizeToSwitchWith(int displaySize)
         {

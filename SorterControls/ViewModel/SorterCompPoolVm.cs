@@ -139,18 +139,28 @@ namespace SorterControls.ViewModel
             }
         }
 
+        private IRecursiveWorkflow<ISorterCompPool> _initialState;
+        private IRecursiveWorkflow<ISorterCompPool> InitialState
+        {
+            get
+            {
+                return _initialState ?? (_initialState = SorterCompPool.Make().ToPassThroughWorkflow(Guid.NewGuid())
+                                                             .ToRecursiveWorkflowRw());
+            }
+        }
+
+
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> MakeSorterEvalBackgroundWorker()
         {
             return
                     _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-                            parameters: _rando.ToIntEnumerator().Take(3).ToList(),
+                            parameters: _rando.ToIntEnumerator().Take(1).ToList(),
                             recursion: (w, i, c) => IterationResult.Make
                                 (
                                     w.Update(i),
                                     ProgressStatus.StepComplete
                                 ),
-                                initialState: SorterCompPool.Make().ToPassThroughWorkflow(Guid.NewGuid())
-                                                                   .ToRecursiveWorkflowRw()
+                            initialState: InitialState
                         );
         }
 
@@ -159,6 +169,7 @@ namespace SorterControls.ViewModel
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {
                 SorterPoolVm.Generation = result.Data.Result.Generation;
+                _initialState = result.Data;
             }
         }
 

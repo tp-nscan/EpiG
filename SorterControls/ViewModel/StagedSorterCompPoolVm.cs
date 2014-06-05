@@ -20,7 +20,8 @@ namespace SorterControls.ViewModel
                     sorterEvals: Enumerable.Empty<ISorterEval>(),
                     displaySize: 3,
                     showStages: false,
-                    showUnused: false
+                    showUnused: false,
+                    sorterDisplayCount: 10
                 );
         }
 
@@ -203,7 +204,8 @@ namespace SorterControls.ViewModel
                     sorterEvals: null,
                     displaySize: DisplaySize,
                     showStages: ShowStages,
-                    showUnused: ShowUnused
+                    showUnused: ShowUnused,
+                    sorterDisplayCount: SorterDisplayCount
                 );
         }
 
@@ -237,6 +239,15 @@ namespace SorterControls.ViewModel
         {
             get { return SorterGalleryVm.ShowUnused; }
             set { SorterGalleryVm.ShowUnused = value; }
+        }
+
+        public int SorterDisplayCount
+        {
+            get { return SorterGalleryVm.SorterDisplayCount; }
+            set
+            {
+                SorterGalleryVm.SorterDisplayCount = value;
+            }
         }
 
         #endregion

@@ -54,6 +54,10 @@
     <Compile Include="ObservableCollectionUtilsFixture.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MathUtils\MathUtils.csproj">
+      <Project>{45d0ac20-8adf-4830-8ce9-37749385834f}</Project>
+      <Name>MathUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WpfUtils\WpfUtils.csproj">
       <Project>{66A08C2E-D258-4154-8263-4A4BEFA0DEE5}</Project>
       <Name>WpfUtils</Name>

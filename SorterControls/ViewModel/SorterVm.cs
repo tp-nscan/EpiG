@@ -11,6 +11,7 @@ namespace SorterControls.ViewModel
     {
         SorterVmType SorterVmType { get; }
         int SwitchesUsed { get; }
+        bool Success { get; }
     }
 
     public static class SorterVm

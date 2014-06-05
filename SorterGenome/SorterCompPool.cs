@@ -6,16 +6,18 @@ using MathUtils.Rand;
 
 namespace SorterGenome
 {
+    public interface ISorterCompPool : IRandomWalk<ISorterCompPool>
+    {
+        int Generation { get; }
+        SorterCompPoolStageType SorterCompPoolStageType { get; }   
+    }
+
     public interface ISorterCompPool<TO,TP,TE>
-        : IRandomWalk<ISorterCompPool<TO, TP, TE>>
+        : IRandomWalk<ISorterCompPool<TO, TP, TE>>, ISorterCompPool
         where TO : IOrg
         where TP : IPhenotype
         where TE : IPhenotypeEval
     {
-        int Generation { get; }
-
-        SorterCompPoolStageType SorterCompPoolStageType { get; }
-
         IReadOnlyDictionary<Guid, TO> Orgs { get; }
 
         IReadOnlyDictionary<Guid, TP> Phenotypes { get; }
@@ -30,16 +32,33 @@ namespace SorterGenome
 
     }
 
-    public static class SorterCompPool<TO,TP,TE> 
-        where TO : IOrg
-        where TP : IPhenotype 
-        where TE : IPhenotypeEval
+    public static class SorterCompPool
     {
-        public static ISorterCompPool<TO,TP,TE> Make()
+        public static ISorterCompPool Make()
         {
-            return null;// new SorterCompPoolImpl();
+            return new SorterCompPoolImpl<IOrg, IPhenotype, IPhenotypeEval>(
+                    generation: 0, 
+                    orgs: null,
+                    phenotypes: null,
+                    phenotypeEvals: null,
+                    sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
+                    phenotyper: null,
+                    phenotypeEvaluator: null,
+                    nextGenerator: (evs, i) => null
+                );
         }
     }
+
+    //public static class SorterCompPool<TO,TP,TE> 
+    //    where TO : IOrg
+    //    where TP : IPhenotype 
+    //    where TE : IPhenotypeEval
+    //{
+    //    public static ISorterCompPool<TO,TP,TE> Make()
+    //    {
+    //        return null;// new SorterCompPoolImpl();
+    //    }
+    //}
 
     public enum SorterCompPoolStageType
     {
@@ -49,7 +68,7 @@ namespace SorterGenome
     }
 
 
-    public class SorterCompPoolImpl<TO,TP,TE> : ISorterCompPool<TO,TP,TE>
+    public class SorterCompPoolImpl<TO, TP, TE> : ISorterCompPool<TO, TP, TE>, ISorterCompPool
         where TO : IOrg
         where TP : IPhenotype
         where TE : IPhenotypeEval
@@ -77,6 +96,10 @@ namespace SorterGenome
 
         public ISorterCompPool<TO, TP, TE> Step(int seed)
         {
+            for (var i = 0; i < 80000000; i++)
+            {
+                seed = seed ^ i;
+            }
 
             switch (SorterCompPoolStageType)
             {
@@ -108,7 +131,7 @@ namespace SorterGenome
                     return new SorterCompPoolImpl<TO, TP, TE>
                         (
                             generation: Generation + 1,
-                            orgs: Orgs,
+                            orgs: NextGenerator(PhenotypeEvals, seed),
                             phenotypes: Phenotypes,
                             phenotypeEvals: PhenotypeEvals,
                             sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
@@ -117,26 +140,9 @@ namespace SorterGenome
                             nextGenerator: NextGenerator
                         );
                 default:
-                    break;
+                    throw new Exception(SorterCompPoolStageType + " not handled");
             }
 
-            //for (var i = 0; i < 80000000; i++)
-            //{
-            //    seed = seed ^ i;
-            //}
-
-            //if (Generation > 2)
-            //{
-            //    string ss = "s";
-            //}
-
-            //return new SorterCompPoolImpl(
-                
-            //    Generation + 1
-                
-            //    );
-
-            throw new NotImplementedException();
         }
 
 
@@ -186,6 +192,11 @@ namespace SorterGenome
         public Func<IReadOnlyDictionary<Guid, TE>, int, IReadOnlyDictionary<Guid, TO>> NextGenerator
         {
             get { return _nextGenerator; }
+        }
+
+        ISorterCompPool IRandomWalk<ISorterCompPool>.Step(int seed)
+        {
+            return Step(seed);
         }
     }
 }

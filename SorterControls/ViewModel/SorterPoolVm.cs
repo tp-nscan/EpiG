@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SorterGenome;
 using Sorting.Evals;
 using WpfUtils;
 
@@ -24,7 +25,8 @@ namespace SorterControls.ViewModel
                     sorterEvals: sorterEvals,
                     displaySize: displaySize,
                     showStages: showStages,
-                    showUnused: showUnused
+                    showUnused: showUnused,
+                    sorterDisplayCount: 10
                 );
         }
 
@@ -38,6 +40,8 @@ namespace SorterControls.ViewModel
                 OnPropertyChanged("Generation");
             }
         }
+
+        public SorterCompPoolStageType SorterCompPoolStageType { get; set; }
 
         private SorterGalleryVm _sorterGalleryVm;
         public SorterGalleryVm SorterGalleryVm
