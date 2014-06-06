@@ -34,7 +34,17 @@ namespace SorterGenome
 
     public static class SorterCompPool
     {
-        public static ISorterCompPool Make()
+
+        public static ISorterCompPool MakeStandard
+            (
+                int seed,
+                int orgCount,
+                int seqenceLength,
+                int keyCount,
+                double mutationRate,
+                double multiplicationRate,
+                double cubRate
+            )
         {
             return new SorterCompPoolImpl<IOrg, IPhenotype, IPhenotypeEval>(
                     generation: 0, 

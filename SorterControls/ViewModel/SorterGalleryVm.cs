@@ -33,13 +33,13 @@ namespace SorterControls.ViewModel
         {
             _sorterEvals.Add(sorterEval);
 
-            _sorterVms.OrderedInsert(
+            _sorterEvalVms.OrderedInsert(
                 item: MakeSorterEvalVm(sorterEval),
                 comparer: SorterEvalComp,
                 maxItems: SorterDisplayCount);
         }
 
-        Func<ISorterVm, ISorterVm, bool> SorterEvalComp
+        Func<ISorterEvalVm, ISorterEvalVm, bool> SorterEvalComp
         {
             get
             {
@@ -49,7 +49,7 @@ namespace SorterControls.ViewModel
                     {
                         return true;
                     }
-                    return a.SwitchesUsed < b.SwitchesUsed;
+                    return a.SwitchUseCount < b.SwitchUseCount;
                 };
             }
         }
@@ -79,7 +79,7 @@ namespace SorterControls.ViewModel
             }
         }
 
-        ISorterVm MakeSorterEvalVm(ISorterEval sorterEval)
+        ISorterEvalVm MakeSorterEvalVm(ISorterEval sorterEval)
         {
             if (ShowStages)
             {
@@ -104,13 +104,13 @@ namespace SorterControls.ViewModel
 
         }
 
-        private ObservableCollection<ISorterVm> _sorterVms = new ObservableCollection<ISorterVm>();
-        public ObservableCollection<ISorterVm> SorterEvalVms
+        private ObservableCollection<ISorterEvalVm> _sorterEvalVms = new ObservableCollection<ISorterEvalVm>();
+        public ObservableCollection<ISorterEvalVm> SorterEvalVms
         {
-            get { return _sorterVms; }
+            get { return _sorterEvalVms; }
             set
             {
-                _sorterVms = value;
+                _sorterEvalVms = value;
                 OnPropertyChanged("SorterEvalVms");
             }
         }

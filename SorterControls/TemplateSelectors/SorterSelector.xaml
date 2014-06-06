@@ -8,7 +8,7 @@
         <StackPanel Orientation="Horizontal">
             <Border Padding="3" Margin="4" Background="#7FFF" CornerRadius="4">
                 <StackPanel>
-                    <TextBlock Text="{Binding SwitchesUsed}" />
+                    <TextBlock Text="{Binding SwitchUseCount}" />
                     <TextBlock Text="{Binding Success}" />
                 </StackPanel>
             </Border>
@@ -24,7 +24,7 @@
         <StackPanel Orientation="Horizontal">
             <Border Padding="3" Margin="4" Background="#7FFF" CornerRadius="4">
                 <StackPanel>
-                    <TextBlock Text="{Binding SwitchesUsed}" />
+                    <TextBlock Text="{Binding SwitchUseCount}" />
                     <TextBlock Text="{Binding Success}" />
                 </StackPanel>
             </Border>

@@ -102,7 +102,7 @@
                     <xctk:IntegerUpDown Value="{Binding SorterCount}"
                         Minimum="0" 
                         Increment="5" 
-                        Maximum="10000" />
+                        Maximum="100000" />
                 </StackPanel>
 
                 <Grid>

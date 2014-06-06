@@ -50,7 +50,7 @@ namespace SorterControls.ViewModel.Design
                     );
             }
 
-            _sorterEvalVms = new ObservableCollection<SorterEvalVm>(_sorterEvalVms.OrderBy(e => e.SwitchesUsed));
+            _sorterEvalVms = new ObservableCollection<SorterEvalVm>(_sorterEvalVms.OrderBy(e => e.SwitchUseCount));
         }
 
         private const int KeyCount = 8;

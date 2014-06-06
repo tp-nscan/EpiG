@@ -8,12 +8,9 @@ namespace SorterControls.ViewModel.Design
         public DesignSorterVm()
             : base
             (
-                sorterEval: SorterEvals.TestSorterEval(__keyCount, 123, 800),
+                sorter: SorterEvals.TestSorterEval(__keyCount, 123, 800),
                 lineBrushes: LineBrushFactory.GradedBlueBrushes(__keyCount),
-                switchBrushes: LineBrushFactory.GradedRedBrushes(__keyCount),
-                width: 8,
-                height:150,
-                showUnusedSwitches: true
+                width: 8
             )
         { }
 

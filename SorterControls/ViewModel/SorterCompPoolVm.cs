@@ -16,6 +16,10 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolVm()
         {
+            _multiplicationRate = 2.0;
+            _mutationRate = 0.03;
+            _cubRate = 0.25;
+
             _sorterCount = 10;
             _seed = 1234;
             _keyPairCount = 100;
@@ -144,13 +148,26 @@ namespace SorterControls.ViewModel
         {
             get
             {
-                return _initialState ?? (_initialState = SorterCompPool.Make().ToPassThroughWorkflow(Guid.NewGuid())
-                                                             .ToRecursiveWorkflowRw());
+                return _initialState ?? 
+                    (
+                        _initialState = SorterCompPool.MakeStandard
+                        (
+                            seed: Seed,
+                            orgCount: SorterCount,
+                            seqenceLength: KeyPairCount,
+                            keyCount: KeyCount,
+                            mutationRate: MutationRate,
+                            multiplicationRate: MultiplicationRate,
+                            cubRate: CubRate
+                        ).ToPassThroughWorkflow(Guid.NewGuid())
+                         .ToRecursiveWorkflowRw()
+                    );
             }
         }
 
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> MakeSorterEvalBackgroundWorker()
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> 
+                        MakeSorterEvalBackgroundWorker()
         {
             return
                     _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
@@ -222,6 +239,38 @@ namespace SorterControls.ViewModel
             }
         }
 
+        private double _multiplicationRate;
+        public double MultiplicationRate
+        {
+            get { return _multiplicationRate; }
+            set
+            {
+                _multiplicationRate = value;
+                OnPropertyChanged("MultiplicationRate");
+            }
+        }
+
+        private double _mutationRate;
+        public double MutationRate
+        {
+            get { return _mutationRate; }
+            set
+            {
+                _mutationRate = value;
+                OnPropertyChanged("MutationRate");
+            }
+        }
+
+        private double _cubRate;
+        public double CubRate
+        {
+            get { return _cubRate; }
+            set
+            {
+                _cubRate = value;
+                OnPropertyChanged("CubRate");
+            }
+        }
 
         private IRando _rando= Rando.Fast(123);
         private int _seed;

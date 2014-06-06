@@ -9,7 +9,7 @@ namespace SorterControls.ViewModel
 {
     public static class StagedSorterVm
     {
-        public static ISorterVm ToStagedSorterVm
+        public static ISorterEvalVm ToStagedSorterVm
             (
                 this ISorterEval sorterEval,
                 List<Brush> lineBrushes,
@@ -31,7 +31,7 @@ namespace SorterControls.ViewModel
         }
     }
 
-    public class StagedSorterVmImpl : ViewModelBase, ISorterVm
+    public class StagedSorterVmImpl : ViewModelBase, ISorterEvalVm
     {
         public StagedSorterVmImpl
             (
@@ -121,7 +121,7 @@ namespace SorterControls.ViewModel
             get { return SorterEval.KeyCount; }
         }
 
-        public int SwitchesUsed
+        public int SwitchUseCount
         {
             get { return SorterEval.SwitchUseCount; }
         }

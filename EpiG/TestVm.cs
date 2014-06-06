@@ -127,8 +127,18 @@ namespace EpiG
                                     w.Update(i),
                                     ProgressStatus.StepComplete
                                 ),
-                                initialState: SorterCompPool.Make().ToPassThroughWorkflow(Guid.NewGuid())
-                                                                   .ToRecursiveWorkflowRw()
+                                initialState: SorterCompPool.MakeStandard
+                                (
+                                    seed: Seed,
+                                    orgCount: SorterCount,
+                                    seqenceLength: 12,
+                                    keyCount: 1,
+                                    mutationRate: 0.0,
+                                    multiplicationRate: 0.0,
+                                    cubRate: 0.0
+                                )
+                                .ToPassThroughWorkflow(Guid.NewGuid())
+                                 .ToRecursiveWorkflowRw()
                         );
         }
 

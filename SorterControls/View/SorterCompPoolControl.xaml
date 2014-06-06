@@ -50,6 +50,13 @@
                 <Setter Property="Margin" Value="0,0,4,0" />
             </Style>
 
+            <Style TargetType="{x:Type xctk:DoubleUpDown}">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Height" Value="25" />
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Margin" Value="0,0,4,0" />
+            </Style>
+            
             <Style TargetType="{x:Type StackPanel}">
                 <Setter Property="Margin" Value="5,2" />
                 <Setter Property="Orientation" Value="Horizontal" />
@@ -105,6 +112,29 @@
                         Maximum="10000" />
                 </StackPanel>
 
+                <StackPanel>
+                    <TextBlock Text="Mutation rate" />
+                    <xctk:DoubleUpDown Value="{Binding MutationRate}"
+                        Minimum="0.005" 
+                        Increment="0.005" 
+                        Maximum="0.1" />
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Multiplication rate" />
+                    <xctk:DoubleUpDown Value="{Binding MultiplicationRate}"
+                        Minimum="1.0" 
+                        Increment="0.25" 
+                        Maximum="10.0" />
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Cub rate" />
+                    <xctk:DoubleUpDown Value="{Binding CubRate}"
+                        Minimum="0.0" 
+                        Increment="0.1" 
+                        Maximum="1.0" />
+                </StackPanel>
                 <Grid>
                     <Button Command="{Binding CancelSimulationCommand}" Content="Cancel"/>
                     <Button Command="{Binding StartSimulationCommand}" Content="Run" 

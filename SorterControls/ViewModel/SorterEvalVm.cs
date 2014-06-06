@@ -11,6 +11,7 @@ namespace SorterControls.ViewModel
     public interface ISorterEvalVm : ISorterVm
     {
         bool Success { get; }
+        int SwitchUseCount { get; }
     }
 
     public class SorterEvalVm : ISorterEvalVm
@@ -132,7 +133,7 @@ namespace SorterControls.ViewModel
             get { return _sorterVmType; }
         }
 
-        public int SwitchesUsed
+        public int SwitchUseCount
         {
             get { return SorterEval.SwitchUseCount; }
         }

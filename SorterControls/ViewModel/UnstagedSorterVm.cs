@@ -9,7 +9,7 @@ namespace SorterControls.ViewModel
 {
     public static class UnStagedSorterVm
     {
-        public static ISorterVm ToUnStagedSorterVm
+        public static ISorterEvalVm ToUnStagedSorterVm
             (
                 this ISorterEval sorterEval,
                 List<Brush> lineBrushes,
@@ -31,7 +31,7 @@ namespace SorterControls.ViewModel
         }
     }
 
-    public class UnstagedSorterVmImpl: ViewModelBase, ISorterVm
+    public class UnstagedSorterVmImpl : ViewModelBase, ISorterEvalVm
     {
         public UnstagedSorterVmImpl
             (
@@ -110,7 +110,7 @@ namespace SorterControls.ViewModel
 
         public SorterVmType SorterVmType { get { return SorterVmType.Unstaged; } }
 
-        public int SwitchesUsed
+        public int SwitchUseCount
         {
             get { return SorterEval.SwitchUseCount; }
         }

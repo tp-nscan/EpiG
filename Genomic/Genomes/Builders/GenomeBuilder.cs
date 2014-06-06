@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
@@ -20,6 +21,31 @@ namespace Genomic.Genomes.Builders
 
     public static class GenomeBuilder
     {
+        public static IEnumerable<IGenomeBuilder<IGenome>> MakeGenerators
+            (
+                int seed,
+                int builderCount,
+                uint symbolCount,
+                int sequenceLength
+            )
+        {
+
+            var randy = Rando.Fast(seed);
+
+            return Enumerable.Range(0, builderCount)
+                             .Select
+                             (
+                                 i=> MakeGenerator
+                                     (
+                                        symbolCount:symbolCount,
+                                        sequenceLength: sequenceLength,
+                                        seed: randy.NextInt(), 
+                                        guid: randy.NextGuid()
+                                    )
+                             );
+        }
+
+
         public static IGenomeBuilder<IGenome> MakeGenerator
             (
                 uint symbolCount,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Sorting.Evals;
+using Sorting.Sorters;
 using WpfUtils;
 
 namespace SorterControls.ViewModel
@@ -10,8 +11,6 @@ namespace SorterControls.ViewModel
     public interface ISorterVm
     {
         SorterVmType SorterVmType { get; }
-        int SwitchesUsed { get; }
-        bool Success { get; }
     }
 
     public static class SorterVm
@@ -20,20 +19,14 @@ namespace SorterControls.ViewModel
             (
                 this ISorterEval sorterEval,
                 List<Brush> lineBrushes,
-                List<Brush> switchBrushes,
-                int width,
-                int height,
-                bool showUnusedSwitches
+                int width
             )
         {
             return new SorterVmImpl
                 (
-                    sorterEval: sorterEval,
+                    sorter: sorterEval,
                     lineBrushes: lineBrushes,
-                    switchBrushes: switchBrushes,
-                    width: width,
-                    height: height,
-                    showUnusedSwitches: showUnusedSwitches
+                    width: width
                 );
         }
     }
@@ -42,23 +35,20 @@ namespace SorterControls.ViewModel
     {
         public SorterVmImpl
             (
-                ISorterEval sorterEval,
+                ISorterEval sorter,
                 List<Brush> lineBrushes,
-                List<Brush> switchBrushes,
-                int width,
-                int height,
-                bool showUnusedSwitches
+                int width
             )
         {
-            _sorterEval = sorterEval;
-            foreach (var keyPair in SorterEval.KeyPairs)
+            _sorter = sorter;
+            foreach (var keyPair in Sorter.KeyPairs)
             {
                 SwitchVms.Add
                     (
                         new SwitchVm
                         (
                             keyPair: keyPair,
-                            keyCount: sorterEval.KeyCount,
+                            keyCount: sorter.KeyCount,
                             lineBrushes: lineBrushes,
                             width: width
                         ) 
@@ -67,15 +57,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private readonly ISorterEval _sorterEval;
-        ISorterEval SorterEval
+        private readonly ISorter _sorter;
+        ISorter Sorter
         {
-            get { return _sorterEval; }
+            get { return _sorter; }
         }
 
         public int KeyCount
         {
-            get { return SorterEval.KeyCount; }
+            get { return Sorter.KeyCount; }
         }
 
         private ObservableCollection<SwitchVm> _switchVms = new ObservableCollection<SwitchVm>();
@@ -93,16 +83,6 @@ namespace SorterControls.ViewModel
         public SorterVmType SorterVmType
         {
             get { return SorterVmType.Unstaged; }
-        }
-
-        public int SwitchesUsed
-        {
-            get { return SorterEval.SwitchUseCount; }
-        }
-
-        public bool Success
-        {
-            get { return SorterEval.Success; }
         }
     }
 }

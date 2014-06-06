@@ -43,7 +43,7 @@ namespace Genomic.Layers
         }
     }
 
-    public class OrgImpl<G> : IOrg<G> where G : class,  IGenome
+    public class OrgImpl<G> : IOrg<G> where G : class, IGenome
     {
         public OrgImpl
             (

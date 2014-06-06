@@ -56,7 +56,7 @@ namespace SorterControls.ViewModel
 
         bool CanMakeSortersCommand()
         {
-            return !_isBusy && WasGuiChanged;
+            return !_isBusy;// && WasGuiChanged;
         }
 
         #endregion // MakeSortersCommand
@@ -311,6 +311,7 @@ namespace SorterControls.ViewModel
             }
         }
         #endregion
+
 
     }
 }
