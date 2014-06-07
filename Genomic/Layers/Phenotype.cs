@@ -1,30 +1,33 @@
-﻿namespace Genomic.Layers
+﻿using System;
+using MathUtils.Collections;
+
+namespace Genomic.Layers
 {
-    public interface IPhenotype
+    public interface IPhenotype : IGuid
     {
         IOrg Org { get; }
     }
 
-    public interface IPhenotype<T>
+    public interface IPhenotype<T> : IPhenotype
     {
-        IOrg Org { get; }
         T Value { get; }
     }
 
     public static class Phenotype
     {
-        public static IPhenotype<T> Make<T>(IOrg org, T value)
+        public static IPhenotype<T> Make<T>(IOrg org, Guid guid, T value)
         {
-            return new PhenotypeImpl<T>(org, value);
+            return new PhenotypeImpl<T>(org, guid, value);
         }
     }
 
     public class PhenotypeImpl<T> : IPhenotype<T>
     {
-        public PhenotypeImpl(IOrg org, T value)
+        public PhenotypeImpl(IOrg org, Guid guid, T value)
         {
             _org = org;
             _value = value;
+            _guid = guid;
         }
 
         private readonly IOrg _org;
@@ -37,6 +40,12 @@
         public T Value
         {
             get { return _value; }
+        }
+
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
         }
     }
 }

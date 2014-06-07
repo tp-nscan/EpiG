@@ -1,7 +1,7 @@
 ﻿using System;
 using MathUtils.Collections;
 
-namespace Genomic.Workflows
+namespace Workflows
 {
     public interface IWorkflow<T> : IGuid
     {

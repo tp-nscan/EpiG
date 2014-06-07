@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkflowFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MathUtils\MathUtils.csproj">

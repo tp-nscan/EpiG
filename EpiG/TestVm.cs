@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Genomic.Workflows;
 using MathUtils.Rand;
 using SorterGenome;
 using Utils.BackgroundWorkers;
+using Workflows;
 using WpfUtils;
 
 namespace EpiG

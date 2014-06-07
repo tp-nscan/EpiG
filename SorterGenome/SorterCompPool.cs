@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Genomic.Layers;
-using Genomic.Workflows;
 using MathUtils.Rand;
+using Utils;
 
 namespace SorterGenome
 {

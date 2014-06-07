@@ -56,6 +56,7 @@
     <Compile Include="BackgroundWorkers\ProgressStatus.cs" />
     <Compile Include="BackgroundWorkers\RecursiveBackgroundWorker.cs" />
     <Compile Include="BackgroundWorkers\RecursiveParamBackgroundWorker.cs" />
+    <Compile Include="IRandomWalk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

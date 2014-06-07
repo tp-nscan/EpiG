@@ -216,6 +216,10 @@
       <Project>{31db7822-1f4a-44f1-91fd-2a016baa1b87}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Workflows\Workflows.csproj">
+      <Project>{0fd9f23f-9d40-4ba6-af4d-95b284253cef}</Project>
+      <Name>Workflows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WpfUtils\WpfUtils.csproj">
       <Project>{66a08c2e-d258-4154-8263-4a4befa0dee5}</Project>
       <Name>WpfUtils</Name>

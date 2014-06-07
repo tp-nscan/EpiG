@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Genomic.Workflows;
 using MathUtils.Rand;
 using SorterGenome;
 using Sorting.Evals;
 using System.Linq;
 using Utils.BackgroundWorkers;
+using Workflows;
 using WpfUtils;
 
 namespace SorterControls.ViewModel

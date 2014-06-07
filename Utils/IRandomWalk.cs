@@ -1,4 +1,4 @@
-﻿namespace Genomic.Workflows
+﻿namespace Utils
 {
     public interface IRandomWalk<T>
     {

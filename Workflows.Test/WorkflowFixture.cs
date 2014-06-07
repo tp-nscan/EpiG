@@ -1,8 +1,7 @@
 ﻿using System;
-using Genomic.Workflows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Genomic.Test.Workflows
+namespace Workflows.Test
 {
     [TestClass]
     public class WorkflowFixture

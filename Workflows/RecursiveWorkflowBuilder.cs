@@ -2,8 +2,9 @@
 using System.Collections.Immutable;
 using System.Linq;
 using MathUtils.Collections;
+using Utils;
 
-namespace Genomic.Workflows
+namespace Workflows
 {
     public interface IRecursiveWorkflowBuilder<T> : IGuid
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
+using Utils;
 
-namespace Genomic.Workflows
+namespace Workflows
 {
     public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T> 
         where T : IRandomWalk<T>

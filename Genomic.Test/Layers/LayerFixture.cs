@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Genomic.Layers;
-using Genomic.Workflows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Genomic.Test.Layers

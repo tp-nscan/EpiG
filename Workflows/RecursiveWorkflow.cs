@@ -1,7 +1,8 @@
 ﻿using System;
 using MathUtils.Collections;
+using Utils;
 
-namespace Genomic.Workflows
+namespace Workflows
 {
     public interface IRecursiveWorkflow<T> : IGuid
     {
