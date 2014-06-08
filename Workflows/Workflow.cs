@@ -3,17 +3,22 @@ using MathUtils.Collections;
 
 namespace Workflows
 {
-    public interface IWorkflow<T> : IGuid
+    public interface IWorkflow<T> : IGuid, IGuidParts where T : IGuid, IGuidParts
     {
         IWorkflowBuilder<T> WorkflowBuilder { get; }
         T Result { get; }
+        string WorkflowBuilderType { get; }
     }
 
     public static class Workflow
     {
-        public static IWorkflow<T> ToPassThroughWorkflow<T>(this T item, Guid guid)
+        public static IWorkflow<T> ToPassThroughWorkflow<T>
+            (
+                this T item, 
+                Guid guid
+            ) where T : IGuid, IGuidParts
         {
-            return new WorkflowImpl<T>
+            return new PassThroughWorkflow<T>
                 (
                     workflowBuilder: WorkflowBuilder.MakePassthrough
                     (
@@ -25,9 +30,15 @@ namespace Workflows
         }
     }
 
-    public class WorkflowImpl<T> : IWorkflow<T>
+    public class PassThroughWorkflow<T> : IWorkflow<T> where T : IGuid, IGuidParts
     {
-        public WorkflowImpl(IWorkflowBuilder<T> workflowBuilder, T result)
+        public const string Name = "Passthrough";
+
+        public PassThroughWorkflow
+            (
+                IWorkflowBuilder<T> workflowBuilder, 
+                T result
+            )
         {
             _workflowBuilder = workflowBuilder;
             _result = result;
@@ -45,9 +56,24 @@ namespace Workflows
             get { return _result; }
         }
 
+        public string WorkflowBuilderType
+        {
+            get { return Name; }
+        }
+
+        public object GetPart(Guid key)
+        {
+            if (Result.Guid == key)
+            {
+                return Result;
+            }
+            return Result.GetPart(key);
+        }
+
         public Guid Guid
         {
             get { return WorkflowBuilder.Guid; }
         }
+
     }
 }

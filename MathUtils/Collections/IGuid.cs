@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace MathUtils.Collections
 {
+
     public interface IGuid
     {
         Guid Guid { get; }
     }
 
-    public interface IParentGuid : IGuid
+    public interface IGuid<out T> : IGuid
     {
-        Guid ParentGuid { get; }
+        T Item { get; }
+    }
+
+    public interface IGuidParts
+    {
+        object GetPart(Guid key);
     }
 
     public static class GuidExt
@@ -25,15 +30,9 @@ namespace MathUtils.Collections
             }
         }
 
-        public static IParentGuid MakeParentGuid(this Guid guid, Guid parentGuid)
-        {
-            return new ParentGuidImpl(guid, parentGuid);
-        }
-
-        public static Guid FromTail(this IReadOnlyList<int> ints)
+        public static Guid TailToGuid(this IReadOnlyList<int> ints)
         {
             return ints.Reverse().RoundRobin(0).Take(11).ToArray().ToGuid();
-
         }
 
         public static Guid ToGuid(this int[] ints)
@@ -52,6 +51,11 @@ namespace MathUtils.Collections
                     (byte)ints[9],
                     (byte)ints[10]
                 );
+        }
+
+        public static IGuid<T> WrapWithGuid<T>(this T item, Guid guid)
+        {
+            return new GuidWrapper<T>(guid, item);
         }
 
         public static int ToHash(this Guid guid)
@@ -107,15 +111,15 @@ namespace MathUtils.Collections
         }
     }
 
-    class ParentGuidImpl : IParentGuid
+    public class GuidWrapper<T> : IGuid<T>, IGuidParts
     {
         private readonly Guid _guid;
-        private readonly Guid _parentGuid;
+        private readonly T _item;
 
-        public ParentGuidImpl(Guid guid, Guid parentGuid)
+        public GuidWrapper(Guid guid, T item)
         {
             _guid = guid;
-            _parentGuid = parentGuid;
+            _item = item;
         }
 
         public Guid Guid
@@ -123,9 +127,25 @@ namespace MathUtils.Collections
             get { return _guid; }
         }
 
-        public Guid ParentGuid
+        public T Item
         {
-            get { return _parentGuid; }
+            get { return _item; }
+        }
+
+        public object GetPart(Guid key)
+        {
+            if (Guid == key)
+            {
+                return Item;
+            }
+
+            var guidParts = Item as IGuidParts;
+            if (guidParts != null)
+            {
+                return guidParts.GetPart(key);
+            }
+
+            return null;
         }
     }
 }

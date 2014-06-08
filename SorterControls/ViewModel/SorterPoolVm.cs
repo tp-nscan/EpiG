@@ -41,7 +41,16 @@ namespace SorterControls.ViewModel
             }
         }
 
-        public SorterCompPoolStageType SorterCompPoolStageType { get; set; }
+        private SorterCompPoolStageType _sorterCompPoolStageType;
+        public SorterCompPoolStageType SorterCompPoolStageType
+        {
+            get { return _sorterCompPoolStageType; }
+            set
+            {
+                _sorterCompPoolStageType = value;
+                OnPropertyChanged("SorterCompPoolStageType");
+            }
+        }
 
         private SorterGalleryVm _sorterGalleryVm;
         public SorterGalleryVm SorterGalleryVm

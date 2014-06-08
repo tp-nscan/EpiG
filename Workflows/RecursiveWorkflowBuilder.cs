@@ -6,7 +6,7 @@ using Utils;
 
 namespace Workflows
 {
-    public interface IRecursiveWorkflowBuilder<T> : IGuid
+    public interface IRecursiveWorkflowBuilder<T> : IGuid where T : IGuid, IGuidParts
     {
         IWorkflow<T> InitialWorkflow { get; }
         IRecursiveWorkflowBuilder<T> Iterate(int seed);
@@ -20,7 +20,7 @@ namespace Workflows
             (
                 this IWorkflow<T> initialWorkflow, 
                 Func<T, int, T> updateFunc
-            )
+            ) where T : IGuid, IGuidParts
         {
             return new RecursiveWorkflowBuilderFunc<T>
                 (
@@ -33,7 +33,7 @@ namespace Workflows
         public static IRecursiveWorkflowBuilder<T> ToRecursiveRandomWalkWorkflowBuilder<T>
         (
             this IWorkflow<T> initialWorkflow
-        ) where T : IRandomWalk<T>
+        ) where T : IRandomWalk<T>, IGuid, IGuidParts
         {
             return new RecursiveWorkflowBuilderRandomWalk<T>
                 (
@@ -44,7 +44,7 @@ namespace Workflows
 
     }
 
-    public abstract class RecursiveWorkflowBuilderBase<T> : IRecursiveWorkflowBuilder<T>
+    public abstract class RecursiveWorkflowBuilderBase<T> : IRecursiveWorkflowBuilder<T> where T : IGuid, IGuidParts
     {
         protected RecursiveWorkflowBuilderBase
             (
@@ -54,7 +54,11 @@ namespace Workflows
         {
             _seeds = seeds;
             _initialWorkflow = initialWorkflow;
-            _guid = Seeds.Any() ? Seeds.FromTail() : Guid.Empty;
+            _guid = initialWorkflow.Guid.ToHash()
+                                       .ToEnumerable()
+                                       .Concat(Seeds)
+                                       .ToList()
+                                       .TailToGuid();
         }
 
         private readonly IImmutableList<int> _seeds;
@@ -80,7 +84,7 @@ namespace Workflows
         }
     }
 
-    public class RecursiveWorkflowBuilderFunc<T> : RecursiveWorkflowBuilderBase<T>
+    public class RecursiveWorkflowBuilderFunc<T> : RecursiveWorkflowBuilderBase<T> where T : IGuid, IGuidParts
     {
         public RecursiveWorkflowBuilderFunc(
                 IImmutableList<int> seeds, 

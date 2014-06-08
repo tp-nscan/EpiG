@@ -55,7 +55,7 @@ namespace MathUtils.Tests.Collections
             for (var i = 0; i < testCount; i++)
             {
                 ints.Add(randy.NextInt());
-                var curGuid = ints.FromTail();
+                var curGuid = ints.TailToGuid();
                 guidsAndKeys[curGuid] = 1;
             }
 

@@ -6,8 +6,7 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     mc:Ignorable="d"
     x:Class="SorterControls.View.SorterGalleryControl"
-    x:Name="UserControl"
-    d:DesignWidth="565.337" d:DesignHeight="41">
+    x:Name="UserControl">
 
     <Grid x:Name="LayoutRoot">
         <Grid>
@@ -17,17 +16,16 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-
             <Border Margin="2" 
                 Padding="2"
                 CornerRadius="4" 
                 Background="#38F0">
                 
                 <WrapPanel>
-                
                     <StackPanel>
                         <TextBlock Text="Display size" />
                         <xctk:IntegerUpDown Value="{Binding DisplaySize}" 
+                            Margin="5, 0, 10, 0" 
                             Minimum="1" 
                             Increment="1" 
                             Maximum="6" />
@@ -36,6 +34,7 @@
                     <StackPanel>
                         <TextBlock Text="Display count" />
                         <xctk:IntegerUpDown Value="{Binding SorterDisplayCount}" 
+                            Margin="5, 0, 10, 0" 
                             Minimum="1" 
                             Increment="10" 
                             Maximum="1000" />
@@ -49,7 +48,6 @@
                         <CheckBox IsChecked="{Binding ShowStages}" Content="Show stages" />
                     </StackPanel>
 
-                    
                 </WrapPanel>
 
             </Border>

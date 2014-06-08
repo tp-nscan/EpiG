@@ -73,10 +73,15 @@
 
                 <StackPanel>
                     <TextBlock Text="Generation" />
-                    <TextBlock Text="{Binding Generation}" 
+                    <TextBlock Margin="5, 0, 10, 0" Text="{Binding Generation}" 
                         MinWidth="50"/>
                 </StackPanel>
 
+                <StackPanel>
+                    <TextBlock Text="Stage type" />
+                    <TextBlock Margin="5, 0, 10, 0" Text="{Binding SorterCompPoolStageType}" 
+                        MinWidth="50"/>
+                </StackPanel>
 
             </WrapPanel>
         </Border>

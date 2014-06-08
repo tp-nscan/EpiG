@@ -14,7 +14,7 @@
 
                     <ItemsControl.Resources>
                         <DataTemplate x:Key="SwitchTemplate">
-                            <Border BorderThickness="0,0,1,0" BorderBrush="Gray">
+                            <Border BorderThickness="0,0,1,0" BorderBrush="Green">
                                 <view:UnstagedSorterControl DataContext="{Binding}"/>
                             </Border>
                         </DataTemplate>

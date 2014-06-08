@@ -1,10 +1,11 @@
 ﻿using System.Collections.Immutable;
+using MathUtils.Collections;
 using Utils;
 
 namespace Workflows
 {
     public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T> 
-        where T : IRandomWalk<T>
+        where T : IRandomWalk<T>, IGuid, IGuidParts
     {
         public RecursiveWorkflowBuilderRandomWalk(
                 IImmutableList<int> seeds,

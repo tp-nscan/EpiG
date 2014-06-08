@@ -30,7 +30,7 @@ namespace Sorting.Sorters
 
         public static ISorter ToSorter(this IRando rando, int keyCount, int keyPairCount, Guid guid)
         {
-            //return rando.RandomKeyPairs(keyCount).Take(keyPairCount).ToSorter(guid, keyCount);
+           // return rando.RandomKeyPairs(keyCount).Take(keyPairCount).ToSorter(guid, keyCount);
             return rando.RandomKeyPairsFullStage(keyCount).Take(keyPairCount).ToSorter(guid, keyCount);
         }
 

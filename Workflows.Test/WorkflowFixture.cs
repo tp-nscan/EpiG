@@ -1,4 +1,5 @@
 ﻿using System;
+using MathUtils.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Workflows.Test
@@ -12,11 +13,12 @@ namespace Workflows.Test
             var guid = Guid.NewGuid();
             var item = "intital";
 
-            var recursiveWorkflowBuilder = item.ToPassThroughWorkflow(guid)
-                                               .ToRecursiveFunctionWorkflowBuilder
-                (
-                    updateFunc: (s, i) => s + "_" + i
-                );
+            //var recursiveWorkflowBuilder = item.WrapWithGuid(guid)
+            //                                   .ToPassThroughWorkflow(guid)
+            //                                   .ToRecursiveFunctionWorkflowBuilder
+                //(
+                //    updateFunc: (s, i) => (s.Item + "_" + i).WrapWithGuid(Guid.NewGuid())
+                //);
 
 
             //var recursiveWorkflow = recursiveWorkflowBuilder.

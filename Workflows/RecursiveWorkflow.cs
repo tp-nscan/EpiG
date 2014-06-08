@@ -4,7 +4,7 @@ using Utils;
 
 namespace Workflows
 {
-    public interface IRecursiveWorkflow<T> : IGuid
+    public interface IRecursiveWorkflow<T> : IGuid where T : IGuid, IGuidParts
     {
         IRecursiveWorkflowBuilder<T> RecursiveWorkflowBuilder { get; }
         T Result { get; }
@@ -13,9 +13,9 @@ namespace Workflows
 
     public static class RecursiveWorkflow
     {
-        public static IRecursiveWorkflow<T> ToRecursiveWorkflowRw<T>(
+        public static IRecursiveWorkflow<T> ToRecursiveWorkflowRndWlk<T>(
             this IWorkflow<T> initialWorkflow
-            ) where T : IRandomWalk<T>
+            ) where T : IRandomWalk<T>, IGuid, IGuidParts
         {
             return new RecursiveWorkflowImpl<T>(
                 result: initialWorkflow.Result,
@@ -26,7 +26,7 @@ namespace Workflows
         public static IRecursiveWorkflow<T> ToRecursiveWorkflow<T>(
                 this IWorkflow<T> initialWorkflow,
                 Func<T, int, T> updateFunc
-        )
+        ) where T : IGuid, IGuidParts
         {
             return new RecursiveWorkflowImpl<T>(
                 result: initialWorkflow.Result,
@@ -37,7 +37,7 @@ namespace Workflows
         public static IRecursiveWorkflow<T> Update<T>(
                 this IRecursiveWorkflow<T> precursor,
                 int seed
-            )
+            ) where T : IGuid, IGuidParts
         {
             return new RecursiveWorkflowImpl<T>(
                 result: precursor.RecursiveWorkflowBuilder.Make(precursor.Result, seed),
@@ -47,7 +47,7 @@ namespace Workflows
     }
 
 
-    public class RecursiveWorkflowImpl<T> : IRecursiveWorkflow<T>
+    public class RecursiveWorkflowImpl<T> : IRecursiveWorkflow<T> where T : IGuid, IGuidParts
     {
         private readonly IRecursiveWorkflowBuilder<T> _recursiveWorkflowBuilder;
         private readonly T _result;
