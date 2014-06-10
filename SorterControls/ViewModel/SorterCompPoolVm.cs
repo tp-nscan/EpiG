@@ -173,7 +173,7 @@ namespace SorterControls.ViewModel
         {
             return
                     _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-                            parameters: _rando.ToIntEnumerator().Take(1).ToList(),
+                            parameters: _rando.ToIntEnumerator().Take(10).ToList(),
                             recursion: (w, i, c) => IterationResult.Make
                                 (
                                     w.Update(i),

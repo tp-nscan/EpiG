@@ -7,7 +7,7 @@ namespace Workflows
     {
         IWorkflowBuilder<T> WorkflowBuilder { get; }
         T Result { get; }
-        string WorkflowBuilderType { get; }
+        string WorkflowType { get; }
     }
 
     public static class Workflow
@@ -56,7 +56,7 @@ namespace Workflows
             get { return _result; }
         }
 
-        public string WorkflowBuilderType
+        public string WorkflowType
         {
             get { return Name; }
         }

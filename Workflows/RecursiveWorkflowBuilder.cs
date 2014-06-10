@@ -30,7 +30,7 @@ namespace Workflows
                 );
         }
 
-        public static IRecursiveWorkflowBuilder<T> ToRecursiveRandomWalkWorkflowBuilder<T>
+        public static IRecursiveWorkflowBuilder<T> ToRecursiveRndWlkWorkflowBuilder<T>
         (
             this IWorkflow<T> initialWorkflow
         ) where T : IRandomWalk<T>, IGuid, IGuidParts

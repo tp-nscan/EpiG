@@ -19,7 +19,7 @@ namespace Workflows
         {
             return new RecursiveWorkflowImpl<T>(
                 result: initialWorkflow.Result,
-                recursiveWorkflowBuilder: initialWorkflow.ToRecursiveRandomWalkWorkflowBuilder()
+                recursiveWorkflowBuilder: initialWorkflow.ToRecursiveRndWlkWorkflowBuilder()
                 );
         }
 

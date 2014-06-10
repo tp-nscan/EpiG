@@ -1,11 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using MathUtils.Collections;
 
 namespace Workflows
 {
     public interface IWorkflowBuilder<T> : IGuid where T : IGuid, IGuidParts
     {
-        IWorkflow<T> Make();
+       Task<IWorkflow<T>> Make();
         string WorkflowBuilderType { get; }
     }
 
@@ -25,7 +26,8 @@ namespace Workflows
         }
     }
 
-    public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T> where T : IGuid, IGuidParts
+    public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T> 
+        where T : IGuid, IGuidParts
     {
         public const string Name = "Passthrough";
 
@@ -45,12 +47,17 @@ namespace Workflows
             get { return _result; }
         }
 
-        public override IWorkflow<T> Make()
+        public override Task<IWorkflow<T>> Make()
         {
-            return new PassThroughWorkflow<T>(
-                    workflowBuilder: this,
-                    result: Result
-                );
+            var taskSource = new TaskCompletionSource<IWorkflow<T>>();
+            taskSource.SetResult(
+                new PassThroughWorkflow<T>
+                    (
+                        workflowBuilder: this,
+                        result: Result
+                    )
+            );
+            return taskSource.Task;
         }
     }
 
@@ -72,7 +79,7 @@ namespace Workflows
             get { return _guid; }
         }
 
-        public abstract IWorkflow<T> Make();
+        public abstract Task<IWorkflow<T>> Make();
 
         private readonly string _workflowBuilderType;
         public string WorkflowBuilderType

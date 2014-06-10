@@ -37,7 +37,7 @@ namespace Genomic.Genomes.Builders
                              (
                                  i=> MakeGenerator
                                      (
-                                        symbolCount:symbolCount,
+                                        symbolCount: symbolCount,
                                         sequenceLength: sequenceLength,
                                         seed: randy.NextInt(), 
                                         guid: randy.NextGuid()
