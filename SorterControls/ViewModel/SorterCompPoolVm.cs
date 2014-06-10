@@ -135,8 +135,8 @@ namespace SorterControls.ViewModel
             IsBusy = false;
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<IOrg, IPhenotype, IPhenotypeEval>>, int> _sorterCompPoolBackgroundWorker;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<IOrg, IPhenotype, IPhenotypeEval>>, int> SorterCompPoolBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -144,23 +144,21 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private IRecursiveWorkflow<ISorterCompPool<IOrg, IPhenotype, IPhenotypeEval>> _initialState;
-        private IRecursiveWorkflow<ISorterCompPool<IOrg, IPhenotype, IPhenotypeEval>> InitialState
+        private IRecursiveWorkflow<ISorterCompPool> _initialState;
+        private IRecursiveWorkflow<ISorterCompPool> InitialState
         {
             get
             {
                 return _initialState ??
                     (
-                        _initialState = SorterCompPool.MakeStandard
-                        (
+                        _initialState = SorterCompPool.MakeStandard<IOrg, IPhenotype, IPhenotypeEval>(
                             seed: Seed,
                             orgCount: SorterCount,
                             seqenceLength: KeyPairCount,
                             keyCount: KeyCount,
                             mutationRate: MutationRate,
                             multiplicationRate: MultiplicationRate,
-                            cubRate: CubRate,
-                            guid: Guid.NewGuid()
+                            cubRate: CubRate
                         ).ToPassThroughWorkflow(Guid.NewGuid())
                          .ToRecursiveWorkflowRndWlk()
                     );
@@ -168,12 +166,12 @@ namespace SorterControls.ViewModel
         }
 
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<IOrg, IPhenotype, IPhenotypeEval>>, int> 
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int>
                         MakeSorterEvalBackgroundWorker()
         {
             return
                     _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-                            parameters: _rando.ToIntEnumerator().Take(10).ToList(),
+                            parameters: _rando.ToIntEnumerator().Take(1).ToList(),
                             recursion: (w, i, c) => IterationResult.Make
                                 (
                                     w.Update(i),
@@ -183,12 +181,10 @@ namespace SorterControls.ViewModel
                         );
         }
 
-        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<IOrg, IPhenotype, IPhenotypeEval>>> result)
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {
-                SorterPoolVm.SorterCompPoolStageType =
-                    result.Data.Result.SorterCompPoolStageType;
                 SorterPoolVm.Generation = result.Data.Result.Generation;
                 _initialState = result.Data;
             }
@@ -276,7 +272,7 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private IRando _rando= Rando.Fast(123);
+        private IRando _rando = Rando.Fast(123);
         private int _seed;
         public int Seed
         {
@@ -361,3 +357,5 @@ namespace SorterControls.ViewModel
 
     }
 }
+
+
