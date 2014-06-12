@@ -1,31 +1,33 @@
 ﻿using System;
 using Genomic.Phenotypes;
+using MathUtils.Collections;
 
 namespace Genomic.PhenotypeEvals
 {
-    public interface IPhenotypeEval : IComparable
+    public interface IPhenotypeEval<T> : IGuid, IComparable
     {
-        IPhenotype Phenotype { get; }
+        IPhenotype<T> Phenotype { get; }
     }
 
     public static class PhenotypeEval
     {
-        public static IPhenotypeEval Make(IPhenotype phenotype, double result)
+        public static IPhenotypeEval<T> Make<T>(Guid guid, IPhenotype<T> phenotype, double result)
         {
-            return new PhenotypeEvalDbl(phenotype, result);
+            return new PhenotypeEvalDbl<T>(guid, phenotype, result);
         }
     }
 
-    public class PhenotypeEvalDbl : IPhenotypeEval
+    public class PhenotypeEvalDbl<T> : IPhenotypeEval<T> 
     {
-        public PhenotypeEvalDbl(IPhenotype phenotype, double result)
+        public PhenotypeEvalDbl(Guid guid, IPhenotype<T> phenotype, double result)
         {
             _phenotype = phenotype;
             _result = result;
+            _guid = guid;
         }
 
-        private readonly IPhenotype _phenotype;
-        public IPhenotype Phenotype
+        private readonly IPhenotype<T> _phenotype;
+        public IPhenotype<T> Phenotype
         {
             get { return _phenotype; }
         }
@@ -38,14 +40,24 @@ namespace Genomic.PhenotypeEvals
 
         public int CompareTo(object obj)
         {
-            var c1 = (PhenotypeEvalDbl)obj;
+            var c1 = (PhenotypeEvalDbl<T>)obj;
 
             if (c1.Result > Result)
+            {
                 return -1;
+            }
             if (Result < c1.Result)
+            {
                 return 1;
-            else
-                return 0;
+            }
+                
+            return 0;
+        }
+
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
         }
     }
 }

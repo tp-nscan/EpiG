@@ -6,17 +6,17 @@ namespace Workflows
 {
     public interface IWorkflowBuilder<T> : IGuid where T : IGuid, IGuidParts
     {
-       Task<IWorkflow<T>> Make();
+        Task<IWorkflow<T>> Make();
         string WorkflowBuilderType { get; }
     }
 
     public static class WorkflowBuilder
     {
         public static IWorkflowBuilder<T> MakePassthrough<T>
-            (
-                Guid guid,
-                T result
-            ) where T : IGuid, IGuidParts
+        (
+            Guid guid,
+            T result
+        ) where T : IGuid, IGuidParts
         {
             return new WorkflowBuilderPassThrough<T>
             (

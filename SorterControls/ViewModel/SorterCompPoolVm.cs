@@ -9,6 +9,7 @@ using MathUtils.Rand;
 using SorterGenome;
 using Sorting.Evals;
 using System.Linq;
+using Sorting.Sorters;
 using Utils.BackgroundWorkers;
 using Workflows;
 using WpfUtils;
@@ -137,8 +138,8 @@ namespace SorterControls.ViewModel
             IsBusy = false;
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -146,14 +147,14 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private IRecursiveWorkflow<ISorterCompPool> _initialState;
-        private IRecursiveWorkflow<ISorterCompPool> InitialState
+        private IRecursiveWorkflow<ISorterCompPool<ISorter>> _initialState;
+        private IRecursiveWorkflow<ISorterCompPool<ISorter>> InitialState
         {
             get
             {
                 return _initialState ??
                     (
-                        _initialState = SorterCompPool.MakeStandard<IOrg, IPhenotype, IPhenotypeEval>(
+                        _initialState = SorterCompPool.MakeStandard<ISorter, IOrg, IPhenotype<ISorter>, IPhenotypeEval<ISorter>>(
                             seed: Seed,
                             orgCount: SorterCount,
                             seqenceLength: KeyPairCount,
@@ -168,7 +169,7 @@ namespace SorterControls.ViewModel
         }
 
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int>
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int>
                         MakeSorterEvalBackgroundWorker()
         {
             return
@@ -183,7 +184,7 @@ namespace SorterControls.ViewModel
                         );
         }
 
-        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<ISorter>>> result)
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {

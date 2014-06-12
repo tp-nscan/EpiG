@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MathUtils.Rand;
 using SorterGenome;
+using Sorting.Sorters;
 using Utils.BackgroundWorkers;
 using Workflows;
 using WpfUtils;
@@ -108,8 +108,8 @@ namespace EpiG
         }
 
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -117,7 +117,7 @@ namespace EpiG
             }
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> MakeSorterEvalBackgroundWorker()
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> MakeSorterEvalBackgroundWorker()
         {
             return null;
             //_sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
@@ -143,7 +143,7 @@ namespace EpiG
             //    );
         }
 
-        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<ISorter>>> result)
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {

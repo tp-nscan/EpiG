@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Genomic.Layers;
 using Genomic.PhenotypeEvals;
@@ -16,11 +17,11 @@ namespace Genomic.Test.Layers
             const double medVal = 2.0;
             const double hiVal = 3.0;
 
-            var evalList = new List<IPhenotypeEval>();
+            var evalList = new List<IPhenotypeEval<string>>();
 
-            evalList.Add(new PhenotypeEvalDbl(null, medVal));
-            evalList.Add(new PhenotypeEvalDbl(null, lowVal));
-            evalList.Add(new PhenotypeEvalDbl(null, hiVal));
+            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, medVal));
+            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, lowVal));
+            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, hiVal));
 
             var sortedList = evalList.OrderBy(e=>e).ToList();
 
