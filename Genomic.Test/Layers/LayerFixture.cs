@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Genomic.Layers;
+using Genomic.PhenotypeEvals;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Genomic.Test.Layers

@@ -1,6 +1,7 @@
 ﻿using System;
+using Genomic.Phenotypes;
 
-namespace Genomic.Layers
+namespace Genomic.PhenotypeEvals
 {
     public interface IPhenotypeEval : IComparable
     {

@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Genomic.Layers;
+using Genomic.PhenotypeEvals;
+using Genomic.Phenotypes;
 using MathUtils.Rand;
 using SorterGenome;
 using Sorting.Evals;

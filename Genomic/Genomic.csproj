@@ -55,8 +55,9 @@
     <Compile Include="Genomes\SequenceBlock.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Layers\Org.cs" />
-    <Compile Include="Layers\Phenotype.cs" />
-    <Compile Include="Layers\PhenotypeEval.cs" />
+    <Compile Include="Phenotypes\Phenotype.cs" />
+    <Compile Include="PhenotypeEvals\PhenotypeEval.cs" />
+    <Compile Include="Phenotypes\PhenotypeBuilder.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

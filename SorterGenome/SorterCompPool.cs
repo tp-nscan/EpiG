@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Genomic.Layers;
+using Genomic.PhenotypeEvals;
+using Genomic.Phenotypes;
 using MathUtils.Collections;
 using MathUtils.Rand;
 using Utils;
