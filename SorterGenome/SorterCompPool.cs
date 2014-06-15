@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Genomic.Layers;
+using Genomic.Genomes;
 using Genomic.PhenotypeEvals;
 using Genomic.Phenotypes;
 using MathUtils.Collections;
@@ -15,23 +15,23 @@ namespace SorterGenome
 
         SorterCompPoolStageType SorterCompPoolStageType { get; }
 
-        IReadOnlyDictionary<Guid, IOrg> Orgs { get; }
+        IReadOnlyDictionary<Guid, IGenome> Genomes { get; }
 
         IReadOnlyDictionary<Guid, IPhenotype<T>> Phenotypes { get; }
 
         IReadOnlyDictionary<Guid, IPhenotypeEval<T>> PhenotypeEvals { get; }
 
-        Func<IOrg, IRando, IPhenotype<T>> Phenotyper { get; }
+        Func<IGenome, IRando, IPhenotype<T>> Phenotyper { get; }
 
         Func<IPhenotype<T>, IRando, IPhenotype<T>> PhenotypeEvaluator { get; }
 
-        Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> NextGenerator { get; }
+        Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
 
     }
 
     public static class SorterCompPool
     {
-        public static ISorterCompPool<T> MakeStandard<T, TO, TP, TE>
+        public static ISorterCompPool<T> MakeStandard<T, TG, TP, TE>
 
             (
                 int seed,
@@ -42,13 +42,13 @@ namespace SorterGenome
                 double multiplicationRate,
                 double cubRate
             )
-            where TO : IOrg
+            where TG : IGenome
             where TP : IPhenotype<T>
             where TE : IPhenotypeEval<T>
         {
             return new SorterCompPoolImpl<T>(
                     generation: 0,
-                    orgs: null,
+                    genomes: null,
                     phenotypes: null,
                     phenotypeEvals: null,
                     sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
@@ -71,17 +71,17 @@ namespace SorterGenome
     {
         public SorterCompPoolImpl(
                 int generation,
-                IReadOnlyDictionary<Guid, IOrg> orgs,
+                IReadOnlyDictionary<Guid, IGenome> genomes,
                 IReadOnlyDictionary<Guid, IPhenotype<T>> phenotypes,
                 IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
-                Func<IOrg, IRando, IPhenotype<T>> phenotyper,
+                Func<IGenome, IRando, IPhenotype<T>> phenotyper,
                 Func<IPhenotype<T>, IRando, IPhenotype<T>> phenotypeEvaluator,
-                Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> nextGenerator
+                Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> nextGenerator
             )
         {
             _generation = generation;
-            _orgs = orgs;
+            _genomes = genomes;
             _phenotypes = phenotypes;
             _phenotypeEvals = phenotypeEvals;
             _sorterCompPoolStageType = sorterCompPoolStageType;
@@ -103,7 +103,7 @@ namespace SorterGenome
                     return new SorterCompPoolImpl<T>
                         (
                             generation: Generation,
-                            orgs: Orgs,
+                            genomes: Genomes,
                             phenotypes: Phenotypes,
                             phenotypeEvals: PhenotypeEvals,
                             sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
@@ -115,7 +115,7 @@ namespace SorterGenome
                     return new SorterCompPoolImpl<T>
                         (
                             generation: Generation,
-                            orgs: Orgs,
+                            genomes: Genomes,
                             phenotypes: Phenotypes,
                             phenotypeEvals: PhenotypeEvals,
                             sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
@@ -127,7 +127,7 @@ namespace SorterGenome
                     return new SorterCompPoolImpl<T>
                         (
                             generation: Generation + 1,
-                            orgs: NextGenerator(PhenotypeEvals, seed),
+                            genomes: NextGenerator(PhenotypeEvals, seed),
                             phenotypes: Phenotypes,
                             phenotypeEvals: PhenotypeEvals,
                             sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
@@ -156,10 +156,10 @@ namespace SorterGenome
             get { return _sorterCompPoolStageType; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IOrg> _orgs;
-        public IReadOnlyDictionary<Guid, IOrg> Orgs
+        private readonly IReadOnlyDictionary<Guid, IGenome> _genomes;
+        public IReadOnlyDictionary<Guid, IGenome> Genomes
         {
-            get { return _orgs; }
+            get { return _genomes; }
         }
 
         private readonly IReadOnlyDictionary<Guid, IPhenotype<T>> _phenotypes;
@@ -174,8 +174,8 @@ namespace SorterGenome
             get { return _phenotypeEvals; }
         }
 
-        private readonly Func<IOrg, IRando, IPhenotype<T>> _phenotyper;
-        public Func<IOrg, IRando, IPhenotype<T>> Phenotyper
+        private readonly Func<IGenome, IRando, IPhenotype<T>> _phenotyper;
+        public Func<IGenome, IRando, IPhenotype<T>> Phenotyper
         {
             get { return _phenotyper; }
         }
@@ -186,8 +186,8 @@ namespace SorterGenome
             get { return _phenotypeEvaluator; }
         }
 
-        private readonly Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> _nextGenerator;
-        public Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> NextGenerator
+        private readonly Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> _nextGenerator;
+        public Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator
         {
             get { return _nextGenerator; }
         }
@@ -205,9 +205,9 @@ namespace SorterGenome
 
         public object GetPart(Guid key)
         {
-            if (Orgs.ContainsKey(key))
+            if (Genomes.ContainsKey(key))
             {
-                return Orgs[key];
+                return Genomes[key];
             }
             if (Phenotypes.ContainsKey(key))
             {

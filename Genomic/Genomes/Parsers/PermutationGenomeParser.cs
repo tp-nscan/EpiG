@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Management.Instrumentation;
 using MathUtils.Collections;
 
 namespace Genomic.Genomes.Parsers
 {
-    public interface IPermutationGenomeParser : IGenomeParser<IPermutation, IGenomeOld> 
+    public interface IPermutationGenomeParser : IGenomeParser<IPermutation, IGenome> 
     {
         int Degree { get; }
     }
@@ -26,19 +24,20 @@ namespace Genomic.Genomes.Parsers
             _degree = degree;
         }
 
-        public IReadOnlyList<ISequenceBlock<IPermutation>> GetSequenceBlocks(IGenomeOld genomeOld)
+        public IReadOnlyList<ISequenceBlock<IPermutation>> GetSequenceBlocks(IGenome genome)
         {
-            return genomeOld.Sequence
+            return genome.Sequence
                         .Chunk(Degree)
                         .Select(c => Permutation.Make(c).ToSequenceBlock())
                         .ToList();
         }
 
-        public IGenomeOld GetGenome(IReadOnlyList<ISequenceBlock<IPermutation>> sequenceBlocks)
+        public IReadOnlyList<uint> GetSequence(IReadOnlyList<ISequenceBlock<IPermutation>> sequenceBlocks)
         {
-            return GenomeOld.Make(sequenceBlocks.SelectMany(b => b.Data.Values())
-                .Select(v=>(uint)v)
-                .ToList());
+                return 
+                    sequenceBlocks.SelectMany(b => b.Data.Values())
+                                  .Select(v => (uint)v)
+                                  .ToList();
         }
 
         public GenomeParserType GenomeParserType

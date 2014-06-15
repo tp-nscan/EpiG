@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Genomic.Layers;
+using Genomic.Genomes;
 using MathUtils.Collections;
 
 namespace Genomic.Phenotypes
@@ -9,7 +9,7 @@ namespace Genomic.Phenotypes
         where TP : IPhenotype<T>, IGuid
     {
         Task<TP> Make();
-        IOrg Org { get; }
+        IGenome Genome { get; }
         string PhenotypeBuilderType { get; }
     }
 
@@ -18,21 +18,21 @@ namespace Genomic.Phenotypes
     {
         protected PhenotypeBuilder(
             Guid guid, 
-            string workflowBuilderType, 
-            IOrg org
+            string workflowBuilderType,
+            IGenome genome
          )
         {
             _phenotypeBuilderType = workflowBuilderType;
-            _org = org;
+            _genome = genome;
             _guid = guid;
         }
 
         public abstract Task<TP> Make();
 
-        private readonly IOrg _org;
-        public IOrg Org
+        private readonly IGenome _genome;
+        public IGenome Genome
         {
-            get { return _org; }
+            get { return _genome; }
         }
 
         private readonly string _phenotypeBuilderType;

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Genomic.Layers;
+using Genomic.Genomes;
 using Genomic.PhenotypeEvals;
 using Genomic.Phenotypes;
 using MathUtils.Rand;
@@ -154,7 +154,7 @@ namespace SorterControls.ViewModel
             {
                 return _initialState ??
                     (
-                        _initialState = SorterCompPool.MakeStandard<ISorter, IOrg, IPhenotype<ISorter>, IPhenotypeEval<ISorter>>(
+                        _initialState = SorterCompPool.MakeStandard<ISorter, IGenome, IPhenotype<ISorter>, IPhenotypeEval<ISorter>>(
                             seed: Seed,
                             orgCount: SorterCount,
                             seqenceLength: KeyPairCount,

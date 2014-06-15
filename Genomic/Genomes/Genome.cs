@@ -7,6 +7,18 @@ namespace Genomic.Genomes
     {
         IReadOnlyList<uint> Sequence { get; }
         IGenomeBuilder GenomeBuilder { get; }
+        int SequenceLength { get; }
+    }
+
+    public interface ISimpleGenomeEncoding
+    {
+        int SymbolCount { get; }
+    }
+
+    public interface IPermutationeGenomeEncoding
+    {
+        int Degree { get; }
+        int PermutationCount { get; }
     }
 
     public static class Genome
@@ -47,6 +59,11 @@ namespace Genomic.Genomes
         public IGenomeBuilder GenomeBuilder
         {
             get { return _genomeBuilder; }
+        }
+
+        public int SequenceLength
+        {
+            get { return _sequence.Count; }
         }
     }
 }

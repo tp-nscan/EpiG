@@ -3,31 +3,31 @@ using System.Linq;
 
 namespace Genomic.Genomes.Parsers
 {
-    public interface IGenomeParser<T, G>  where G : class, IGenomeOld
+    public interface IGenomeParser<T, G>  where G : class, IGenome
     {
         IReadOnlyList<ISequenceBlock<T>> GetSequenceBlocks(G genomeOld);
-        G GetGenome(IReadOnlyList<ISequenceBlock<T>> sequenceBlocks);
+        IReadOnlyList<uint> GetSequence(IReadOnlyList<ISequenceBlock<T>> sequenceBlocks);
         GenomeParserType GenomeParserType { get; }
     }
 
     public static class GenomeParser
     {
-        public static IGenomeParser<uint?, IGenomeOld> MakeSimple()
+        public static IGenomeParser<uint?, IGenome> MakeSimple()
         {
             return new SimpleGenomeParser();
         }
     }
 
-    public class SimpleGenomeParser : IGenomeParser<uint?, IGenomeOld>
+    public class SimpleGenomeParser : IGenomeParser<uint?, IGenome>
     {
-        public IReadOnlyList<ISequenceBlock<uint?>> GetSequenceBlocks(IGenomeOld genomeOld)
+        public IReadOnlyList<ISequenceBlock<uint?>> GetSequenceBlocks(IGenome genomeOld)
         {
             return genomeOld.Sequence.Select(v => new uint?(v).ToSequenceBlock()).ToList();
         }
 
-        public IGenomeOld GetGenome(IReadOnlyList<ISequenceBlock<uint?>> sequenceBlocks)
+        public IReadOnlyList<uint> GetSequence(IReadOnlyList<ISequenceBlock<uint?>> sequenceBlocks)
         {
-            return GenomeOld.Make(sequenceBlocks.SelectMany(b => b.ToGenomeSubSequence()).ToList());
+            return sequenceBlocks.SelectMany(b => b.ToGenomeSubSequence()).ToList();
         }
 
         public GenomeParserType GenomeParserType

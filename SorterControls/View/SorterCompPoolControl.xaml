@@ -136,7 +136,7 @@
                         Maximum="1.0" />
                 </StackPanel>
                 <Grid>
-                    <Button Command="{Binding CancelSimulationCommand}" Content="Cancel"/>
+                    <Button Command="{Binding CancelSimulationCommand}" Content="Stop"/>
                     <Button Command="{Binding StartSimulationCommand}" Content="Run" 
                         Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
                 </Grid>

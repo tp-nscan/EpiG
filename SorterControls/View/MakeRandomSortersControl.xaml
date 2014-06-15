@@ -106,7 +106,7 @@
                 </StackPanel>
 
                 <Grid>
-                    <Button Command="{Binding CancelMakeSortersCommand}" Content="Cancel"/>
+                    <Button Command="{Binding CancelMakeSortersCommand}" Content="Stop"/>
                     <Button Command="{Binding MakeSortersCommand}" Content="Make" 
                         Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
                 </Grid>
