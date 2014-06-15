@@ -169,6 +169,11 @@ namespace SorterControls.ViewModel
         }
 
 
+        void Reset()
+        {
+            _initialState = null;
+        }
+
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int>
                         MakeSorterEvalBackgroundWorker()
         {
@@ -227,6 +232,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _keyCount = value;
+                Reset();
                 OnPropertyChanged("KeyCount");
             }
         }
@@ -238,6 +244,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _keyPairCount = value;
+                Reset();
                 OnPropertyChanged("KeyPairCount");
             }
         }
@@ -249,6 +256,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _multiplicationRate = value;
+                Reset();
                 OnPropertyChanged("MultiplicationRate");
             }
         }
@@ -260,6 +268,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _mutationRate = value;
+                Reset();
                 OnPropertyChanged("MutationRate");
             }
         }
@@ -271,6 +280,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _cubRate = value;
+                Reset();
                 OnPropertyChanged("CubRate");
             }
         }
@@ -283,6 +293,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _seed = value;
+                Reset();
                 _rando = Rando.Fast(_seed);
                 OnPropertyChanged("Seed");
             }
@@ -295,6 +306,7 @@ namespace SorterControls.ViewModel
             set
             {
                 _sorterCount = value;
+                Reset();
                 OnPropertyChanged("SorterCount");
             }
         }
@@ -340,19 +352,28 @@ namespace SorterControls.ViewModel
         public bool ShowStages
         {
             get { return SorterPoolVm.SorterGalleryVm.ShowStages; }
-            set { SorterPoolVm.SorterGalleryVm.ShowStages = value; }
+            set
+            {
+                SorterPoolVm.SorterGalleryVm.ShowStages = value;
+            }
         }
 
         public bool ShowUnused
         {
             get { return SorterPoolVm.SorterGalleryVm.ShowUnused; }
-            set { SorterPoolVm.SorterGalleryVm.ShowUnused = value; }
+            set
+            {
+                SorterPoolVm.SorterGalleryVm.ShowUnused = value;
+            }
         }
 
         public int Generation
         {
             get { return SorterPoolVm.Generation; }
-            set { SorterPoolVm.Generation = value; }
+            //set
+            //{
+            //    SorterPoolVm.Generation = value;
+            //}
         }
 
         #endregion

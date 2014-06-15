@@ -7,22 +7,41 @@ namespace Genomic.PhenotypeEvals
     public interface IPhenotypeEval<T> : IGuid, IComparable
     {
         IPhenotype<T> Phenotype { get; }
+        IPhenotypeEvalBuilder<IPhenotypeEval<T>, T> PhenotypeEvalBuilder { get; }
     }
 
     public static class PhenotypeEval
     {
-        public static IPhenotypeEval<T> Make<T>(Guid guid, IPhenotype<T> phenotype, double result)
+        public static IPhenotypeEval<T> Make<T>(
+                Guid guid, 
+                IPhenotype<T> 
+                phenotype, 
+                double result,
+                IPhenotypeEvalBuilder<IPhenotypeEval<T>, T> phenotypeEvalBuilder
+            )
         {
-            return new PhenotypeEvalDbl<T>(guid, phenotype, result);
+            return new PhenotypeEvalDbl<T>(
+                guid: guid,
+                phenotype: phenotype,
+                result: result,
+                phenotypeEvalBuilder: phenotypeEvalBuilder
+             );
         }
     }
 
     public class PhenotypeEvalDbl<T> : IPhenotypeEval<T> 
     {
-        public PhenotypeEvalDbl(Guid guid, IPhenotype<T> phenotype, double result)
+        public PhenotypeEvalDbl
+        (
+            Guid guid, 
+            IPhenotype<T> phenotype, 
+            double result, 
+            IPhenotypeEvalBuilder<IPhenotypeEval<T>, T> phenotypeEvalBuilder
+        )
         {
             _phenotype = phenotype;
             _result = result;
+            _phenotypeEvalBuilder = phenotypeEvalBuilder;
             _guid = guid;
         }
 
@@ -30,6 +49,12 @@ namespace Genomic.PhenotypeEvals
         public IPhenotype<T> Phenotype
         {
             get { return _phenotype; }
+        }
+
+        private readonly IPhenotypeEvalBuilder<IPhenotypeEval<T>, T> _phenotypeEvalBuilder;
+        public IPhenotypeEvalBuilder<IPhenotypeEval<T>, T> PhenotypeEvalBuilder
+        {
+            get { return _phenotypeEvalBuilder; }
         }
 
         private readonly double _result;

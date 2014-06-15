@@ -18,7 +18,7 @@ namespace Genomic.Phenotypes
                 IPhenotypeBuilder<IPhenotype<T>, T> phenotypeBuilder
             )        
         {
-            return new PhenotypeImpl<T>(guid, value, phenotypeBuilder);
+            return new PhenotypeImpl<T>(value, phenotypeBuilder);
         }
     }
 
@@ -26,14 +26,12 @@ namespace Genomic.Phenotypes
     {
         public PhenotypeImpl
         (
-            Guid guid, 
             T value, 
             IPhenotypeBuilder<IPhenotype<T>, T> phenotypeBuilder
         )
         {
             _value = value;
             _phenotypeBuilder = phenotypeBuilder;
-            _guid = guid;
         }
 
         private readonly T _value;
@@ -48,10 +46,10 @@ namespace Genomic.Phenotypes
             get { return _phenotypeBuilder; }
         }
 
-        private readonly Guid _guid;
         public Guid Guid
         {
-            get { return _guid; }
+            get { return PhenotypeBuilder.Guid; }
         }
+
     }
 }

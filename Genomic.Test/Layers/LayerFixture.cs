@@ -19,9 +19,9 @@ namespace Genomic.Test.Layers
 
             var evalList = new List<IPhenotypeEval<string>>();
 
-            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, medVal));
-            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, lowVal));
-            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, hiVal));
+            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, medVal, null));
+            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, lowVal, null));
+            evalList.Add(new PhenotypeEvalDbl<string>(Guid.NewGuid(), null, hiVal, null));
 
             var sortedList = evalList.OrderBy(e=>e).ToList();
 
