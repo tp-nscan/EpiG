@@ -6,7 +6,7 @@ using MathUtils.Collections;
 
 namespace Genomic.Genomes.Parsers
 {
-    public interface IPermutationGenomeParser : IGenomeParser<IPermutation, IGenome> 
+    public interface IPermutationGenomeParser : IGenomeParser<IPermutation, IGenomeOld> 
     {
         int Degree { get; }
     }
@@ -26,17 +26,17 @@ namespace Genomic.Genomes.Parsers
             _degree = degree;
         }
 
-        public IReadOnlyList<ISequenceBlock<IPermutation>> GetSequenceBlocks(IGenome genome)
+        public IReadOnlyList<ISequenceBlock<IPermutation>> GetSequenceBlocks(IGenomeOld genomeOld)
         {
-            return genome.Sequence
+            return genomeOld.Sequence
                         .Chunk(Degree)
                         .Select(c => Permutation.Make(c).ToSequenceBlock())
                         .ToList();
         }
 
-        public IGenome GetGenome(IReadOnlyList<ISequenceBlock<IPermutation>> sequenceBlocks)
+        public IGenomeOld GetGenome(IReadOnlyList<ISequenceBlock<IPermutation>> sequenceBlocks)
         {
-            return Genome.Make(sequenceBlocks.SelectMany(b => b.Data.Values())
+            return GenomeOld.Make(sequenceBlocks.SelectMany(b => b.Data.Values())
                 .Select(v=>(uint)v)
                 .ToList());
         }

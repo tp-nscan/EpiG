@@ -23,7 +23,7 @@ namespace SorterGenome
 
         Func<IOrg, IRando, IPhenotype<T>> Phenotyper { get; }
 
-        Func<IOrg, IRando, IPhenotype<T>> PhenotypeEvaluator { get; }
+        Func<IPhenotype<T>, IRando, IPhenotype<T>> PhenotypeEvaluator { get; }
 
         Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> NextGenerator { get; }
 
@@ -76,7 +76,7 @@ namespace SorterGenome
                 IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
                 Func<IOrg, IRando, IPhenotype<T>> phenotyper,
-                Func<IOrg, IRando, IPhenotype<T>> phenotypeEvaluator,
+                Func<IPhenotype<T>, IRando, IPhenotype<T>> phenotypeEvaluator,
                 Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> nextGenerator
             )
         {
@@ -180,15 +180,13 @@ namespace SorterGenome
             get { return _phenotyper; }
         }
 
-        private readonly Func<IOrg, IRando, IPhenotype<T>> _phenotypeEvaluator;
-        public Func<IOrg, IRando, IPhenotype<T>> PhenotypeEvaluator
+        private readonly Func<IPhenotype<T>, IRando, IPhenotype<T>> _phenotypeEvaluator;
+        public Func<IPhenotype<T>, IRando, IPhenotype<T>> PhenotypeEvaluator
         {
             get { return _phenotypeEvaluator; }
         }
 
         private readonly Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> _nextGenerator;
-        private Guid _guid;
-
         public Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IOrg>> NextGenerator
         {
             get { return _nextGenerator; }
@@ -199,6 +197,7 @@ namespace SorterGenome
             return Step(seed);
         }
 
+        private Guid _guid;
         public Guid Guid
         {
             get { return _guid; }

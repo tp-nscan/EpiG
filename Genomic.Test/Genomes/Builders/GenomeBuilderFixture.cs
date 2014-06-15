@@ -18,7 +18,7 @@ namespace Genomic.Test.Genomes
             var guid = Guid.NewGuid();
 
 
-            var generator = GenomeBuilder.MakeGenerator
+            var generator = GenomeBuilderOld.MakeGenerator
                 (
                     symbolCount: symbolCount,
                     sequenceLength: sequenceLength,
@@ -44,7 +44,7 @@ namespace Genomic.Test.Genomes
             var sourceGuid = Guid.NewGuid();
 
 
-            var generator = GenomeBuilder.MakeGenerator
+            var generator = GenomeBuilderOld.MakeGenerator
                 (
                     symbolCount: symbolCount,
                     sequenceLength: sequenceLength,
@@ -60,9 +60,9 @@ namespace Genomic.Test.Genomes
             const int mutationSeed = 345;
             var mutationGuid = Guid.NewGuid();
 
-            var genomeMutator = GenomeBuilder.MakeMutator
+            var genomeMutator = GenomeBuilderOld.MakeMutator
                 (
-                    sourceGenome: genome,
+                    sourceGenomeOld: genome,
                     symbolCount: symbolCount,
                     seed: mutationSeed,
                     deletionRate: deletionRate,

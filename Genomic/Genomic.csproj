@@ -43,13 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Genomes\Builders\GenomeBuilder.cs" />
     <Compile Include="Genomes\Builders\PermutationGenomeBuilder.cs" />
     <Compile Include="Genomes\Genome.cs" />
+    <Compile Include="Genomes\GenomeOld.cs" />
     <Compile Include="Genomes\Builders\GenomeBuilderType.cs" />
     <Compile Include="Genomes\Parsers\GenomeParser.cs" />
     <Compile Include="Genomes\Parsers\GenomeParserType.cs" />
     <Compile Include="Layers\OrgEval.cs" />
-    <Compile Include="Genomes\Builders\GenomeBuilder.cs" />
+    <Compile Include="Genomes\Builders\GenomeBuilderOld.cs" />
     <Compile Include="Genomes\Parsers\PermutationGenomeParser.cs" />
     <Compile Include="Genomes\PermutationGenome.cs" />
     <Compile Include="Genomes\SequenceBlock.cs" />

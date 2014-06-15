@@ -2,7 +2,7 @@
 
 namespace Genomic.Layers
 {
-    public interface IOrgEval<TG> where TG : class, IGenome
+    public interface IOrgEval<TG> where TG : class, IGenomeOld
     {
         int Generation { get; }
         IOrg<TG> Org { get; }
@@ -21,7 +21,7 @@ namespace Genomic.Layers
             double score,
             int generation,
             bool success
-        ) where TG : class, IGenome
+        ) where TG : class, IGenomeOld
         {
             return new OrgEvalImpl<TG>
                 (
@@ -33,7 +33,7 @@ namespace Genomic.Layers
         }
     }
 
-    class OrgEvalImpl<TG> : IOrgEval<TG> where TG : class, IGenome
+    class OrgEvalImpl<TG> : IOrgEval<TG> where TG : class, IGenomeOld
     {
         private readonly double _score;
 

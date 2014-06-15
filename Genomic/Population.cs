@@ -7,7 +7,7 @@ using MathUtils.Collections;
 
 namespace Genomic
 {
-    public interface IPopulation<G> : IGuid where G : class, IGenome
+    public interface IPopulation<G> : IGuid where G : class, IGenomeOld
     {
         IEnumerable<IOrg<G>> Orgs { get; }
         IPopulationBuilder<G> Bulder { get; }
@@ -16,7 +16,7 @@ namespace Genomic
     public static class Population
     {
         public static PopulationImpl<G> Make<G>(this IPopulationBuilder<G> bulder, Guid guid)
-            where G : class, IGenome
+            where G : class, IGenomeOld
         {
             var orgs = bulder.MakeOrgs();
 
@@ -28,7 +28,7 @@ namespace Genomic
         }
     }
 
-    public class PopulationImpl<G> : IPopulation<G> where G : class, IGenome
+    public class PopulationImpl<G> : IPopulation<G> where G : class, IGenomeOld
     {
         public PopulationImpl(Guid guid, IEnumerable<IOrg<G>> orgs, IPopulationBuilder<G> bulder)
         {

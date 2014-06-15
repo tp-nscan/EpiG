@@ -7,7 +7,7 @@ using MathUtils.Rand;
 
 namespace Genomic.Genomes.Builders
 {
-    public interface IPermutationGenomeBuilder : IGenomeBuilder<IGenome>
+    public interface IPermutationGenomeBuilderOld : IGenomeBuilderOld<IGenomeOld>
     {
         int Degree { get; }
         int TargetPermutationCount { get; }
@@ -15,7 +15,7 @@ namespace Genomic.Genomes.Builders
 
     public static class PermutationGenomeBuilder
     {
-        public static IPermutationGenomeBuilder MakeRandom(
+        public static IPermutationGenomeBuilderOld MakeRandom(
                 Guid guid,
                 int seed,
                 int degree,
@@ -23,7 +23,7 @@ namespace Genomic.Genomes.Builders
             )
         {
 
-            return new PermutationGenomeBuilderRandom
+            return new PermutationGenomeBuilderOldRandom
                 (
                     guid: guid,
                     seed: seed,
@@ -33,20 +33,20 @@ namespace Genomic.Genomes.Builders
         }
 
 
-        public static IPermutationGenomeBuilder MakeMutator(
+        public static IPermutationGenomeBuilderOld MakeMutator(
                 Guid guid,
                 int seed,
                 int degree,
-                IGenome sourceGenome,
+                IGenomeOld sourceGenomeOld,
                 double mutationRate
             )
         {
-            return new PermutationGenomeBuilderMutator
+            return new PermutationGenomeBuilderOldMutator
                 (
                     guid: guid,
                     seed: seed,
                     permutationGenomeParser: PermutationGenomeParser.Make(degree),
-                    sourceGenome: sourceGenome,
+                    sourceGenomeOld: sourceGenomeOld,
                     mutationRate: mutationRate
                 );
         }
@@ -54,9 +54,9 @@ namespace Genomic.Genomes.Builders
     }
 
 
-    public class PermutationGenomeBuilderRandom : IPermutationGenomeBuilder
+    public class PermutationGenomeBuilderOldRandom : IPermutationGenomeBuilderOld
     {
-        public PermutationGenomeBuilderRandom
+        public PermutationGenomeBuilderOldRandom
             (
                 Guid guid, 
                 int seed,
@@ -76,7 +76,7 @@ namespace Genomic.Genomes.Builders
             get { return _guid; }
         }
 
-        public IGenome Make()
+        public IGenomeOld Make()
         {
             IReadOnlyList<uint> initialPermutation = 
                       Enumerable.Range(0, Degree)
@@ -85,7 +85,7 @@ namespace Genomic.Genomes.Builders
 
             var randy = Rando.Fast(Seed);
 
-            return Genome.Make
+            return GenomeOld.Make
                 (
                     sequence: Enumerable.Range(0, TargetPermutationCount)
                     .Select(i => initialPermutation.FisherYatesShuffle(randy))
@@ -119,23 +119,23 @@ namespace Genomic.Genomes.Builders
 
     }
 
-    public class PermutationGenomeBuilderMutator: IPermutationGenomeBuilder
+    public class PermutationGenomeBuilderOldMutator: IPermutationGenomeBuilderOld
     {
-        public PermutationGenomeBuilderMutator
+        public PermutationGenomeBuilderOldMutator
          (
                 Guid guid,
                 int seed,
-                IGenome sourceGenome, 
+                IGenomeOld sourceGenomeOld, 
                 IPermutationGenomeParser permutationGenomeParser, 
                 double mutationRate
          )
         {
             _guid = guid;
             _seed = seed;
-            _sourceGenome = sourceGenome;
+            _sourceGenomeOld = sourceGenomeOld;
             _permutationGenomeParser = permutationGenomeParser;
             _mutationRate = mutationRate;
-            _targetPermutationCount = SourceGenome.Sequence.Count/PermutationGenomeParser.Degree;
+            _targetPermutationCount = SourceGenomeOld.Sequence.Count/PermutationGenomeParser.Degree;
         }
 
         private readonly Guid _guid;
@@ -144,12 +144,12 @@ namespace Genomic.Genomes.Builders
             get { return _guid; }
         }
 
-        public IGenome Make()
+        public IGenomeOld Make()
         {
             var randy = Rando.Fast(Seed);
 
             IReadOnlyList<ISequenceBlock<IPermutation>> sbs =
-                PermutationGenomeParser.GetSequenceBlocks(SourceGenome)
+                PermutationGenomeParser.GetSequenceBlocks(SourceGenomeOld)
                                        .Select(b => b.Data.Mutate(randy, MutationRate))
                                        .Select(mb => mb.ToSequenceBlock())
                                        .ToList();
@@ -174,10 +174,10 @@ namespace Genomic.Genomes.Builders
             get { return _permutationGenomeParser; }
         }
 
-        private readonly IGenome _sourceGenome;
-        public IGenome SourceGenome
+        private readonly IGenomeOld _sourceGenomeOld;
+        public IGenomeOld SourceGenomeOld
         {
-            get { return _sourceGenome; }
+            get { return _sourceGenomeOld; }
         }
 
         public int Degree

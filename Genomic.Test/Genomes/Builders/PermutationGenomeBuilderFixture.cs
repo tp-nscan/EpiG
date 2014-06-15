@@ -62,7 +62,7 @@ namespace Genomic.Test.Genomes.Builders
                     guid: mutatorGuid,
                     seed: mutatorSeed,
                     degree: degree,
-                    sourceGenome: genome,
+                    sourceGenomeOld: genome,
                     mutationRate: mutationRate
                 );
 
@@ -118,7 +118,7 @@ namespace Genomic.Test.Genomes.Builders
                     guid: mutatorGuid,
                     seed: mutatorSeed,
                     degree: degree,
-                    sourceGenome: genome,
+                    sourceGenomeOld: genome,
                     mutationRate: mutationRate
                 );
 

@@ -7,7 +7,7 @@ using MathUtils.Rand;
 
 namespace Genomic.Layers
 {
-    public interface ILayer<TG> where TG : class, IGenome
+    public interface ILayer<TG> where TG : class, IGenomeOld
     {
         int Generation { get; }
         IReadOnlyList<IOrg<TG>> Orgs { get; }
@@ -16,7 +16,7 @@ namespace Genomic.Layers
 
     public static class Layer
     {
-        public static ILayer<IGenome> CreateSimpleRandomLayer
+        public static ILayer<IGenomeOld> CreateSimpleRandomLayer
             (
                 int seed,
                 uint symbolCount,
@@ -27,7 +27,7 @@ namespace Genomic.Layers
             var randy = Rando.Fast(seed);
 
             var genomeBuilders = Enumerable.Range(0, orgCount)
-                .Select(i => GenomeBuilder.MakeGenerator(
+                .Select(i => GenomeBuilderOld.MakeGenerator(
                     symbolCount: symbolCount,
                     sequenceLength: sequenceLength,
                     seed: randy.NextInt(),
@@ -36,7 +36,7 @@ namespace Genomic.Layers
             return Create
                 (
                     Enumerable.Range(0, orgCount)
-                        .Select(i => GenomeBuilder.MakeGenerator(
+                        .Select(i => GenomeBuilderOld.MakeGenerator(
                             symbolCount: symbolCount,
                             sequenceLength: sequenceLength,
                             seed: randy.NextInt(),
@@ -46,8 +46,8 @@ namespace Genomic.Layers
 
         public static ILayer<TG> Create<TG>
         (
-            IEnumerable<IGenomeBuilder<TG>> createFuncs
-        ) where TG : class, IGenome
+            IEnumerable<IGenomeBuilderOld<TG>> createFuncs
+        ) where TG : class, IGenomeOld
         {
             return Make
             (
@@ -62,7 +62,7 @@ namespace Genomic.Layers
             int seed,
             Func<int, IOrg<TG>> createFunc,
             int orgCount
-        ) where TG : class, IGenome
+        ) where TG : class, IGenomeOld
         {
             var randy = Rando.Fast(seed);
             return Make
@@ -133,7 +133,7 @@ namespace Genomic.Layers
             (
                 int generation,
                 IEnumerable<IOrg<TG>> orgs
-            ) where TG : class, IGenome
+            ) where TG : class, IGenomeOld
         {
             return new LayerImpl<TG>
                 (
@@ -144,7 +144,7 @@ namespace Genomic.Layers
 
     }
 
-    public class LayerImpl<TG> : ILayer<TG> where TG : class, IGenome
+    public class LayerImpl<TG> : ILayer<TG> where TG : class, IGenomeOld
     {
         private readonly int _generation;
         private readonly IReadOnlyDictionary<Guid, IOrg<TG>> _orgs;

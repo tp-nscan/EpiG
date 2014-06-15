@@ -1,6 +1,6 @@
 ﻿namespace Genomic.Genomes
 {
-    public interface IPermutationGenome : IGenome
+    public interface IPermutationGenomeOld : IGenomeOld
     {
         uint Degree { get; }
     }
