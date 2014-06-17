@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using MathUtils.Collections;
+using MathUtils.Rand;
 
 namespace Genomic.Genomes.Builders
 {
@@ -7,6 +9,11 @@ namespace Genomic.Genomes.Builders
     {
         IGenome Make();
         string GenomeBuilderType { get; }
+    }
+
+    public interface ISimpleGenomeEncoding
+    {
+        uint SymbolCount { get; }
     }
 
     public interface IGenomeBuilderMutator : IGuid
@@ -21,19 +28,31 @@ namespace Genomic.Genomes.Builders
         int Seed { get; }
     }
 
+    public interface ISimpleGenomeBuilderRandom : IGenomeBuilderRandom, ISimpleGenomeEncoding
+    { }
+
     public static class GenomeBuilder
     {
 
     }
 
 
-    public class GenomeBuilderRandom : IGenomeBuilderRandom
+    public class GenomeBuilderRandom : ISimpleGenomeBuilderRandom
     {
-        public GenomeBuilderRandom(Guid guid, string genomeBuilderType, int seed)
+        public GenomeBuilderRandom
+        (
+            Guid guid, 
+            string genomeBuilderType, 
+            int seed, 
+            uint symbolCount, 
+            int sequenceLength
+        )
         {
             _guid = guid;
             _genomeBuilderType = genomeBuilderType;
             _seed = seed;
+            _symbolCount = symbolCount;
+            _sequenceLength = sequenceLength;
         }
 
         private readonly Guid _guid;
@@ -44,7 +63,11 @@ namespace Genomic.Genomes.Builders
 
         public IGenome Make()
         {
-            throw new NotImplementedException();
+            var randy = Rando.Fast(Seed);
+            return Genome.Make(
+                    sequence: Enumerable.Range(0, SequenceLength).Select(i => randy.NextUint(SymbolCount)).ToList(),
+                    genomeBuilder: this
+                );
         }
 
         private readonly string _genomeBuilderType;
@@ -58,5 +81,19 @@ namespace Genomic.Genomes.Builders
         {
             get { return _seed; }
         }
+
+        private readonly int _sequenceLength;
+        public int SequenceLength
+        {
+            get { return _sequenceLength; }
+        }
+
+        private readonly uint _symbolCount;
+        public uint SymbolCount
+        {
+            get { return _symbolCount; }
+        }
+
+
     }
 }

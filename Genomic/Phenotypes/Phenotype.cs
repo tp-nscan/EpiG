@@ -6,7 +6,7 @@ namespace Genomic.Phenotypes
     public interface IPhenotype<T> : IGuid
     {
         T Value { get; }
-        IPhenotypeBuilder<IPhenotype<T>, T> PhenotypeBuilder { get; }
+        IPhenotypeBuilder<T> PhenotypeBuilder { get; }
     }
 
     public static class Phenotype
@@ -15,7 +15,7 @@ namespace Genomic.Phenotypes
             (
                 Guid guid, 
                 T value, 
-                IPhenotypeBuilder<IPhenotype<T>, T> phenotypeBuilder
+                IPhenotypeBuilder<T> phenotypeBuilder
             )        
         {
             return new PhenotypeImpl<T>(value, phenotypeBuilder);
@@ -26,8 +26,8 @@ namespace Genomic.Phenotypes
     {
         public PhenotypeImpl
         (
-            T value, 
-            IPhenotypeBuilder<IPhenotype<T>, T> phenotypeBuilder
+            T value,
+            IPhenotypeBuilder<T> phenotypeBuilder
         )
         {
             _value = value;
@@ -40,8 +40,8 @@ namespace Genomic.Phenotypes
             get { return _value; }
         }
 
-        private readonly IPhenotypeBuilder<IPhenotype<T>, T> _phenotypeBuilder;
-        public IPhenotypeBuilder<IPhenotype<T>, T> PhenotypeBuilder
+        private readonly IPhenotypeBuilder<T> _phenotypeBuilder;
+        public IPhenotypeBuilder<T> PhenotypeBuilder
         {
             get { return _phenotypeBuilder; }
         }

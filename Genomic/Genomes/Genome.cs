@@ -10,11 +10,6 @@ namespace Genomic.Genomes
         int SequenceLength { get; }
     }
 
-    public interface ISimpleGenomeEncoding
-    {
-        int SymbolCount { get; }
-    }
-
     public interface IPermutationeGenomeEncoding
     {
         int Degree { get; }
@@ -29,21 +24,20 @@ namespace Genomic.Genomes
                 IGenomeBuilder genomeBuilder
             )
         {
-            return new SimpleGenome
-                (
+            return new SimpleGenome(
                     sequence: sequence,
                     genomeBuilder: genomeBuilder
                 );
         }
     }
 
-    class SimpleGenome : IGenome
+    class SimpleGenome : IGenome 
     {
         public SimpleGenome
-            (
-                IReadOnlyList<uint> sequence, 
-                IGenomeBuilder genomeBuilder
-            )
+        (
+            IReadOnlyList<uint> sequence,
+            IGenomeBuilder genomeBuilder
+        )
         {
             _sequence = sequence;
             _genomeBuilder = genomeBuilder;
@@ -65,5 +59,6 @@ namespace Genomic.Genomes
         {
             get { return _sequence.Count; }
         }
+
     }
 }

@@ -46,6 +46,9 @@ namespace SorterGenome
             where TP : IPhenotype<T>
             where TE : IPhenotypeEval<T>
         {
+
+
+
             return new SorterCompPoolImpl<T>(
                     generation: 0,
                     genomes: null,

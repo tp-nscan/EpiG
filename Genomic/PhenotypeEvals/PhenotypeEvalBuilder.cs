@@ -5,17 +5,14 @@ using MathUtils.Collections;
 
 namespace Genomic.PhenotypeEvals
 {
-
-    public interface IPhenotypeEvalBuilder<TP, T> : IGuid 
-        where TP : IPhenotypeEval<T>, IGuid
+    public interface IPhenotypeEvalBuilder<T> : IGuid
     {
-        Task<TP> Make();
+        Task<IPhenotypeEval<T>> Make();
         IPhenotype<T> Phenotype { get; }
         string PhenotypeEvalBuilderType { get; }
     }
 
-    public abstract class PhenotypeEvalBuilder<TP, T> 
-        : IPhenotypeEvalBuilder<TP, T> where TP : IPhenotypeEval<T>, IGuid
+    public abstract class PhenotypeEvalBuilder<T> : IGuid
     {
         protected PhenotypeEvalBuilder(
             Guid guid, 
@@ -34,7 +31,7 @@ namespace Genomic.PhenotypeEvals
             get { return _guid; }
         }
 
-        public abstract Task<TP> Make();
+        public abstract Task<IPhenotypeEval<T>> Make();
 
         private readonly IPhenotype<T> _phenotype;
         public IPhenotype<T> Phenotype
