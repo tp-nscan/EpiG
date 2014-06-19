@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
@@ -16,11 +17,9 @@ namespace Genomic.Genomes.Builders
         uint SymbolCount { get; }
     }
 
-    public interface IGenomeBuilderMutator : IGuid
+    public interface IGenomeBuilderMutator : IGenomeBuilder
     {
-        int Seed { get; }
         IGenome SourceGenome { get; }
-        string GenomeBuilderType { get; }
     }
 
     public interface IGenomeBuilderRandom : IGenomeBuilder
@@ -31,90 +30,121 @@ namespace Genomic.Genomes.Builders
     public interface ISimpleGenomeBuilderRandom : IGenomeBuilderRandom, ISimpleGenomeEncoding
     { }
 
+    public interface ISimpleGenomeBuilderMutator : IGenomeBuilderMutator, ISimpleGenomeEncoding
+    { }
+
     public static class GenomeBuilder
     {
-        //        public static IEnumerable<IGenomeBuilderOld<IGenome>> MakeGenerators
-        //            (
-        //                int seed,
-        //                int builderCount,
-        //                uint symbolCount,
-        //                int sequenceLength
-        //            )
-        //        {
+        public static IEnumerable<ISimpleGenomeBuilderRandom> MakeSimpleGenomeBuilderRandoms
+            (
+                int seed,
+                int builderCount,
+                uint symbolCount,
+                int sequenceLength
+            )
+        {
 
-        //            var randy = Rando.Fast(seed);
+            var randy = Rando.Fast(seed);
 
-        //            return Enumerable.Range(0, builderCount)
-        //                             .Select
-        //                             (
-        //                                 i=> MakeGenerator
-        //                                     (
-        //                                        symbolCount: symbolCount,
-        //                                        sequenceLength: sequenceLength,
-        //                                        seed: randy.NextInt(), 
-        //                                        guid: randy.NextGuid()
-        //                                    )
-        //                             );
-        //        }
+            return Enumerable.Range(0, builderCount)
+                             .Select
+                             (
+                                 i => MakeSimpleGenomeBuilderRandom
+                                     (
+                                        symbolCount: symbolCount,
+                                        sequenceLength: sequenceLength,
+                                        seed: randy.NextInt(),
+                                        guid: randy.NextGuid()
+                                    )
+                             );
+        }
 
+        public static IEnumerable<ISimpleGenomeBuilderMutator> MakeSimpleGenomeBuilderMutators
+            (
+                this IEnumerable<IGenome> sourceGenomes,
+                int seed,
+                int builderCount,
+                uint symbolCount,
+                int sequenceLength,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate
+            )
+        {
 
-        //public static IGenomeBuilder MakeGenerator
-        //    (
-        //        uint symbolCount,
-        //        int sequenceLength,
-        //        int seed,
-        //        Guid guid
-        //    )
-        //{
-        //    return new GenomeBuilderRandom
-        //        (
-        //            symbolCount: symbolCount,
-        //            sequenceLength: sequenceLength,
-        //            seed: seed,
-        //            guid: guid
-        //        );
-        //}
+            var randy = Rando.Fast(seed);
 
-        //        public static ISingleGenomeMutator<IGenome> MakeMutator
-        //            (
-        //                Guid guid,
-        //                IGenome sourceGenomeOld,
-        //                uint symbolCount,
-        //                int seed,
-        //                double deletionRate,
-        //                double insertionRate,
-        //                double mutationRate
-        //            )
-        //        {
-        //            {
-        //                return new GenomeBuilderMutator
-        //                    (
-        //                        symbolCount: symbolCount,
-        //                        sourceGenomeOld: sourceGenomeOld,
-        //                        seed: seed,
-        //                        deletionRate: deletionRate,
-        //                        insertionRate: insertionRate,
-        //                        mutationRate: mutationRate,
-        //                        guid: guid
-        //                    );
-        //            }
-        //        }
+            return sourceGenomes
+                             .Select
+                             (
+                                 i => MakeSimpleGenomeBuilderMutator
+                                     (
+                                        symbolCount: symbolCount,
+                                        seed: randy.NextInt(),
+                                        guid: randy.NextGuid(),
+                                        deletionRate:deletionRate,
+                                        insertionRate:insertionRate,
+                                        mutationRate:mutationRate,
+                                        sourceGenome: i
+                                    )
+                             );
+        }
+
+        public static ISimpleGenomeBuilderRandom MakeSimpleGenomeBuilderRandom
+            (
+                Guid guid,
+                int seed,
+                uint symbolCount,
+                int sequenceLength
+            )
+        {
+            return new SimpleGenomeBuilderRandom
+                (
+                    guid: guid,
+                    seed: seed,
+                    symbolCount: symbolCount,
+                    sequenceLength: sequenceLength
+                );
+        }
+
+        public static ISimpleGenomeBuilderMutator MakeSimpleGenomeBuilderMutator
+            (
+                Guid guid,
+                IGenome sourceGenome,
+                uint symbolCount,
+                int seed,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate
+            )
+        {
+            {
+                return new GenomeBuilderMutator
+                    (
+                        symbolCount: symbolCount,
+                        sourceGenome: sourceGenome,
+                        seed: seed,
+                        deletionRate: deletionRate,
+                        insertionRate: insertionRate,
+                        mutationRate: mutationRate,
+                        guid: guid
+                    );
+            }
+        }
     }
 
 
-    public class GenomeBuilderRandom : ISimpleGenomeBuilderRandom
+    public class SimpleGenomeBuilderRandom : ISimpleGenomeBuilderRandom
     {
-        public GenomeBuilderRandom
+        public SimpleGenomeBuilderRandom
         (
-            Guid guid, 
-            string genomeBuilderType, 
+            Guid guid,
             int seed, 
             uint symbolCount, 
             int sequenceLength
         )
         {
             _guid = guid;
-            _genomeBuilderType = genomeBuilderType;
             _seed = seed;
             _symbolCount = symbolCount;
             _sequenceLength = sequenceLength;
@@ -135,10 +165,10 @@ namespace Genomic.Genomes.Builders
                 );
         }
 
-        private readonly string _genomeBuilderType;
+
         public string GenomeBuilderType
         {
-            get { return _genomeBuilderType; }
+            get { return "SimpleGenomeBuilderRandom"; }
         }
 
         private readonly int _seed;
@@ -162,85 +192,83 @@ namespace Genomic.Genomes.Builders
 
     }
 
-    //    public class GenomeBuilderMutator : ISingleGenomeMutator<IGenome>
-    //    {
-    //        public GenomeBuilderMutator
-    //            (
-    //                Guid guid,
-    //                IGenome sourceGenomeOld,
-    //                uint symbolCount, 
-    //                int seed, 
-    //                double deletionRate, 
-    //                double insertionRate, 
-    //                double mutationRate
-    //            )
-    //        {
-    //            _sourceGenomeOld = sourceGenomeOld;
-    //            _seed = seed;
-    //            _deletionRate = deletionRate;
-    //            _insertionRate = insertionRate;
-    //            _mutationRate = mutationRate;
-    //            _guid = guid;
-    //            _symbolCount = symbolCount;
-    //        }
+    public class GenomeBuilderMutator : ISimpleGenomeBuilderMutator
+    {
+        public GenomeBuilderMutator
+            (
+                Guid guid,
+                IGenome sourceGenome,
+                uint symbolCount,
+                int seed,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate
+            )
+        {
+            _sourceGenome = sourceGenome;
+            _seed = seed;
+            _deletionRate = deletionRate;
+            _insertionRate = insertionRate;
+            _mutationRate = mutationRate;
+            _guid = guid;
+            _symbolCount = symbolCount;
+        }
 
-    //        private readonly IGenome _sourceGenomeOld;
-    //        public IGenome SourceGenomeOld
-    //        {
-    //            get { return _sourceGenomeOld; }
-    //        }
+        private readonly IGenome _sourceGenome;
+        public IGenome SourceGenome
+        {
+            get { return _sourceGenome; }
+        }
 
-    //        private readonly uint _symbolCount;
+        private readonly uint _symbolCount;
 
-    //        public uint SymbolCount
-    //        {
-    //            get { return _symbolCount; }
-    //        }
+        public uint SymbolCount
+        {
+            get { return _symbolCount; }
+        }
 
-    //        public IGenome Make()
-    //        {
-    //            return Genome.Make
-    //                (
-    //                    sequence: SourceGenomeOld.Sequence,
-    //                    genomeBuilder: this
-    //                );
-    //        }
+        public IGenome Make()
+        {
+            return Genome.Make
+                (
+                    sequence: SourceGenome.Sequence,
+                    genomeBuilder: this
+                );
+        }
 
-    //        public GenomeBuilderType GenomeBuilderType
-    //        {
-    //            get { return GenomeBuilderType.SimpleSingleParent; }
-    //        }
+        public string GenomeBuilderType
+        {
+            get { return "SimpleGenomeBuilderRandom"; }
+        }
 
-    //        private readonly int _seed;
-    //        public int Seed
-    //        {
-    //            get { return _seed; }
-    //        }
+        private readonly int _seed;
+        public int Seed
+        {
+            get { return _seed; }
+        }
 
-    //        private readonly double _deletionRate;
-    //        public double DeletionRate
-    //        {
-    //            get { return _deletionRate; }
-    //        }
+        private readonly double _deletionRate;
+        public double DeletionRate
+        {
+            get { return _deletionRate; }
+        }
 
-    //        private readonly double _insertionRate;
-    //        public double InsertionRate
-    //        {
-    //            get { return _insertionRate; }
-    //        }
+        private readonly double _insertionRate;
+        public double InsertionRate
+        {
+            get { return _insertionRate; }
+        }
 
-    //        private readonly double _mutationRate;
-    //        public double MutationRate
-    //        {
-    //            get { return _mutationRate; }
-    //        }
+        private readonly double _mutationRate;
+        public double MutationRate
+        {
+            get { return _mutationRate; }
+        }
 
-    //        private readonly Guid _guid;
-    //        private IGenome _sourceGenome;
-
-    //        public Guid Guid
-    //        {
-    //            get { return _guid; }
-    //        }
-    //    }
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
+        }
+    }
 }
