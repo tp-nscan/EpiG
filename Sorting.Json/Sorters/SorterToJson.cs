@@ -9,9 +9,6 @@ namespace Sorting.Json.Sorters
 {
     public class SorterToJson
     {
-
-        public Guid Guid { get; set; }
-
         public int KeyCount { get; set; }
 
         public List<int> Sequence { get; set; }
@@ -28,7 +25,6 @@ namespace Sorting.Json.Sorters
         {
             var chromosomeUintToJson = new SorterToJson
             {
-                Guid = sorter.Guid,
                 Sequence = sorter.KeyPairs.Select(kp => kp.Index).ToList(),
                 KeyCount = sorter.KeyCount
             };
@@ -44,11 +40,8 @@ namespace Sorting.Json.Sorters
 
         public static ISorter ToSorter(this SorterToJson sorterToJson)
         {
-            return Sorter.ToSorter(
-                    guid: sorterToJson.Guid,
-                    keyPairs: sorterToJson.Sequence.Select(KeyPairRepository.AtIndex),
-                    keyCount: sorterToJson.KeyCount
-                );
+            return sorterToJson.Sequence.Select(
+                KeyPairRepository.AtIndex).ToSorter(keyCount: sorterToJson.KeyCount);
         }
     }
 }

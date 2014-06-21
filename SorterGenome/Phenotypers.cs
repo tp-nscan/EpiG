@@ -20,8 +20,7 @@ namespace SorterGenome
             .KeyPairs.ToSorter
             (
                 keyPairChoices: g.Sequence,
-                keyCount: keyCount,
-                guid: Guid.NewGuid()
+                keyCount: keyCount
             );
 
             return (g, r) =>

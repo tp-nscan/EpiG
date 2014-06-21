@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -13,7 +12,6 @@ namespace Sorting.Stages
     {
         ISorterStage<T> SorterStage(int index);
         IImmutableList<ISorterStage<T>> SorterStages { get; }
-        Guid Guid { get; }
         int KeyCount { get; }
         int KeyPairCount { get; }
         T KeyPair(int index);
@@ -23,13 +21,12 @@ namespace Sorting.Stages
     public static class StagedSorter
     {
         public static IStagedSorter<T> Make<T>(
-                Guid guid,
                 int keyCount,
                 IImmutableList<ISorterStage<T>> sorterStages
             )
             where T: IKeyPair 
         {
-            return new StagedSorterImpl<T>(guid, keyCount, sorterStages);
+            return new StagedSorterImpl<T>(keyCount, sorterStages);
         }
 
         public static IStagedSorter<ISwitchEval> ToStagedSorter(this ISorterEval sorter, bool showUnused)
@@ -38,7 +35,6 @@ namespace Sorting.Stages
             {
                 return new StagedSorterImpl<ISwitchEval>
                     (
-                        guid: sorter.Guid,
                         keyCount: sorter.KeyCount,
                         sorterStages: ImmutableList<ISorterStage<ISwitchEval>>.Empty.AddRange
                         (
@@ -50,7 +46,6 @@ namespace Sorting.Stages
 
             return new StagedSorterImpl<ISwitchEval>
                 (
-                    guid: sorter.Guid,
                     keyCount: sorter.KeyCount,
                     sorterStages: ImmutableList<ISorterStage<ISwitchEval>>.Empty.AddRange
                     (
@@ -65,7 +60,6 @@ namespace Sorting.Stages
         {
             return new StagedSorterImpl<IKeyPair>
                 (
-                    guid: sorter.Guid,
                     keyCount: sorter.KeyCount,
                     sorterStages: ImmutableList<ISorterStage<IKeyPair>>.Empty.AddRange(
                         sorter.KeyPairs.ToList().ToSorterStages(sorter.KeyCount))
@@ -104,17 +98,14 @@ namespace Sorting.Stages
 
     class StagedSorterImpl<T> : IStagedSorter<T> where T : IKeyPair 
     {
-        private readonly Guid _guid;
         private readonly int _keyCount;
 
         public StagedSorterImpl
             (
-                Guid guid, 
                 int keyCount,
                 IImmutableList<ISorterStage<T>> sorterStages
             )
         {
-            _guid = guid;
             _keyCount = keyCount;
             _sorterStages = sorterStages;
 
@@ -130,11 +121,6 @@ namespace Sorting.Stages
 
             _keyPairs = tempList;
             _keyPairCount = SorterStages.Sum(s => s.KeyPairCount);
-        }
-
-        public Guid Guid
-        {
-            get { return _guid; }
         }
 
         public int KeyCount

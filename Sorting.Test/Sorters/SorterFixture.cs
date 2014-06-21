@@ -22,7 +22,7 @@ namespace Sorting.Test.Sorters
             const int switchableGroupCount = 40;
 
             var sorters = Rando.Fast(1243).ToRandomEnumerator()
-                .Select(t => t.ToSorter(keyCount, keyPairCount, Guid.NewGuid()))
+                .Select(t => t.ToSorter(keyCount, keyPairCount))
                 .Take(sorterCount)
                 .ToList();
 

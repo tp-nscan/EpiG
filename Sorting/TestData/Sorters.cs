@@ -1,5 +1,4 @@
-﻿using System;
-using MathUtils.Rand;
+﻿using MathUtils.Rand;
 using Sorting.Sorters;
 
 namespace Sorting.TestData
@@ -8,7 +7,7 @@ namespace Sorting.TestData
     {
         public static ISorter TestSorter(int keyCount, int seed, int keyPairCount)
         {
-            return Rando.Fast(seed).ToSorter(keyCount, keyPairCount, Guid.NewGuid());
+            return Rando.Fast(seed).ToSorter(keyCount, keyPairCount);
         }
     }
 }

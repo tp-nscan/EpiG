@@ -19,7 +19,7 @@ namespace Sorting.Test.CompetePool
             const int keyPairCount = 600;
             const int switchableCount = 2000;
 
-            var sorter = Rando.Fast(1243).ToSorter(keyCount, keyPairCount, Guid.NewGuid());
+            var sorter = Rando.Fast(1243).ToSorter(keyCount, keyPairCount);
             var switchableGroup = Rando.Fast(1234).ToSwitchableGroup<uint>(Guid.NewGuid(), keyCount, switchableCount);
 
             stopwatch.Start();

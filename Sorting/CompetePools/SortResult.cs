@@ -84,7 +84,7 @@ namespace Sorting.CompetePools
 
         public static ISorter Reduce(this ISortResult sortResult, Guid guid)
         {
-            return sortResult.UsedKeyPairs().ToSorter(sortResult.Sorter.Guid, sortResult.Sorter.KeyCount);
+            return sortResult.UsedKeyPairs().ToSorter(sortResult.Sorter.KeyCount);
         }
 
         public static ulong Hash(this IReadOnlyList<int> intList, int start)

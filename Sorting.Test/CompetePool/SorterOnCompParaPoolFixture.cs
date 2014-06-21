@@ -21,7 +21,7 @@ namespace Sorting.Test.CompetePool
             const int switchableCount = 100;
             const int switchableGroupCount = 40;
 
-            var sorter = Rando.Fast(1243).ToSorter(keyCount, keyPairCount, Guid.NewGuid());
+            var sorter = Rando.Fast(1243).ToSorter(keyCount, keyPairCount);
             var switchableGroups =
                 Enumerable.Range(77, switchableGroupCount)
                     .Select(i => Rando.Fast(1234 + i).ToSwitchableGroup<uint>(Guid.NewGuid(), keyCount, switchableCount))

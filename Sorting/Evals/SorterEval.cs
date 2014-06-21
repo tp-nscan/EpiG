@@ -31,7 +31,7 @@ namespace Sorting.Evals
                                                         sortResult.SwitchUseList[i]
                                                     )
                                             ),
-                    guid: sortResult.Sorter.Guid,
+                    guid: Guid.NewGuid(),
                     keyCount: sortResult.Sorter.KeyCount,
                     switchableGroupId: sortResult.SwitchableGroupGuid,
                     switchUseCount: sortResult.SwitchUseCount,

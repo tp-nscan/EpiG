@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using MathUtils.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -20,17 +18,15 @@ namespace Sorting.Json.Test.Sorters
             const int sequenceLength = 100;
             var keyPairSet = KeyPairRepository.KeyPairSet(keyCount);
 
-            var guid = Guid.NewGuid();
-            var keyPairs = Enumerable.Range(0, KeyPairRepository.KeyPairSetSizeForKeyCount(keyCount))
+            var keyPairs = Enumerable.Range(0, sequenceLength)
                                             .Select(i=>keyPairSet[i])
                                             .ToArray();
 
-            var sorter = keyPairs.ToSorter(guid: guid, keyCount: keyCount);
+            var sorter = keyPairs.ToSorter(keyCount: keyCount);
 
             var serialized = JsonConvert.SerializeObject(sorter.ToJsonAdapter(), Formatting.Indented);
             var newSorter = serialized.ToSorter();
 
-            Assert.AreEqual(newSorter.Guid, guid);
             Assert.AreEqual(newSorter.KeyCount, keyCount);
             Assert.IsTrue(newSorter.KeyPairs.IsSameAs(keyPairs));
         }

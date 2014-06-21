@@ -10,7 +10,7 @@ namespace Sorting.TestData
     {
         public static ISorterEval TestSorterEval(int keyCount, int seed, int keyPairCount)
         {
-            return Rando.Fast(seed).ToSorter(keyCount, keyPairCount, Guid.NewGuid())
+            return Rando.Fast(seed).ToSorter(keyCount, keyPairCount)
                         .ToSorterResult().ToSorterEval();
         }
     }
