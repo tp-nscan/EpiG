@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Genomic.Genomes;
+using Genomic.Genomes.Builders;
 using Genomic.PhenotypeEvals;
 using Genomic.Phenotypes;
 using MathUtils.Collections;
 using MathUtils.Rand;
+using Sorting.KeyPairs;
+using Sorting.Sorters;
 using Utils;
 
 namespace SorterGenome
@@ -31,7 +35,7 @@ namespace SorterGenome
 
     public static class SorterCompPool
     {
-        public static ISorterCompPool<T> MakeStandard<T, TG, TP, TE>
+        public static ISorterCompPool<ISorter> MakeStandard<TG, TP, TE>
 
             (
                 int seed,
@@ -43,19 +47,22 @@ namespace SorterGenome
                 double cubRate
             )
             where TG : IGenome
-            where TP : IPhenotype<T>
-            where TE : IPhenotypeEval<T>
+            where TP : IPhenotype<ISorter>
+            where TE : IPhenotypeEval<ISorter>
         {
-
-
-
-            return new SorterCompPoolImpl<T>(
+            return new SorterCompPoolImpl<ISorter>(
                     generation: 0,
-                    genomes: null,
+                    genomes: GenomeBuilder.MakeSimpleGenomeBuilderRandoms
+                            (
+                               seed: seed,
+                               builderCount: orgCount,
+                               symbolCount: (uint) KeyPairRepository.KeyPairSetSizeForKeyCount(keyCount),
+                               sequenceLength: seqenceLength
+                            ).Select(b=>b.Make()).ToDictionary(v=>v.GenomeBuilder.Guid),
                     phenotypes: null,
                     phenotypeEvals: null,
                     sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
-                    phenotyper: null,
+                    phenotyper: Phenotypers.MakeStandard(keyCount),
                     phenotypeEvaluator: null,
                     nextGenerator: (evs, i) => null
                 );

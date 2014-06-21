@@ -75,19 +75,19 @@ namespace Genomic.Genomes.Builders
             var randy = Rando.Fast(seed);
 
             return sourceGenomes
-                             .Select
-                             (
-                                 i => MakeSimpleGenomeBuilderMutator
-                                     (
-                                        symbolCount: symbolCount,
-                                        seed: randy.NextInt(),
-                                        guid: randy.NextGuid(),
-                                        deletionRate:deletionRate,
-                                        insertionRate:insertionRate,
-                                        mutationRate:mutationRate,
-                                        sourceGenome: i
-                                    )
-                             );
+                    .Select
+                    (
+                        i => MakeSimpleGenomeBuilderMutator
+                            (
+                            symbolCount: symbolCount,
+                            seed: randy.NextInt(),
+                            guid: randy.NextGuid(),
+                            deletionRate:deletionRate,
+                            insertionRate:insertionRate,
+                            mutationRate:mutationRate,
+                            sourceGenome: i
+                        )
+                    );
         }
 
         public static ISimpleGenomeBuilderRandom MakeSimpleGenomeBuilderRandom
@@ -229,9 +229,24 @@ namespace Genomic.Genomes.Builders
 
         public IGenome Make()
         {
+            var randy = Rando.Fast(Seed);
+            var randoMutate = Rando.Fast(123);
+            var randoInsert = Rando.Fast(1234);
+            var randoDelete = Rando.Fast(12345);
+
             return Genome.Make
                 (
-                    sequence: SourceGenome.Sequence,
+                    sequence: SourceGenome
+                                .Sequence
+                                .MutateInsertDelete
+                                (
+                                    doMutation: randoMutate.ToBoolEnumerator(MutationRate),
+                                    doInsertion: randoInsert.ToBoolEnumerator(InsertionRate),
+                                    doDeletion: randoDelete.ToBoolEnumerator(DeletionRate),
+                                    mutator: x => randy.NextUint(SymbolCount),
+                                    inserter: x => randy.NextUint(SymbolCount),
+                                    paddingFunc: x => randy.NextUint(SymbolCount)
+                                ).ToList(),
                     genomeBuilder: this
                 );
         }

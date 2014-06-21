@@ -154,7 +154,7 @@ namespace SorterControls.ViewModel
             {
                 return _initialState ??
                     (
-                        _initialState = SorterCompPool.MakeStandard<ISorter, IGenome, IPhenotype<ISorter>, IPhenotypeEval<ISorter>>(
+                        _initialState = SorterCompPool.MakeStandard<IGenome, IPhenotype<ISorter>, IPhenotypeEval<ISorter>>(
                             seed: Seed,
                             orgCount: SorterCount,
                             seqenceLength: KeyPairCount,

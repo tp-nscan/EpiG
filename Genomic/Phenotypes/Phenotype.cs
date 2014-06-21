@@ -13,7 +13,6 @@ namespace Genomic.Phenotypes
     {
         public static IPhenotype<T> Make<T>        
             (
-                Guid guid, 
                 T value, 
                 IPhenotypeBuilder<T> phenotypeBuilder
             )        
