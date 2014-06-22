@@ -27,7 +27,7 @@ namespace SorterGenome
 
         Func<IGenome, IRando, IPhenotype<T>> Phenotyper { get; }
 
-        Func<IPhenotype<T>, IRando, IPhenotype<T>> PhenotypeEvaluator { get; }
+        Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> PhenotypeEvaluator { get; }
 
         Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
 
@@ -61,9 +61,9 @@ namespace SorterGenome
                             ).Select(b=>b.Make()).ToDictionary(v=>v.GenomeBuilder.Guid),
                     phenotypes: null,
                     phenotypeEvals: null,
-                    sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
+                    sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
                     phenotyper: Phenotypers.MakeStandard(keyCount),
-                    phenotypeEvaluator: null,
+                    phenotypeEvaluator: PhenotypeEvaluators.MakeStandard(keyCount),
                     nextGenerator: (evs, i) => null
                 );
         }
@@ -86,7 +86,7 @@ namespace SorterGenome
                 IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
                 Func<IGenome, IRando, IPhenotype<T>> phenotyper,
-                Func<IPhenotype<T>, IRando, IPhenotype<T>> phenotypeEvaluator,
+                Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> phenotypeEvaluator,
                 Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> nextGenerator
             )
         {
@@ -110,30 +110,42 @@ namespace SorterGenome
             switch (SorterCompPoolStageType)
             {
                 case SorterCompPoolStageType.MakePhenotypes:
+
+                    var randy = Rando.Fast(seed);
                     return new SorterCompPoolImpl<T>
                         (
                             generation: Generation,
                             genomes: Genomes,
-                            phenotypes: Phenotypes,
+                            phenotypes: Genomes.Values
+                                               .Select(g=>Phenotyper(g, randy))
+                                               .ToDictionary(p=>p.Guid),
                             phenotypeEvals: PhenotypeEvals,
                             sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
                             phenotyper: Phenotyper,
                             phenotypeEvaluator: PhenotypeEvaluator,
                             nextGenerator: NextGenerator
                         );
+
                 case SorterCompPoolStageType.EvaluatePhenotypes:
+
+                    var randy2 = Rando.Fast(seed);
                     return new SorterCompPoolImpl<T>
                         (
                             generation: Generation,
                             genomes: Genomes,
                             phenotypes: Phenotypes,
-                            phenotypeEvals: PhenotypeEvals,
+                            phenotypeEvals: Phenotypes.Values
+                                                      .Select(p=>PhenotypeEvaluator(p, randy2))
+                                                      .ToDictionary(pe=>pe.Guid),
                             sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
                             phenotyper: Phenotyper,
                             phenotypeEvaluator: PhenotypeEvaluator,
                             nextGenerator: NextGenerator
                         );
+
                 case SorterCompPoolStageType.MakeNextGeneration:
+
+                    var randy3 = Rando.Fast(seed);
                     return new SorterCompPoolImpl<T>
                         (
                             generation: Generation + 1,
@@ -190,8 +202,8 @@ namespace SorterGenome
             get { return _phenotyper; }
         }
 
-        private readonly Func<IPhenotype<T>, IRando, IPhenotype<T>> _phenotypeEvaluator;
-        public Func<IPhenotype<T>, IRando, IPhenotype<T>> PhenotypeEvaluator
+        private readonly Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> _phenotypeEvaluator;
+        public Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> PhenotypeEvaluator
         {
             get { return _phenotypeEvaluator; }
         }

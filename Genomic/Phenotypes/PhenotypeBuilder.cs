@@ -42,7 +42,7 @@ namespace Genomic.Phenotypes
         }
 
         private readonly Func<IGenome, T> _phenoFunc;
-        private Func<IGenome, T> PhenoFunc
+        public Func<IGenome, T> PhenoFunc
         {
             get { return _phenoFunc; }
         }
