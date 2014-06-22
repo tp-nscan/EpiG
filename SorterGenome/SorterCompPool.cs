@@ -63,7 +63,7 @@ namespace SorterGenome
                     phenotypeEvals: null,
                     sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
                     phenotyper: Phenotypers.MakeStandard(keyCount),
-                    phenotypeEvaluator: PhenotypeEvaluators.MakeStandard(keyCount),
+                    phenotypeEvaluator: PhenotypeEvaluators.MakeStandard(),
                     nextGenerator: (evs, i) => null
                 );
         }
@@ -167,6 +167,13 @@ namespace SorterGenome
 
 
         private readonly int _generation;
+
+        private string _entityType;
+        public string EntityType
+        {
+            get { return _entityType; }
+        }
+
         public int Generation
         {
             get { return _generation; }

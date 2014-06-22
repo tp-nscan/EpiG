@@ -7,7 +7,7 @@ using Sorting.Sorters;
 
 namespace Sorting.Evals
 {
-    public interface ISorterEval : ISorter
+    public interface ISorterEval : ISorter, IComparable
     {
         IReadOnlyList<ISwitchEval> SwitchEvals { get; }
         bool Success { get; }
@@ -31,7 +31,6 @@ namespace Sorting.Evals
                                                         sortResult.SwitchUseList[i]
                                                     )
                                             ),
-                    guid: Guid.NewGuid(),
                     keyCount: sortResult.Sorter.KeyCount,
                     switchableGroupId: sortResult.SwitchableGroupGuid,
                     switchUseCount: sortResult.SwitchUseCount,
@@ -60,7 +59,6 @@ namespace Sorting.Evals
         public SorterEvalImpl
             (
                 IEnumerable<ISwitchEval> switchEvals, 
-                Guid guid, 
                 int keyCount, 
                 Guid switchableGroupId, 
                 int switchUseCount,
@@ -68,7 +66,6 @@ namespace Sorting.Evals
                 bool success
          )
         {
-            _guid = guid;
             _keyCount = keyCount;
             _switchableGroupId = switchableGroupId;
             _switchUseCount = switchUseCount;
@@ -78,12 +75,8 @@ namespace Sorting.Evals
             _switchEvals = switchEvals.ToList();
         }
 
-        private readonly Guid _guid;
         private readonly int _keyCount;
-        public Guid Guid
-        {
-            get { return _guid; }
-        }
+
 
         public int KeyCount
         {
@@ -140,6 +133,28 @@ namespace Sorting.Evals
         public int SwitchUseCount
         {
             get { return _switchUseCount; }
+        }
+
+        public int CompareTo(object obj)
+        {
+            var c1 = (ISorterEval)obj;
+
+            if (c1.Success != Success)
+            {
+                return c1.Success ? 1 : -1;
+            }
+
+            if (c1.SwitchUseCount > SwitchUseCount)
+            {
+                return -1;
+            }
+
+            if (c1.SwitchUseCount < SwitchUseCount)
+            {
+                return 1;
+            }
+
+            return 0;
         }
     }
 }

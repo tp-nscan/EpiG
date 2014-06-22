@@ -11,21 +11,41 @@ namespace Genomic.PhenotypeEvals
         string PhenotypeEvalBuilderType { get; }
     }
 
-    public class PhenotypeEvalBuilderStandard<T> : PhenotypeEvalBuilder<T>
+    public static class PhenotypeEavlBuilder
     {
-        public PhenotypeEvalBuilderStandard
+        public static IPhenotypeEval<T> ToPhenotypeEavl<T, C>
+            (
+                this Func<T, C> evaluatorFunc,
+                IPhenotype<T> phenotype, 
+                Guid guid
+            )
+            where C : IComparable
+        {
+            return new PhenotypeEvalBuilder<T, C>
+                (
+                    guid: guid,
+                    phenotype: phenotype,
+                    evaluatorFunc: evaluatorFunc
+                ).Make();
+        }
+    }
+
+    public class PhenotypeEvalBuilder<T, C> : PhenotypeEvalBuilder<T> 
+        where C : IComparable
+    {
+        public PhenotypeEvalBuilder
             (
                 Guid guid, 
                 IPhenotype<T> phenotype, 
-                Func<T, double> evaluatorFunc
+                Func<T, C> evaluatorFunc
             )
-            : base(guid, phenotype, "PhenotypeEvalBuilderStandard")
+            : base(guid, phenotype, "PhenotypeEvalBuilder." + typeof(C).Name)
         {
             _evaluatorFunc = evaluatorFunc;
         }
 
-        private readonly Func<T, double> _evaluatorFunc;
-        public Func<T, double> EvaluatorFunc
+        private readonly Func<T, C> _evaluatorFunc;
+        public Func<T, C> EvaluatorFunc
         {
             get { return _evaluatorFunc; }
         }

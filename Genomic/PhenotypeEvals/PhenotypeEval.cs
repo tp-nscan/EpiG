@@ -10,6 +10,7 @@ namespace Genomic.PhenotypeEvals
         IPhenotypeEvalBuilder<T> PhenotypeEvalBuilder { get; }
     }
 
+
     public static class PhenotypeEval
     {
         public static IPhenotypeEval<T> Make<T>(
@@ -27,7 +28,25 @@ namespace Genomic.PhenotypeEvals
                 phenotypeEvalBuilder: phenotypeEvalBuilder
              );
         }
+
+        public static IPhenotypeEval<T> Make<T, C>(
+            Guid guid,
+            IPhenotype<T>
+            phenotype,
+            C result,
+            IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
+        )
+            where C : IComparable
+        {
+            return new PhenotypeEvalComparable<T, C>(
+                guid: guid,
+                phenotype: phenotype,
+                result: result,
+                phenotypeEvalBuilder: phenotypeEvalBuilder
+             );
+        }
     }
+
 
     public class PhenotypeEvalDbl<T> : IPhenotypeEval<T> 
     {
@@ -35,7 +54,7 @@ namespace Genomic.PhenotypeEvals
         (
             Guid guid, 
             IPhenotype<T> phenotype, 
-            double result, 
+            double result,
             IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
         )
         {
@@ -77,6 +96,55 @@ namespace Genomic.PhenotypeEvals
             }
                 
             return 0;
+        }
+
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
+        }
+    }
+
+
+    public class PhenotypeEvalComparable<T, C> : IPhenotypeEval<T>
+        where C : IComparable
+    {
+        public PhenotypeEvalComparable
+        (
+            Guid guid,
+            IPhenotype<T> phenotype,
+            C result,
+            IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
+        )
+        {
+            _phenotype = phenotype;
+            _result = result;
+            _phenotypeEvalBuilder = phenotypeEvalBuilder;
+            _guid = guid;
+        }
+
+        private readonly IPhenotype<T> _phenotype;
+        public IPhenotype<T> Phenotype
+        {
+            get { return _phenotype; }
+        }
+
+        private readonly IPhenotypeEvalBuilder<T> _phenotypeEvalBuilder;
+        public IPhenotypeEvalBuilder<T> PhenotypeEvalBuilder
+        {
+            get { return _phenotypeEvalBuilder; }
+        }
+
+        private readonly C _result;
+        public C Result
+        {
+            get { return _result; }
+        }
+
+        public int CompareTo(object obj)
+        {
+            var c1 = (PhenotypeEvalComparable<T, C>)obj;
+            return Result.CompareTo(c1.Result);
         }
 
         private readonly Guid _guid;
