@@ -9,19 +9,20 @@ namespace SorterGenome
 {
     public static class Phenotypers
     {
-        public static Func<IGenome, IRando, IPhenotype<ISorter>> MakeStandard
+        public static Func<IGenome, IRando, IPhenotype<T>> MakeStandard<T>
         (
             int keyCount
         )
+        where T : ISorter
         {
-            Func<IGenome, ISorter> phenoFunc = 
+            Func<IGenome, T> phenoFunc = 
                 g =>
-                   KeyPairRepository.KeyPairSet(keyCount)
-                                    .KeyPairs.ToSorter
-                                    (
-                                        keyPairChoices: g.Sequence,
-                                        keyCount: keyCount
-                                    );
+                   (T) KeyPairRepository.KeyPairSet(keyCount)
+                       .KeyPairs.ToSorter
+                       (
+                           keyPairChoices: g.Sequence,
+                           keyCount: keyCount
+                       );
 
             return (g, r) =>
 

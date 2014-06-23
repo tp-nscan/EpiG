@@ -36,7 +36,7 @@ namespace Genomic.Phenotypes
                 IGenome genome,
                 Func<IGenome, T> phenoFunc
             )
-            : base(guid, "PhenotypeBuilderStandard", genome)
+            : base(guid, "PhenotypeBuilder.Standard", genome)
         {
             _phenoFunc = phenoFunc;
         }

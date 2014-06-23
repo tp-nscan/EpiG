@@ -76,8 +76,6 @@ namespace Sorting.Evals
         }
 
         private readonly int _keyCount;
-
-
         public int KeyCount
         {
             get { return _keyCount; }

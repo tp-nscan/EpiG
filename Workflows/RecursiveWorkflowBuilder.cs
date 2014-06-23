@@ -6,7 +6,7 @@ using Utils;
 
 namespace Workflows
 {
-    public interface IRecursiveWorkflowBuilder<T> : IGuid where T : IGuid, IGuidParts
+    public interface IRecursiveWorkflowBuilder<T> : IGuid where T : IEntity
     {
         IWorkflow<T> InitialWorkflow { get; }
         IRecursiveWorkflowBuilder<T> Iterate(int seed);
@@ -20,7 +20,7 @@ namespace Workflows
             (
                 this IWorkflow<T> initialWorkflow, 
                 Func<T, int, T> updateFunc
-            ) where T : IGuid, IGuidParts
+            ) where T : IEntity
         {
             return new RecursiveWorkflowBuilderFunc<T>
                 (
@@ -33,7 +33,7 @@ namespace Workflows
         public static IRecursiveWorkflowBuilder<T> ToRecursiveRndWlkWorkflowBuilder<T>
         (
             this IWorkflow<T> initialWorkflow
-        ) where T : IRandomWalk<T>, IGuid, IGuidParts
+        ) where T : IRandomWalk<T>, IEntity
         {
             return new RecursiveWorkflowBuilderRandomWalk<T>
                 (
@@ -44,7 +44,8 @@ namespace Workflows
 
     }
 
-    public abstract class RecursiveWorkflowBuilderBase<T> : IRecursiveWorkflowBuilder<T> where T : IGuid, IGuidParts
+    public abstract class RecursiveWorkflowBuilderBase<T> : IRecursiveWorkflowBuilder<T>
+        where T : IEntity
     {
         protected RecursiveWorkflowBuilderBase
             (
@@ -84,7 +85,8 @@ namespace Workflows
         }
     }
 
-    public class RecursiveWorkflowBuilderFunc<T> : RecursiveWorkflowBuilderBase<T> where T : IGuid, IGuidParts
+    public class RecursiveWorkflowBuilderFunc<T> : RecursiveWorkflowBuilderBase<T>
+        where T : IEntity
     {
         public RecursiveWorkflowBuilderFunc(
                 IImmutableList<int> seeds, 

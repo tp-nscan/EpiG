@@ -3,7 +3,7 @@ using MathUtils.Collections;
 
 namespace Workflows
 {
-    public interface IWorkflow<T> : IGuid, IGuidParts where T : IGuid, IGuidParts
+    public interface IWorkflow<T> : IGuid, IGuidParts where T : IEntity
     {
         IWorkflowBuilder<T> WorkflowBuilder { get; }
         T Result { get; }
@@ -16,7 +16,7 @@ namespace Workflows
             (
                 this T item, 
                 Guid guid
-            ) where T : IGuid, IGuidParts
+            ) where T : IEntity
         {
             return new PassThroughWorkflow<T>
                 (
@@ -30,9 +30,9 @@ namespace Workflows
         }
     }
 
-    public class PassThroughWorkflow<T> : IWorkflow<T> where T : IGuid, IGuidParts
+    public class PassThroughWorkflow<T> : IWorkflow<T> where T : IEntity
     {
-        public const string Name = "Passthrough";
+        public const string Name = "Workflow.Passthrough";
 
         public PassThroughWorkflow
             (

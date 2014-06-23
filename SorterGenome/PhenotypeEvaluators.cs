@@ -10,16 +10,17 @@ namespace SorterGenome
 {
     public static class PhenotypeEvaluators
     {
-        public static Func<IPhenotype<ISorter>, IRando, IPhenotypeEval<ISorter>> MakeStandard()
-        {
+        public static Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> MakeStandard<T>()
+            where T : ISorter
+    {
 
-            Func<ISorter, ISorterEval> phenoEvalFunc =
-                s =>
-                    s.ToSorterResult().ToSorterEval();
+        Func<T, ISorterEval> phenoEvalFunc =
+            s =>
+                s.ToSorterResult().ToSorterEval();
 
 
-            return (p, r) => phenoEvalFunc.ToPhenotypeEavl(p, r.NextGuid());
-        }
+        return (p, r) => phenoEvalFunc.ToPhenotypeEavl(p, r.NextGuid());
+    }
 
     }
 }

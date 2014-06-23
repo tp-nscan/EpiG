@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Genomic.Genomes.Builders;
+using MathUtils.Collections;
 
 namespace Genomic.Genomes
 {
-    public interface IGenome
+    public interface IGenome : IGuid
     {
         IReadOnlyList<uint> Sequence { get; }
         IGenomeBuilder GenomeBuilder { get; }
@@ -60,5 +62,9 @@ namespace Genomic.Genomes
             get { return _sequence.Count; }
         }
 
+        public Guid Guid
+        {
+            get { return _genomeBuilder.Guid; }
+        }
     }
 }

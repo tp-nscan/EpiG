@@ -4,7 +4,7 @@ using MathUtils.Collections;
 
 namespace Workflows
 {
-    public interface IWorkflowBuilder<T> : IGuid where T : IGuid, IGuidParts
+    public interface IWorkflowBuilder<T> : IGuid where T : IEntity
     {
         Task<IWorkflow<T>> Make();
         string WorkflowBuilderType { get; }
@@ -16,7 +16,7 @@ namespace Workflows
         (
             Guid guid,
             T result
-        ) where T : IGuid, IGuidParts
+        ) where T : IEntity
         {
             return new WorkflowBuilderPassThrough<T>
             (
@@ -26,10 +26,10 @@ namespace Workflows
         }
     }
 
-    public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T> 
-        where T : IGuid, IGuidParts
+    public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T>
+        where T : IEntity
     {
-        public const string Name = "Passthrough";
+        public const string Name = "WorkflowBuilder.Passthrough";
 
         public WorkflowBuilderPassThrough
             (
@@ -61,7 +61,7 @@ namespace Workflows
         }
     }
 
-    public abstract class WorkflowBuilderBase<T> : IWorkflowBuilder<T> where T : IGuid, IGuidParts
+    public abstract class WorkflowBuilderBase<T> : IWorkflowBuilder<T> where T : IEntity
     {
         protected WorkflowBuilderBase
             (
@@ -89,59 +89,4 @@ namespace Workflows
 
     }
 
-    //public interface IWorkflowBuilder : IGuid
-    //{
-    //    Func<IGenome, IRando, IPhenotype> Phenotyper { get; }
-    //    Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator { get; }
-    //    Func<IReadOnlyDictionary<Guid, IReadOnlyDictionary<Guid, IOrg>>, IRando, IPhenotypeEval> NextLayerBuilder { get; }
-
-    //    IReadOnlyDictionary<Guid, IOrg> Orgs { get; }
-    //    IReadOnlyDictionary<Guid, IPhenotype> Phenotypes { get; }
-    //    IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals { get; }
-
-    //}
-
-    //public static class WorkflowBuilder
-    //{
-
-    //}
-
-    //public class WorkflowBuilderImpl
-    //{
-    //    private Func<IGenome, IRando, IPhenotype> _phenotyper;
-    //    public Func<IGenome, IRando, IPhenotype> Phenotyper
-    //    {
-    //        get { return _phenotyper; }
-    //    }
-
-    //    private Func<IPhenotype, IRando, IPhenotypeEval> _phenotypeEvaluator;
-    //    public Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator
-    //    {
-    //        get { return _phenotypeEvaluator; }
-    //    }
-
-    //    private Func<IReadOnlyDictionary<Guid, IReadOnlyDictionary<Guid, IOrg>>, IRando, IPhenotypeEval> _nextLayerBuilder;
-    //    public Func<IReadOnlyDictionary<Guid, IReadOnlyDictionary<Guid, IOrg>>, IRando, IPhenotypeEval> NextLayerBuilder
-    //    {
-    //        get { return _nextLayerBuilder; }
-    //    }
-
-    //    private readonly IReadOnlyDictionary<Guid, IOrg> _orgs;
-    //    public IReadOnlyDictionary<Guid, IOrg> Orgs
-    //    {
-    //        get { return _orgs; }
-    //    }
-
-    //    private IReadOnlyDictionary<Guid, IPhenotype> _phenotypes;
-    //    public IReadOnlyDictionary<Guid, IPhenotype> Phenotypes
-    //    {
-    //        get { return _phenotypes; }
-    //    }
-
-    //    private IReadOnlyDictionary<Guid, IPhenotypeEval> _phenotypeEvals;
-    //    public IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals
-    //    {
-    //        get { return _phenotypeEvals; }
-    //    }
-    //}
 }

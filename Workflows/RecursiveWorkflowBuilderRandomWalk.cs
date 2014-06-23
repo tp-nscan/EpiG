@@ -4,8 +4,8 @@ using Utils;
 
 namespace Workflows
 {
-    public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T> 
-        where T : IRandomWalk<T>, IGuid, IGuidParts
+    public class RecursiveWorkflowBuilderRandomWalk<T> : RecursiveWorkflowBuilderBase<T>
+        where T : IRandomWalk<T>, IEntity
     {
         public RecursiveWorkflowBuilderRandomWalk(
                 IImmutableList<int> seeds,
