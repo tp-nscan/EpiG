@@ -77,7 +77,7 @@ namespace Genomic.Genomes.Builders
             return sourceGenomes
                     .Select
                     (
-                        i => MakeSimpleGenomeBuilderMutator
+                        i => ToSimpleGenomeBuilderMutator
                             (
                             symbolCount: symbolCount,
                             seed: randy.NextInt(),
@@ -107,10 +107,10 @@ namespace Genomic.Genomes.Builders
                 );
         }
 
-        public static ISimpleGenomeBuilderMutator MakeSimpleGenomeBuilderMutator
+        public static ISimpleGenomeBuilderMutator ToSimpleGenomeBuilderMutator
             (
+                this IGenome sourceGenome,
                 Guid guid,
-                IGenome sourceGenome,
                 uint symbolCount,
                 int seed,
                 double deletionRate,

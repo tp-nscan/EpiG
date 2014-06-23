@@ -46,7 +46,6 @@
     <Compile Include="Genomes\Builders\GenomeBuilder.cs" />
     <Compile Include="Genomes\Builders\PermutationGenomeBuilder.cs" />
     <Compile Include="Genomes\Genome.cs" />
-    <Compile Include="Genomes\Builders\GenomeBuilderType.cs" />
     <Compile Include="Genomes\Parsers\GenomeParser.cs" />
     <Compile Include="Genomes\Parsers\GenomeParserType.cs" />
     <Compile Include="Genomes\Parsers\PermutationGenomeParser.cs" />

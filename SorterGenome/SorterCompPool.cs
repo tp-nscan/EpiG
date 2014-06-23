@@ -43,6 +43,8 @@ namespace SorterGenome
             int orgCount,
             int seqenceLength,
             int keyCount,
+            double deletionRate, 
+            double insertionRate,
             double mutationRate,
             double multiplicationRate,
             double cubRate
@@ -62,6 +64,8 @@ namespace SorterGenome
                     sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
                     keyCount: keyCount,
                     orgCount: orgCount,
+                    deletionRate: deletionRate,
+                    insertionRate: insertionRate,
                     mutationRate: mutationRate,
                     multiplicationRate: multiplicationRate
                 );
@@ -85,7 +89,13 @@ namespace SorterGenome
             IReadOnlyDictionary<Guid, IPhenotype<T>> phenotypes,
             IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
             SorterCompPoolStageType sorterCompPoolStageType,
-            int keyCount, int orgCount, double mutationRate, double multiplicationRate)
+            int keyCount, 
+            int orgCount, 
+            double multiplicationRate, 
+            double deletionRate, 
+            double insertionRate,
+            double mutationRate
+       )
     {
         _generation = generation;
         _genomes = genomes;
@@ -93,9 +103,11 @@ namespace SorterGenome
         _phenotypeEvals = phenotypeEvals;
         _sorterCompPoolStageType = sorterCompPoolStageType;
         _keyCount = keyCount;
-            _orgCount = orgCount;
-            _mutationRate = mutationRate;
-            _multiplicationRate = multiplicationRate;
+        _orgCount = orgCount;
+        _mutationRate = mutationRate;
+        _multiplicationRate = multiplicationRate;
+        _deletionRate = deletionRate;
+        _insertionRate = insertionRate;
     }
 
     public ISorterCompPool<T> Step(int seed)
@@ -116,6 +128,8 @@ namespace SorterGenome
                         sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
                         keyCount: KeyCount,
                         orgCount: OrgCount,
+                        deletionRate: DeletionRate,
+                        insertionRate: InsertionRate,
                         mutationRate: MutationRate,
                         multiplicationRate: MultiplicationRate
                     );
@@ -134,6 +148,8 @@ namespace SorterGenome
                         sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
                         keyCount: KeyCount,
                         orgCount: OrgCount,
+                        deletionRate: DeletionRate,
+                        insertionRate: InsertionRate,
                         mutationRate: MutationRate,
                         multiplicationRate: MultiplicationRate
                     );
@@ -150,6 +166,8 @@ namespace SorterGenome
                         sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
                         keyCount: KeyCount,
                         orgCount: OrgCount,
+                        deletionRate: DeletionRate,
+                        insertionRate: InsertionRate,
                         mutationRate: MutationRate,
                         multiplicationRate: MultiplicationRate
                     );
@@ -173,6 +191,18 @@ namespace SorterGenome
     public int OrgCount
     {
         get { return _orgCount; }
+    }
+
+    private readonly double _deletionRate;
+    public double DeletionRate
+    {
+        get { return _deletionRate; }
+    }
+
+    private readonly double _insertionRate;
+    public double InsertionRate
+    {
+        get { return _insertionRate; }
     }
 
     private readonly double _mutationRate;
@@ -257,6 +287,8 @@ namespace SorterGenome
                     (
                         keyCount : KeyCount, 
                         orgCount : OrgCount,
+                        deletionRate: DeletionRate,
+                        insertionRate: InsertionRate,
                         mutationRate: MutationRate,
                         multiplicationRate: MultiplicationRate,
                         cubRate: CubRate

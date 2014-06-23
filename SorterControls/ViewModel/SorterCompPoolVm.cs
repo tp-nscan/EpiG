@@ -160,6 +160,8 @@ namespace SorterControls.ViewModel
                             orgCount: SorterCount,
                             seqenceLength: KeyPairCount,
                             keyCount: KeyCount,
+                            deletionRate:0,
+                            insertionRate: 0,
                             mutationRate: MutationRate,
                             multiplicationRate: MultiplicationRate,
                             cubRate: CubRate
