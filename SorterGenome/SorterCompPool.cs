@@ -156,7 +156,6 @@ namespace SorterGenome
 
             case SorterCompPoolStageType.MakeNextGeneration:
 
-                var randy3 = Rando.Fast(seed);
                 return new SorterCompPoolStandard<T>
                     (
                         generation: Generation + 1,

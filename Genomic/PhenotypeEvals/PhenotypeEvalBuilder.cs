@@ -13,7 +13,7 @@ namespace Genomic.PhenotypeEvals
 
     public static class PhenotypeEavlBuilder
     {
-        public static IPhenotypeEval<T> ToPhenotypeEavl<T, C>
+        public static IPhenotypeEval<T> ToPhenotypeEval<T, C>
             (
                 this Func<T, C> evaluatorFunc,
                 IPhenotype<T> phenotype, 

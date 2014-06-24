@@ -19,7 +19,7 @@ namespace SorterGenome
                 s.ToSorterResult().ToSorterEval();
 
 
-        return (p, r) => phenoEvalFunc.ToPhenotypeEavl(p, r.NextGuid());
+        return (p, r) => phenoEvalFunc.ToPhenotypeEval(p, r.NextGuid());
     }
 
     }

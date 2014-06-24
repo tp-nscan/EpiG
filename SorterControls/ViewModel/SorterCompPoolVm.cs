@@ -194,11 +194,23 @@ namespace SorterControls.ViewModel
 
         void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<ISorter>>> result)
         {
-            if (result.ProgressStatus == ProgressStatus.StepComplete)
+            if (result.ProgressStatus == ProgressStatus.StepComplete && result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
             {
-                SorterPoolVm.Generation = result.Data.Result.Generation;
-                _initialState = result.Data;
+                var res = result.Data.Result.PhenotypeEvals.Select(ev => ((PhenotypeEvalComparable<ISorter, ISorterEval> )ev.Value).Result).ToList();
+                SorterPoolVm = new SorterPoolVm
+                (
+                    keyCount: KeyCount,
+                    sorterEvals: res,
+                    displaySize: DisplaySize,
+                    showStages: ShowStages,
+                    showUnused: ShowUnused,
+                    generation: result.Data.Result.Generation
+                );
+
+                //SorterPoolVm.Generation = result.Data.Result.Generation;
+   
             }
+            _initialState = result.Data;
         }
 
         private IDisposable _updateSubscription;
