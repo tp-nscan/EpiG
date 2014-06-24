@@ -28,8 +28,8 @@ namespace Sorting.Sorters
 
         public static ISorter ToSorter(this IRando rando, int keyCount, int keyPairCount)
         {
-           return rando.RandomKeyPairs(keyCount).Take(keyPairCount).ToSorter(keyCount);
-            //return rando.RandomKeyPairsFullStage(keyCount).Take(keyPairCount).ToSorter(keyCount);
+           //return rando.RandomKeyPairs(keyCount).Take(keyPairCount).ToSorter(keyCount);
+           return rando.RandomKeyPairsFullStage(keyCount).Take(keyPairCount).ToSorter(keyCount);
         }
 
         public static ISorter ToSorter(this IRando rando, IReadOnlyList<IKeyPair> keyPairs, int keyPairCount, int keyCount)

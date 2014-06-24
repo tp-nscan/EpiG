@@ -14,7 +14,7 @@ namespace Sorting.KeyPairs
 
     public static class KeyPairRepository
     {
-        private static readonly List<KeyPairSet> keyPairSets = Enumerable.Repeat<KeyPairSet>(null, 64).ToList();
+        private static readonly List<KeyPairSet> KeyPairSets = Enumerable.Repeat<KeyPairSet>(null, 64).ToList();
         public static IEnumerable<IKeyPair> RandomKeyPairs(this IRando rando, int keyCount)
         {
             while (true)
@@ -47,19 +47,20 @@ namespace Sorting.KeyPairs
                 var b = scrambles[i + 1];
                 listRet.Add((a < b) ? ForKeys(a, b) : ForKeys(b, a)); 
             }
+
             return listRet;
         }
 
         static KeyPairRepository()
         {
-            keyPairs = new IKeyPair[KeyPairSetSizeForKeyCount(MaxKeyCount)];
+            KeyPairs = new IKeyPair[KeyPairSetSizeForKeyCount(MaxKeyCount)];
 
             for (var hiKey = 1; hiKey < MaxKeyCount; hiKey++)
             {
                 for (var lowKey = 0; lowKey < hiKey; lowKey++)
                 {
                     var keyPairIndex = KeyPairIndex(lowKey, hiKey);
-                    keyPairs[keyPairIndex] = new KeyPair(keyPairIndex, lowKey, hiKey);
+                    KeyPairs[keyPairIndex] = new KeyPair(keyPairIndex, lowKey, hiKey);
                 }
             }
         }
@@ -74,18 +75,18 @@ namespace Sorting.KeyPairs
             return KeyPairSetSizeForKeyCount(hiKey) + lowKey;
         }
 
-        private static readonly IKeyPair[] keyPairs;
+        private static readonly IKeyPair[] KeyPairs;
         public static IEnumerable<IKeyPair> KeyPairsForKeyCount(int keyCount)
         {
             for (var i = 0; i < KeyPairSetSizeForKeyCount(keyCount); i++)
             {
-                yield return keyPairs[i];
+                yield return KeyPairs[i];
             }
         }
 
         public static IKeyPair AtIndex(int dex)
         {
-            return keyPairs[dex]; 
+            return KeyPairs[dex]; 
         }
 
         public static IKeyPair ForKeys(int lowKey, int highKey)
@@ -95,7 +96,7 @@ namespace Sorting.KeyPairs
 
         public static KeyPairSet KeyPairSet(int keyCount)
         {
-            return keyPairSets[keyCount] ?? (keyPairSets[keyCount] = new KeyPairSet(keyCount));
+            return KeyPairSets[keyCount] ?? (KeyPairSets[keyCount] = new KeyPairSet(keyCount));
         }
 
         public static int KeyPairSetSizeForKeyCount(int keyCount)

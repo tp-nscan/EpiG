@@ -12,11 +12,13 @@ namespace Genomic.Genomes
         int SequenceLength { get; }
     }
 
-    public interface IPermutationeGenomeEncoding
+    public interface IPermutationGenomeEncoding
     {
         int Degree { get; }
         int PermutationCount { get; }
     }
+
+    public interface IPermutationGenome : IGenome, IPermutationGenomeEncoding { }
 
     public static class Genome
     {

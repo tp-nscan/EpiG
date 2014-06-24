@@ -160,11 +160,12 @@ namespace Genomic.Genomes.Builders
         {
             var randy = Rando.Fast(Seed);
             return Genome.Make(
-                    sequence: Enumerable.Range(0, SequenceLength).Select(i => randy.NextUint(SymbolCount)).ToList(),
+                    sequence: Enumerable.Range(0, SequenceLength)
+                                        .Select(i => randy.NextUint(SymbolCount))
+                                        .ToList(),
                     genomeBuilder: this
                 );
         }
-
 
         public string GenomeBuilderType
         {
@@ -230,9 +231,9 @@ namespace Genomic.Genomes.Builders
         public IGenome Make()
         {
             var randy = Rando.Fast(Seed);
-            var randoMutate = Rando.Fast(123);
-            var randoInsert = Rando.Fast(1234);
-            var randoDelete = Rando.Fast(12345);
+            var randoMutate = randy.Spawn();
+            var randoInsert = randy.Spawn();
+            var randoDelete = randy.Spawn();
 
             return Genome.Make
                 (

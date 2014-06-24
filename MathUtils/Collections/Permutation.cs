@@ -28,6 +28,20 @@ namespace MathUtils.Collections
             }
         }
 
+        public static IEnumerable<uint> ToPermutationBlocks(this IRando rando, int degree)
+        {
+            IReadOnlyList<int> singles = Enumerable.Range(0, degree).ToList();
+
+            while (true)
+            {
+                var scrambles = singles.FisherYatesShuffle(rando);
+                foreach (var item in scrambles)
+                {
+                    yield return (uint) item;
+                }
+            }
+        }
+
         public static IEnumerable<int> Values(this IPermutation permutation)
         {
             for (var i = 0; i < permutation.Degree; i++)
