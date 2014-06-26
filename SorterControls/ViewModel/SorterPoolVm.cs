@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SorterGenome;
+using SorterGenome.CompPool;
 using Sorting.Evals;
 using WpfUtils;
 

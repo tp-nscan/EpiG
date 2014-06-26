@@ -6,7 +6,7 @@ using Sorting.KeyPairs;
 using Sorting.Sorters;
 using Sorting.Switchables;
 
-namespace Sorting.CompetePools
+namespace Sorting.Evals
 {
     public interface ISortResult
     {

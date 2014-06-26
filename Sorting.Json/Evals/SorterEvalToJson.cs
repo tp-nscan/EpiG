@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Sorting.CompetePools;
+using Sorting.Evals;
 using Sorting.Json.Sorters;
 
-namespace Sorting.Json.CompetePools
+namespace Sorting.Json.Evals
 {
     public class SorterEvalToJson
     {

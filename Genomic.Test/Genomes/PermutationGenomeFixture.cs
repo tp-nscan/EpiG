@@ -15,10 +15,12 @@ namespace Genomic.Test.Genomes
         {
             const int degree = 10;
             const int permutationCount = 100;
+            const int builderCount = 10;
             const int seed = 123;
 
             var permutationGenome = Rando.Fast(seed)
-                .ToPermutationGenomeBuilderRandom(degree, permutationCount)
+                .ToPermutationGenomeBuilders(degree, builderCount, permutationCount)
+                .Single()
                 .Make();
 
             Assert.AreEqual(degree * permutationCount, permutationGenome.SequenceLength);
@@ -28,24 +30,29 @@ namespace Genomic.Test.Genomes
         public void TestPermutationMutateWithZeroMutationRate()
         {
             const int degree = 10;
-            const int permutationCount=100;
+            const int permutationCount = 100;
+            const double deletionRate = 0;
+            const double insertionRate = 0;
             const double mutationRate = 0;
+            const int builderCount = 10;
             const int seed = 123;
             Guid guid = Guid.NewGuid();
 
             var permutationGenome = Rando.Fast(seed)
-                .ToPermutationGenomeBuilderRandom(degree, permutationCount)
+                .ToPermutationGenomeBuilders(degree, builderCount, permutationCount)
+                .Single()
                 .Make();
 
 
-            var builder = PermutationGenomeBuilder.MakeMutator
+            var builder = permutationGenome.ToPermutationMutatorBuilder
                 (
                     guid: guid,
                     seed: seed,
-                    mutationRate: mutationRate,
-                    sourceGenome: permutationGenome,
                     degree: degree,
-                    permutationCount: permutationCount
+                    permutationCount: permutationCount,
+                    mutationRate: mutationRate,
+                    insertionRate: insertionRate,
+                    deletionRate: deletionRate
                 );
 
             var mutantGenome = builder.Make();
@@ -64,21 +71,26 @@ namespace Genomic.Test.Genomes
         {
             const int degree = 10;
             const int permutationCount = 100;
+            const int builderCount = 10; 
+            const double deletionRate = 0;
+            const double insertionRate = 0;
             const double mutationRate = 0.1;
             const int seed = 12837;
             Guid guid = Guid.NewGuid();
 
             var permutationGenome = Rando.Fast(seed)
-                .ToPermutationGenomeBuilderRandom(degree, permutationCount)
+                .ToPermutationGenomeBuilders(degree, builderCount, permutationCount)
+                .Single()
                 .Make();
 
 
-            var builder = PermutationGenomeBuilder.MakeMutator
+            var builder = permutationGenome.ToPermutationMutatorBuilder
                 (
                     guid: guid,
                     seed: seed,
                     mutationRate: mutationRate,
-                    sourceGenome: permutationGenome,
+                    insertionRate: insertionRate,
+                    deletionRate: deletionRate,
                     degree: degree,
                     permutationCount: permutationCount
                 );

@@ -1,5 +1,4 @@
 ﻿using MathUtils.Rand;
-using Sorting.CompetePools;
 using Sorting.Evals;
 using Sorting.Sorters;
 

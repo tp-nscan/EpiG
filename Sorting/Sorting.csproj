@@ -70,13 +70,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompetePools\CompPool.cs" />
-    <Compile Include="CompetePools\SorterResultSet.cs" />
     <Compile Include="Evals\SorterEval.cs" />
     <Compile Include="Evals\SwitchEval.cs" />
     <Compile Include="Properties\Entities\IEntityFunctionParams.cs" />
     <Compile Include="KeyPairs\KeyPairSet.cs" />
-    <Compile Include="CompetePools\SortResult.cs" />
+    <Compile Include="Evals\SortResult.cs" />
     <Compile Include="Stages\SorterStage.cs" />
     <Compile Include="Sorters\SortingFunctions.cs" />
     <Compile Include="Stages\StagedSorter.cs" />

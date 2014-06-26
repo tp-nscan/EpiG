@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MathUtils.Rand;
 using SorterGenome;
+using SorterGenome.CompPool;
 using Sorting.Sorters;
 using Utils.BackgroundWorkers;
 using Workflows;

@@ -60,8 +60,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CompetePool\SorterEvalFixture.cs" />
-    <Compile Include="CompetePool\SorterOnCompParaPoolFixture.cs" />
     <Compile Include="Evals\SorterEvalFixture.cs" />
     <Compile Include="KeyPairSetFixture.cs" />
     <Compile Include="KeyPairs\KeyPairsFixture.cs" />

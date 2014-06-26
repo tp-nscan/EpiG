@@ -2,7 +2,6 @@
 using Genomic.PhenotypeEvals;
 using Genomic.Phenotypes;
 using MathUtils.Rand;
-using Sorting.CompetePools;
 using Sorting.Evals;
 using Sorting.Sorters;
 

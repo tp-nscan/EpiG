@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
@@ -16,39 +17,48 @@ namespace Genomic.Genomes.Builders
 
     public static class PermutationGenomeBuilder
     {
-        public static IPermutationGenomeBuilderRandom ToPermutationGenomeBuilderRandom
+        public static IEnumerable<IPermutationGenomeBuilderRandom> ToPermutationGenomeBuilders
             (
                 this IRando rando,
+                int builderCount,
                 int degree,
                 int permutationCount
             )
         {
-            return new PermutationGenomeBuilderRandomImpl
-                (
-                    guid: rando.NextGuid(),
-                    degree: degree,
-                    permutationCount: permutationCount,
-                    seed: rando.NextInt()
-                );
+            return Enumerable.Range(0, builderCount)
+                 .Select
+                 (
+                     i => new PermutationGenomeBuilderRandomImpl
+                        (
+                            guid: rando.NextGuid(),
+                            degree: degree,
+                            permutationCount: permutationCount,
+                            seed: rando.NextInt()
+                        )
+                 );
         }
 
-        public static IPermutationGenomeBuilderMutator MakeMutator(
+        public static IPermutationGenomeBuilderMutator ToPermutationMutatorBuilder(
+                this IGenome sourceGenome,
                 Guid guid,
                 int seed,
-                double mutationRate,
-                IGenome sourceGenome,
                 int degree,
-                int permutationCount
+                int permutationCount,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate
             )
         {
             return new PermutationGenomeBuilderMutatorImpl
                 (
                     guid: guid,
-                    seed: seed,
-                    mutationRate: mutationRate,
                     sourceGenome: sourceGenome,
                     degree: degree,
-                    permutationCount: permutationCount
+                    permutationCount: permutationCount,
+                    seed: seed,
+                    mutationRate: mutationRate,
+                    insertionRate: insertionRate,
+                    deletionRate: deletionRate
                 );
         }
     }
@@ -114,12 +124,14 @@ namespace Genomic.Genomes.Builders
     {
         public PermutationGenomeBuilderMutatorImpl
             (
+                IGenome sourceGenome,
                 Guid guid,
-                int seed, 
-                double mutationRate, 
-                IGenome sourceGenome, 
-                int degree, 
-                int permutationCount
+                int seed,
+                int degree,
+                int permutationCount,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate
             )
         {
             _guid = guid;
@@ -128,6 +140,8 @@ namespace Genomic.Genomes.Builders
             _sourceGenome = sourceGenome;
             _degree = degree;
             _permutationCount = permutationCount;
+            _deletionRate = deletionRate;
+            _insertionRate = insertionRate;
         }
 
         private readonly Guid _guid;
@@ -155,6 +169,17 @@ namespace Genomic.Genomes.Builders
             get { return "PermutationGenomeBuilderMutator"; }
         }
 
+        private readonly double _deletionRate;
+        public double DeletionRate
+        {
+            get { return _deletionRate; }
+        }
+
+        private readonly double _insertionRate;
+        public double InsertionRate
+        {
+            get { return _insertionRate; }
+        }
 
         private readonly double _mutationRate;
         public double MutationRate
@@ -186,193 +211,5 @@ namespace Genomic.Genomes.Builders
             get { return _permutationCount; }
         }
     }
-
-
-    //public static class PermutationGenomeBuilder
-    //{
-    //    public static IPermutationGenomeBuilder MakeRandom(
-    //            Guid guid,
-    //            int seed,
-    //            int degree,
-    //            int targetPermutationCount
-    //        )
-    //    {
-
-    //        return new PermutationGenomeBuilderRandom
-    //            (
-    //                guid: guid,
-    //                seed: seed,
-    //                degree: degree,
-    //                targetPermutationCount: targetPermutationCount
-    //            );
-    //    }
-
-
-    //    public static IPermutationGenomeBuilder MakeMutator(
-    //            Guid guid,
-    //            int seed,
-    //            int degree,
-    //            IGenome sourceGenome,
-    //            double mutationRate
-    //        )
-    //    {
-    //        return new PermutationGenomeBuilderMutator
-    //            (
-    //                guid: guid,
-    //                seed: seed,
-    //                permutationGenomeParser: PermutationGenomeParser.Make(degree),
-    //                sourceGenome: sourceGenome,
-    //                mutationRate: mutationRate
-    //            );
-    //    }
-
-    //}
-
-
-    //public class PermutationGenomeBuilderRandom : IPermutationGenomeBuilder
-    //{
-    //    public PermutationGenomeBuilderRandom
-    //        (
-    //            Guid guid,
-    //            int seed,
-    //            int degree,
-    //            int targetPermutationCount
-    //        )
-    //    {
-    //        _guid = guid;
-    //        _seed = seed;
-    //        _degree = degree;
-    //        _targetPermutationCount = targetPermutationCount;
-    //    }
-
-    //    private readonly Guid _guid;
-    //    public Guid Guid
-    //    {
-    //        get { return _guid; }
-    //    }
-
-    //    public IGenome Make()
-    //    {
-    //        IReadOnlyList<uint> initialPermutation =
-    //                  Enumerable.Range(0, Degree)
-    //                            .Select(v => (uint)v)
-    //                            .ToList();
-
-    //        var randy = Rando.Fast(Seed);
-
-    //        return Genome.Make
-    //            (
-    //                sequence: Enumerable.Range(0, TargetPermutationCount)
-    //                .Select(i => initialPermutation.FisherYatesShuffle(randy))
-    //                .SelectMany(b => b)
-    //                .ToList(),
-    //                genomeBuilder: this
-    //            );
-    //    }
-
-    //    public GenomeBuilderType GenomeBuilderType
-    //    {
-    //        get { return GenomeBuilderType.PermutationRandom; }
-    //    }
-
-    //    private readonly int _seed;
-    //    public int Seed
-    //    {
-    //        get { return _seed; }
-    //    }
-
-    //    private readonly int _degree;
-    //    public int Degree
-    //    {
-    //        get { return _degree; }
-    //    }
-
-    //    private readonly int _targetPermutationCount;
-    //    public int TargetPermutationCount
-    //    {
-    //        get { return _targetPermutationCount; }
-    //    }
-
-    //}
-
-
-    //public class PermutationGenomeBuilderMutator : IPermutationGenomeBuilder
-    //{
-    //    public PermutationGenomeBuilderMutator
-    //     (
-    //            Guid guid,
-    //            int seed,
-    //            IGenome sourceGenome,
-    //            IPermutationGenomeParser permutationGenomeParser,
-    //            double mutationRate
-    //     )
-    //    {
-    //        _guid = guid;
-    //        _seed = seed;
-    //        _sourceGenome = sourceGenome;
-    //        _permutationGenomeParser = permutationGenomeParser;
-    //        _mutationRate = mutationRate;
-    //        _targetPermutationCount = SourceGenome.Sequence.Count / PermutationGenomeParser.Degree;
-    //    }
-
-    //    private readonly Guid _guid;
-    //    public Guid Guid
-    //    {
-    //        get { return _guid; }
-    //    }
-
-    //    public IGenome Make()
-    //    {
-    //        var randy = Rando.Fast(Seed);
-
-    //        IReadOnlyList<ISequenceBlock<IPermutation>> sbs =
-    //            PermutationGenomeParser.GetSequenceBlocks(SourceGenome)
-    //                                   .Select(b => b.Data.Mutate(randy, MutationRate))
-    //                                   .Select(mb => mb.ToSequenceBlock())
-    //                                   .ToList();
-
-    //        return PermutationGenomeParser.GetSequence(sbs);
-    //    }
-
-    //    public string GenomeBuilderType
-    //    {
-    //        get { return "SimpleGenomeBuilderRandom"; }
-    //    }
-
-    //    private readonly int _seed;
-    //    public int Seed
-    //    {
-    //        get { return _seed; }
-    //    }
-
-    //    private readonly IPermutationGenomeParser _permutationGenomeParser;
-    //    public IPermutationGenomeParser PermutationGenomeParser
-    //    {
-    //        get { return _permutationGenomeParser; }
-    //    }
-
-    //    private readonly IGenome _sourceGenome;
-    //    public IGenome SourceGenome
-    //    {
-    //        get { return _sourceGenome; }
-    //    }
-
-    //    public int Degree
-    //    {
-    //        get { return PermutationGenomeParser.Degree; }
-    //    }
-
-    //    private readonly double _mutationRate;
-    //    public double MutationRate
-    //    {
-    //        get { return _mutationRate; }
-    //    }
-
-    //    private readonly int _targetPermutationCount;
-    //    public int TargetPermutationCount
-    //    {
-    //        get { return _targetPermutationCount; }
-    //    }
-    //}
 
 }

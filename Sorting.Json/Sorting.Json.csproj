@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompetePools\SorterEvalToJson.cs" />
+    <Compile Include="Evals\SorterEvalToJson.cs" />
     <Compile Include="Sorters\SorterToJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Switchables\SwitchableGroupToJson.cs" />

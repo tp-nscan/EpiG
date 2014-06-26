@@ -35,17 +35,14 @@ namespace Genomic.Genomes.Builders
 
     public static class GenomeBuilder
     {
-        public static IEnumerable<ISimpleGenomeBuilderRandom> MakeSimpleGenomeBuilderRandoms
+        public static IEnumerable<ISimpleGenomeBuilderRandom> ToSimpleGenomeBuilders
             (
-                int seed,
+                this IRando randy,
                 int builderCount,
                 uint symbolCount,
                 int sequenceLength
             )
         {
-
-            var randy = Rando.Fast(seed);
-
             return Enumerable.Range(0, builderCount)
                              .Select
                              (
@@ -57,37 +54,6 @@ namespace Genomic.Genomes.Builders
                                         guid: randy.NextGuid()
                                     )
                              );
-        }
-
-        public static IEnumerable<ISimpleGenomeBuilderMutator> MakeSimpleGenomeBuilderMutators
-            (
-                this IEnumerable<IGenome> sourceGenomes,
-                int seed,
-                int builderCount,
-                uint symbolCount,
-                int sequenceLength,
-                double deletionRate,
-                double insertionRate,
-                double mutationRate
-            )
-        {
-
-            var randy = Rando.Fast(seed);
-
-            return sourceGenomes
-                    .Select
-                    (
-                        i => ToSimpleGenomeBuilderMutator
-                            (
-                            symbolCount: symbolCount,
-                            seed: randy.NextInt(),
-                            guid: randy.NextGuid(),
-                            deletionRate:deletionRate,
-                            insertionRate:insertionRate,
-                            mutationRate:mutationRate,
-                            sourceGenome: i
-                        )
-                    );
         }
 
         public static ISimpleGenomeBuilderRandom MakeSimpleGenomeBuilderRandom

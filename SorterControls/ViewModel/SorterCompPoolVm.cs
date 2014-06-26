@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Genomic.PhenotypeEvals;
 using MathUtils.Rand;
 using SorterGenome;
+using SorterGenome.CompPool;
 using Sorting.Evals;
 using System.Linq;
 using Sorting.Sorters;
