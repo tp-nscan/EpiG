@@ -115,11 +115,28 @@
                 <StackPanel>
                     <TextBlock Text="Mutation rate" />
                     <xctk:DoubleUpDown Value="{Binding MutationRate}"
-                        Minimum="0.005" 
+                        Minimum="0.000" 
                         Increment="0.005" 
                         Maximum="0.1" />
                 </StackPanel>
 
+                <StackPanel>
+                    <TextBlock Text="Insertion rate" />
+                    <xctk:DoubleUpDown Value="{Binding InsertionRate}"
+                        Minimum="0.000" 
+                        Increment="0.005" 
+                        Maximum="0.1" />
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Deletion rate" />
+                    <xctk:DoubleUpDown Value="{Binding DeletionRate}"
+                        Minimum="0.000" 
+                        Increment="0.005" 
+                        Maximum="0.1" />
+                </StackPanel>
+                
+                
                 <StackPanel>
                     <TextBlock Text="Multiplication rate" />
                     <xctk:DoubleUpDown Value="{Binding MultiplicationRate}"

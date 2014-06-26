@@ -36,6 +36,9 @@ namespace SorterGenome
 
     public static class SorterCompPool
     {
+
+
+
         public static ISorterCompPool<ISorter> InitStandardFromSeed
 
         (
@@ -70,6 +73,50 @@ namespace SorterGenome
                     multiplicationRate: multiplicationRate
                 );
         }
+
+
+
+
+
+        public static ISorterCompPool<ISorter> InitPermutorFromSeed
+        (
+            int seed,
+            int orgCount,
+            int seqenceLength,
+            int keyCount,
+            double deletionRate,
+            double insertionRate,
+            double mutationRate,
+            double multiplicationRate,
+            double cubRate
+        )
+        {
+            return new SorterCompPoolStandard<ISorter>(
+                    generation: 0,
+                    genomes: GenomeBuilder.MakeSimpleGenomeBuilderRandoms
+                            (
+                               seed: seed,
+                               builderCount: orgCount,
+                               symbolCount: (uint)KeyPairRepository.KeyPairSetSizeForKeyCount(keyCount),
+                               sequenceLength: seqenceLength
+                            ).Select(b => b.Make()).ToDictionary(v => v.GenomeBuilder.Guid),
+                    phenotypes: null,
+                    phenotypeEvals: null,
+                    sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
+                    keyCount: keyCount,
+                    orgCount: orgCount,
+                    deletionRate: deletionRate,
+                    insertionRate: insertionRate,
+                    mutationRate: mutationRate,
+                    multiplicationRate: multiplicationRate
+                );
+        }
+
+
+
+
+
+
     }
 
     public enum SorterCompPoolStageType

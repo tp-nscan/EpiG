@@ -10,21 +10,22 @@ namespace MathUtils.Collections
         int Degree { get; }
         int Value(int index);
         int IndexOf(int value);
+        IEnumerable<int> Values { get; } 
     }
 
     public static class Permutation
     {
-        private static readonly IList<IReadOnlyList<int>> Units;
+        private static readonly IList<IReadOnlyList<int>> identityPermutations;
         private const int MaxDegree = 32;
 
         static Permutation()
         {
-            Units = Enumerable.Range(0, MaxDegree + 1)
+            identityPermutations = Enumerable.Range(0, MaxDegree + 1)
                 .Select<int, IReadOnlyList<int>>(i => null).ToList();
 
             for (var i = 1; i < MaxDegree + 1; i++)
             {
-                Units[i] = Enumerable.Range(0, i).ToArray();
+                identityPermutations[i] = Enumerable.Range(0, i).ToArray();
             }
         }
 
@@ -42,50 +43,45 @@ namespace MathUtils.Collections
             }
         }
 
-        public static IEnumerable<int> Values(this IPermutation permutation)
+        public static IPermutation ToPermutation(this IReadOnlyList<int> values)
         {
-            for (var i = 0; i < permutation.Degree; i++)
+            return new PermuationImpl
+                (
+                    values: values.ToArray()
+                );
+        }
+
+        public static IPermutation ToPermutation(this IReadOnlyList<uint> values)
+        {
+            return new PermuationImpl
+                (
+                    values: values.Select(v => (int)v).ToArray()
+                );
+        }
+
+
+        public static IEnumerable<IPermutation> ToPermutations(this IRando rando, int degree)
+        {
+            while (true)
             {
-                yield return permutation.Value(i);
+                yield return new PermuationImpl
+                        (
+                            values: identityPermutations[degree].FisherYatesShuffle(rando)
+                        );
             }
         }
 
-        public static IPermutation Make(IEnumerable<int> values)
+        public static IEnumerable<IPermutation> ToPermutations(this IEnumerable<uint> sequence, int degree)
         {
-            var valueList = values.ToArray();
-            return new PermuationImpl
-                (
-                    degree: valueList.Length,
-                    values: valueList
-                );
-        }
-
-        public static IPermutation Make(IEnumerable<uint> values)
-        {
-            var valueList = values.Select(v=>(int)v).ToArray();
-
-            return new PermuationImpl
-                (
-                    degree: valueList.Length,
-                    values: valueList
-                );
-        }
-
-        public static IPermutation MakeRandom(int degree, IRando rando)
-        {
-            return new PermuationImpl
-                (
-                    degree: degree,
-                    values: Units[degree].FisherYatesShuffle(rando)
-                );
+            return sequence.Select(v=>(int)v).Chunk(degree).Select(c => new PermuationImpl(c));
         }
 
         public static IPermutation Mutate(this IPermutation permutation, IRando rando, double mutationRate)
         {
             return new PermuationImpl
                 (
-                    degree: permutation.Degree,
-                    values: permutation.Values().ToList().FisherYatesPartialShuffle(rando, mutationRate) 
+                    values: permutation.Values
+                                    .ToList().FisherYatesPartialShuffle(rando, mutationRate) 
                 );
         }
 
@@ -93,7 +89,6 @@ namespace MathUtils.Collections
         {
             return new PermuationImpl
                 (
-                    degree: permutation.Degree,
                     values: Enumerable.Range(0, permutation.Degree)
                                       .Select(permutation.IndexOf)
                                       .ToArray()
@@ -104,7 +99,6 @@ namespace MathUtils.Collections
         {
             return new PermuationImpl
                 (
-                    degree: lhs.Degree,
                     values: Enumerable.Range(0, lhs.Degree)
                                       .Select(i=>rhs.Value(lhs.Value(i)))
                                       .ToArray()
@@ -161,18 +155,17 @@ namespace MathUtils.Collections
         }
     }
 
+
     public class PermuationImpl : IPermutation
     {
-        public PermuationImpl(int degree, int[] values)
+        public PermuationImpl(int[] values)
         {
-            _degree = degree;
             _values = values;
         }
 
-        private readonly int _degree;
         public int Degree
         {
-            get { return _degree; }
+            get { return _values.Length; }
         }
 
         private readonly int[] _values;
@@ -191,6 +184,11 @@ namespace MathUtils.Collections
                 }
             }
             throw new Exception("permutation value not found");
+        }
+
+        public IEnumerable<int> Values
+        {
+            get { return _values; }
         }
     }
 }

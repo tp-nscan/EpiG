@@ -5,22 +5,62 @@ using MathUtils.Rand;
 
 namespace Genomic.Genomes.Builders
 {
-    public interface IPermutationGenomeBuilderRandom : IGenomeBuilderRandom, IPermutationGenomeEncoding
+    public interface IPermutationGenomeBuilderRandom : IGenomeBuilderRandom, IPermutationEncoding
     {
+    
     }
 
-    public interface IPermutationGenomeBuilderMutator : IGenomeBuilderRandom, IGenomeBuilderMutator, IPermutationGenomeEncoding
+    public interface IPermutationGenomeBuilderMutator : IGenomeBuilderRandom, IGenomeBuilderMutator, IPermutationEncoding
     {
     }
 
     public static class PermutationGenomeBuilder
     {
+        public static IPermutationGenomeBuilderRandom ToPermutationGenomeBuilderRandom
+            (
+                this IRando rando,
+                int degree,
+                int permutationCount
+            )
+        {
+            return new PermutationGenomeBuilderRandomImpl
+                (
+                    guid: rando.NextGuid(),
+                    degree: degree,
+                    permutationCount: permutationCount,
+                    seed: rando.NextInt()
+                );
+        }
 
+        public static IPermutationGenomeBuilderMutator MakeMutator(
+                Guid guid,
+                int seed,
+                double mutationRate,
+                IGenome sourceGenome,
+                int degree,
+                int permutationCount
+            )
+        {
+            return new PermutationGenomeBuilderMutatorImpl
+                (
+                    guid: guid,
+                    seed: seed,
+                    mutationRate: mutationRate,
+                    sourceGenome: sourceGenome,
+                    degree: degree,
+                    permutationCount: permutationCount
+                );
+        }
     }
 
     public class PermutationGenomeBuilderRandomImpl : IPermutationGenomeBuilderRandom
     {
-        public PermutationGenomeBuilderRandomImpl(Guid guid, int degree, int permutationCount, int seed)
+        public PermutationGenomeBuilderRandomImpl(
+            Guid guid, 
+            int degree, 
+            int permutationCount, 
+            int seed
+            )
         {
             _guid = guid;
             _degree = degree;
@@ -49,8 +89,9 @@ namespace Genomic.Genomes.Builders
         public IGenome Make()
         {
             return Genome.Make(
-                    sequence: Rando.Fast(Seed).ToPermutationBlocks(Degree)
-                                    .Take(Degree * PermutationCount)
+                    sequence: Rando.Fast(Seed).ToPermutations(Degree)
+                                    .Take(PermutationCount)
+                                    .SelectMany(p => p.Values.Cast<uint>())
                                     .ToList(),
                     genomeBuilder: this
                 );
@@ -69,18 +110,24 @@ namespace Genomic.Genomes.Builders
     }
 
 
-    public class PermutationGenomeBuilderMutator : IPermutationGenomeBuilderMutator
+    public class PermutationGenomeBuilderMutatorImpl : IPermutationGenomeBuilderMutator
     {
-        public PermutationGenomeBuilderMutator(
-                                 Guid guid, 
-                                 IPermutationGenomeEncoding permutationGenomeEncoding, 
-                                 int seed, 
-                                 double mutationRate)
+        public PermutationGenomeBuilderMutatorImpl
+            (
+                Guid guid,
+                int seed, 
+                double mutationRate, 
+                IGenome sourceGenome, 
+                int degree, 
+                int permutationCount
+            )
         {
             _guid = guid;
-            _permutationGenomeEncoding = permutationGenomeEncoding;
             _seed = seed;
             _mutationRate = mutationRate;
+            _sourceGenome = sourceGenome;
+            _degree = degree;
+            _permutationCount = permutationCount;
         }
 
         private readonly Guid _guid;
@@ -91,7 +138,16 @@ namespace Genomic.Genomes.Builders
 
         public IGenome Make()
         {
-            throw new NotImplementedException();
+            var randy = Rando.Fast(Seed);
+            return Genome.Make
+                (
+                    sequence: SourceGenome.Sequence
+                                        .ToPermutations(Degree)
+                                        .Select(p=> p.Mutate(randy, MutationRate))
+                                        .SelectMany(p => p.Values.Cast<uint>())
+                                        .ToList(),
+                    genomeBuilder: this
+                );
         }
 
         public string GenomeBuilderType
@@ -99,11 +155,6 @@ namespace Genomic.Genomes.Builders
             get { return "PermutationGenomeBuilderMutator"; }
         }
 
-        private readonly IPermutationGenomeEncoding _permutationGenomeEncoding;
-        private IPermutationGenomeEncoding PermutationGenomeEncoding
-        {
-            get { return _permutationGenomeEncoding; }
-        }
 
         private readonly double _mutationRate;
         public double MutationRate
@@ -111,25 +162,28 @@ namespace Genomic.Genomes.Builders
             get { return _mutationRate; }
         }
 
-        public IGenome SourceGenome
-        {
-            get { return (IGenome)PermutationGenomeEncoding; }
-        }
-
-        public int Degree
-        {
-            get { return PermutationGenomeEncoding.Degree; }
-        }
-
-        public int PermutationCount
-        {
-            get { return PermutationGenomeEncoding.PermutationCount; }
-        }
-
         private readonly int _seed;
         public int Seed
         {
             get { return _seed; }
+        }
+
+        private readonly IGenome _sourceGenome;
+        public IGenome SourceGenome
+        {
+            get { return _sourceGenome; }
+        }
+
+        private readonly int _degree;
+        public int Degree
+        {
+            get { return _degree; }
+        }
+
+        private readonly int _permutationCount;
+        public int PermutationCount
+        {
+            get { return _permutationCount; }
         }
     }
 

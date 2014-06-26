@@ -158,8 +158,8 @@ namespace SorterControls.ViewModel
                             orgCount: SorterCount,
                             seqenceLength: KeyPairCount,
                             keyCount: KeyCount,
-                            deletionRate:0,
-                            insertionRate: 0,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             multiplicationRate: MultiplicationRate,
                             cubRate: CubRate
@@ -194,11 +194,17 @@ namespace SorterControls.ViewModel
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete && result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
             {
-                var res = result.Data.Result.PhenotypeEvals.Select(ev => ((PhenotypeEvalComparable<ISorter, ISorterEval> )ev.Value).Result).ToList();
+                var phenotypeEvals = result.Data.Result.PhenotypeEvals
+                                            .Select(ev => (PhenotypeEvalComparable<ISorter, ISorterEval>) ev.Value)
+                                            .OrderBy(v => v)
+                                            .Select(v => v.Result)
+                                            .Take(SorterPoolVm.SorterGalleryVm.SorterDisplayCount)
+                                            .ToList();
+
                 SorterPoolVm = new SorterPoolVm
                 (
                     keyCount: KeyCount,
-                    sorterEvals: res,
+                    sorterEvals: phenotypeEvals,
                     displaySize: DisplaySize,
                     showStages: ShowStages,
                     showUnused: ShowUnused,
@@ -283,6 +289,30 @@ namespace SorterControls.ViewModel
                 _mutationRate = value;
                 Reset();
                 OnPropertyChanged("MutationRate");
+            }
+        }
+
+        private double _deletionRate;
+        public double DeletionRate
+        {
+            get { return _deletionRate; }
+            set
+            {
+                _deletionRate = value;
+                Reset();
+                OnPropertyChanged("DeletionRate");
+            }
+        }
+
+        private double _insertionRate;
+        public double InsertionRate
+        {
+            get { return _insertionRate; }
+            set
+            {
+                _insertionRate = value;
+                Reset();
+                OnPropertyChanged("InsertionRate");
             }
         }
 

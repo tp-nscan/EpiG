@@ -14,22 +14,22 @@ namespace MathUtils.Tests.Collections
         [TestMethod]
         public void TestMake()
         {
-            const int Degree = 16;
-            const int Seed = 123;
+            const int degree = 16;
+            const int seed = 123;
 
-            var permutation = Permutation.MakeRandom(degree: Degree, rando: Rando.Fast(Seed));
+            var permutation = Rando.Fast(seed).ToPermutations(degree).Single();
 
-            Assert.AreEqual(Degree, permutation.Degree);
+            Assert.AreEqual(degree, permutation.Degree);
         }
 
         [TestMethod]
         public void TestAreEqualWhenEqual()
         {
-            const int Degree = 16;
-            const int Seed = 123;
+            const int degree = 16;
+            const int seed = 123;
 
-            var permutation = Permutation.MakeRandom(degree: Degree, rando: Rando.Fast(Seed));
-            var permutationCopy = Permutation.Make(permutation.Values());
+            var permutation = Rando.Fast(seed).ToPermutations(degree).Single();
+            var permutationCopy = Permutation.ToPermutation(permutation.Values.ToList());
 
             Assert.IsTrue(permutation.IsEqualTo(permutationCopy));
         }
@@ -37,11 +37,11 @@ namespace MathUtils.Tests.Collections
         [TestMethod]
         public void TestAreNotEqualWhenNotEqual()
         {
-            const int Degree = 16;
-            const int Seed = 123;
+            const int degree = 16;
+            const int seed = 123;
 
-            var permutation = Permutation.MakeRandom(degree: Degree, rando: Rando.Fast(Seed));
-            var permutationReverse = Permutation.Make(permutation.Values().Reverse());
+            var permutation = Rando.Fast(seed).ToPermutations(degree).Single();
+            var permutationReverse = Permutation.ToPermutation(permutation.Values.Reverse().ToList());
 
             Assert.IsFalse(permutation.IsEqualTo(permutationReverse));
         }
@@ -49,13 +49,13 @@ namespace MathUtils.Tests.Collections
         [TestMethod]
         public void TestInverse()
         {
-            const int Degree = 16;
-            const int Seed = 123;
+            const int degree = 16;
+            const int seed = 123;
 
-            var permutation = Permutation.MakeRandom(degree: Degree, rando: Rando.Fast(Seed));
+            var permutation = Rando.Fast(seed).ToPermutations(degree).Single();
             var permutationInverse = permutation.Inverse();
 
-            Assert.AreEqual(Degree, permutationInverse.Degree);
+            Assert.AreEqual(degree, permutationInverse.Degree);
 
             Assert.IsTrue(permutation.Compose(permutationInverse).IsUnit());
 
@@ -64,11 +64,11 @@ namespace MathUtils.Tests.Collections
         [TestMethod]
         public void TestValidPermutationIsValid()
         {
-            const int Degree = 16;
-            const int Seed = 123;
+            const int degree = 16;
+            const int seed = 123;
             for (var i = 0; i < 10; i++)
             {
-                var permutation = Permutation.MakeRandom(degree: Degree, rando: Rando.Fast(Seed + i));
+                var permutation = Rando.Fast(seed + i).ToPermutations(degree).Single(); ;
                 Assert.IsTrue(permutation.IsValid());
 
             }
@@ -77,19 +77,19 @@ namespace MathUtils.Tests.Collections
         [TestMethod]
         public void TestInValidPermutationsAreNotValid()
         {
-            var permutation = Permutation.Make(new[] { 1, 2, 3, 3 });
+            var permutation = Permutation.ToPermutation(new[] { 1, 2, 3, 3 });
             Assert.IsFalse(permutation.IsValid());
 
-            permutation = Permutation.Make(new[] { 1, 2, 3, 4 });
+            permutation = Permutation.ToPermutation(new[] { 1, 2, 3, 4 });
             Assert.IsFalse(permutation.IsValid());
 
-            permutation = Permutation.Make(new[] { 0, 0, 3, 1 });
+            permutation = Permutation.ToPermutation(new[] { 0, 0, 3, 1 });
             Assert.IsFalse(permutation.IsValid());
 
-            permutation = Permutation.Make(new[] { 4, 2, 4, 3 });
+            permutation = Permutation.ToPermutation(new[] { 4, 2, 4, 3 });
             Assert.IsFalse(permutation.IsValid());
 
-            permutation = Permutation.Make(new[] { 0, 2, 3, 3 });
+            permutation = Permutation.ToPermutation(new[] { 0, 2, 3, 3 });
             Assert.IsFalse(permutation.IsValid());
         }
     }
