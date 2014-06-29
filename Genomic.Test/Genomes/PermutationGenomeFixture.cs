@@ -49,7 +49,6 @@ namespace Genomic.Test.Genomes
                     guid: guid,
                     seed: seed,
                     degree: degree,
-                    permutationCount: permutationCount,
                     mutationRate: mutationRate,
                     insertionRate: insertionRate,
                     deletionRate: deletionRate
@@ -91,8 +90,7 @@ namespace Genomic.Test.Genomes
                     mutationRate: mutationRate,
                     insertionRate: insertionRate,
                     deletionRate: deletionRate,
-                    degree: degree,
-                    permutationCount: permutationCount
+                    degree: degree
                 );
 
             var mutantGenome = builder.Make();

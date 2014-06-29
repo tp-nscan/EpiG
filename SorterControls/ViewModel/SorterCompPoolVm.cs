@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Genomic.PhenotypeEvals;
 using MathUtils.Rand;
-using SorterGenome;
 using SorterGenome.CompPool;
 using Sorting.Evals;
 using System.Linq;
@@ -35,7 +34,8 @@ namespace SorterControls.ViewModel
                     displaySize: 3,
                     showStages: false,
                     showUnused: false,
-                    generation: 0
+                    generation: 0,
+                    sorterDisplayCount: 10
                 );
         }
 
@@ -153,21 +153,43 @@ namespace SorterControls.ViewModel
             {
                 return _initialState ??
                     (
-                        _initialState = SorterCompPool.InitStandardFromSeed
-                        (
-                            seed: Seed,
-                            orgCount: SorterCount,
-                            seqenceLength: KeyPairCount,
-                            keyCount: KeyCount,
-                            deletionRate: DeletionRate,
-                            insertionRate: InsertionRate,
-                            mutationRate: MutationRate,
-                            multiplicationRate: MultiplicationRate,
-                            cubRate: CubRate
-                        ).ToPassThroughWorkflow(Guid.NewGuid())
-                         .ToRecursiveWorkflowRndWlk()
+                    _initialState = PermutationStyle ? MakePermutation() : MakeStandard()
                     );
             }
+        }
+
+        IRecursiveWorkflow<ISorterCompPool<ISorter>> MakeStandard()
+        {
+            return SorterCompPool.InitStandardFromSeed
+                (
+                    seed: Seed,
+                    orgCount: SorterCount,
+                    seqenceLength: KeyPairCount,
+                    keyCount: KeyCount,
+                    deletionRate: DeletionRate,
+                    insertionRate: InsertionRate,
+                    mutationRate: MutationRate,
+                    multiplicationRate: MultiplicationRate,
+                    cubRate: CubRate
+                ).ToPassThroughWorkflow(Guid.NewGuid())
+                .ToRecursiveWorkflowRndWlk();
+        }
+
+        IRecursiveWorkflow<ISorterCompPool<ISorter>> MakePermutation()
+        {
+            return SorterCompPool.InitPermuterFromSeed
+                (
+                    seed: Seed,
+                    orgCount: SorterCount,
+                    permutationCount: (KeyPairCount * 2) / KeyCount,
+                    degree: KeyCount,
+                    deletionRate: DeletionRate,
+                    insertionRate: InsertionRate,
+                    mutationRate: MutationRate,
+                    multiplicationRate: MultiplicationRate,
+                    cubRate: CubRate
+                ).ToPassThroughWorkflow(Guid.NewGuid())
+                .ToRecursiveWorkflowRndWlk();
         }
 
 
@@ -209,7 +231,8 @@ namespace SorterControls.ViewModel
                     displaySize: DisplaySize,
                     showStages: ShowStages,
                     showUnused: ShowUnused,
-                    generation: result.Data.Result.Generation
+                    generation: result.Data.Result.Generation,
+                    sorterDisplayCount: SorterPoolVm.SorterGalleryVm.SorterDisplayCount
                 );
 
                 //SorterPoolVm.Generation = result.Data.Result.Generation;
@@ -329,6 +352,18 @@ namespace SorterControls.ViewModel
             }
         }
 
+        private bool _permutationStyle;
+        public bool PermutationStyle
+        {
+            get { return _permutationStyle; }
+            set
+            {
+                _permutationStyle = value; 
+                Reset();
+                OnPropertyChanged("PermutationStyle");
+            }
+        }
+
         private IRando _rando = Rando.Fast(123);
         private int _seed;
         public int Seed
@@ -358,20 +393,7 @@ namespace SorterControls.ViewModel
         #endregion
 
 
-        #region MakeSorterPoolVm related
-
-        void MakeSorterPoolVm(int generation)
-        {
-            SorterPoolVm = new SorterPoolVm
-                (
-                    keyCount: KeyCount,
-                    sorterEvals: Enumerable.Empty<ISorterEval>(),
-                    displaySize: DisplaySize,
-                    showStages: ShowStages,
-                    showUnused: ShowUnused,
-                    generation: generation
-                );
-        }
+        #region SorterPoolVm related
 
         private SorterPoolVm _sorterPoolVm;
         public SorterPoolVm SorterPoolVm
@@ -414,10 +436,6 @@ namespace SorterControls.ViewModel
         public int Generation
         {
             get { return SorterPoolVm.Generation; }
-            //set
-            //{
-            //    SorterPoolVm.Generation = value;
-            //}
         }
 
         #endregion

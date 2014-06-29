@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using MathUtils.Rand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sorting.KeyPairs;
@@ -11,15 +10,21 @@ namespace Sorting.Test.KeyPairs
     public class KeyPairsFixture
     {
         [TestMethod]
-        public void TestRandomFullStage()
+        public void TestToKeyPairs()
         {
-            const int keyCount = 16;
-            IReadOnlyList<int> keys = Enumerable.Range(0, keyCount).ToList();
-            var keyPairs = keys.RandomFullStage(Rando.Fast(111));
+            const int seed = 123;
+            const int keyCount = 100;
+            const int maxKeyIndex = 16;
 
-            var stages = keyPairs.ToSorterStages(keyCount);
+            var randy = Rando.Fast(seed);
 
-            Assert.AreEqual(1, stages.Count());
+            var testKeys = Enumerable.Range(0, keyCount)
+                                     .Select(i => randy.NextInt(maxKeyIndex))
+                                     .ToList();
+
+            var keyPairs = testKeys.ToKeyPairs().ToList();
+
+            Assert.AreEqual(keyCount/2, keyPairs.Count);
         }
 
         [TestMethod]

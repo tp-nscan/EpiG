@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SorterGenome;
 using SorterGenome.CompPool;
 using Sorting.Evals;
 using WpfUtils;
@@ -15,7 +14,8 @@ namespace SorterControls.ViewModel
                 int displaySize,
                 bool showStages,
                 bool showUnused,
-                int generation
+                int generation,
+                int sorterDisplayCount
             )
         {
             _generation = generation;
@@ -27,7 +27,7 @@ namespace SorterControls.ViewModel
                     displaySize: displaySize,
                     showStages: showStages,
                     showUnused: showUnused,
-                    sorterDisplayCount: 10
+                    sorterDisplayCount: sorterDisplayCount
                 );
         }
 

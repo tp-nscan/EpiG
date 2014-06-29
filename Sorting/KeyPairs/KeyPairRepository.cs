@@ -33,22 +33,55 @@ namespace Sorting.KeyPairs
             IReadOnlyList<int> keys = Enumerable.Range(0, keyCount).ToList();
             while (true)
             {
-                yield return keys.RandomFullStage(rando);
+                var scrambles = keys.FisherYatesShuffle(rando);
+                yield return scrambles.ToKeyPairs().ToList();
             }
         }
 
-        public static List<IKeyPair> RandomFullStage(this IReadOnlyList<int> singles, IRando rando)
+        public static IEnumerable<IKeyPair> ToKeyPairs(this IEnumerable<int> keys)
         {
-            var listRet = new List<IKeyPair>();
-            var scrambles = singles.FisherYatesShuffle(rando);
-            for (var i = 0; i < scrambles.Count()-1; i+=2)
+            var keyEnumerator = keys.GetEnumerator();
+            while (true)
             {
-                var a = scrambles[i];
-                var b = scrambles[i + 1];
-                listRet.Add((a < b) ? ForKeys(a, b) : ForKeys(b, a)); 
-            }
+                if (! keyEnumerator.MoveNext())
+                {
+                    yield break;
+                }
 
-            return listRet;
+                var valA = keyEnumerator.Current;
+
+                if (!keyEnumerator.MoveNext())
+                {
+                    yield break;
+                }
+
+                var valB = keyEnumerator.Current;
+
+                yield return (valA < valB) ? ForKeys(valA, valB) : ForKeys(valB, valA);
+            }
+        }
+
+        public static IEnumerable<IKeyPair> ToKeyPairs(this IEnumerable<uint> keys)
+        {
+            var keyEnumerator = keys.GetEnumerator();
+            while (true)
+            {
+                if (!keyEnumerator.MoveNext())
+                {
+                    yield break;
+                }
+
+                var valA = keyEnumerator.Current;
+
+                if (!keyEnumerator.MoveNext())
+                {
+                    yield break;
+                }
+
+                var valB = keyEnumerator.Current;
+
+                yield return (valA < valB) ? ForKeys((int) valA, (int) valB) : ForKeys((int) valB, (int) valA);
+            }
         }
 
         static KeyPairRepository()

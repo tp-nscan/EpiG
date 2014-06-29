@@ -14,17 +14,19 @@ namespace SorterGenome.CompPool
     {
         public SorterCompPoolPermutation
             (
-            int generation,
-            IReadOnlyDictionary<Guid, IGenome> genomes,
-            IReadOnlyDictionary<Guid, IPhenotype<T>> phenotypes,
-            IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
-            SorterCompPoolStageType sorterCompPoolStageType,
-            int keyCount,
-            int orgCount,
-            double multiplicationRate,
-            double deletionRate,
-            double insertionRate,
-            double mutationRate
+                Guid guid,
+                int generation,
+                IReadOnlyDictionary<Guid, IGenome> genomes,
+                IReadOnlyDictionary<Guid, IPhenotype<T>> phenotypes,
+                IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
+                SorterCompPoolStageType sorterCompPoolStageType,
+                int keyCount,
+                int orgCount,
+                double multiplicationRate,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate,
+                double cubRate
             )
         {
             _generation = generation;
@@ -35,6 +37,8 @@ namespace SorterGenome.CompPool
             _keyCount = keyCount;
             _orgCount = orgCount;
             _mutationRate = mutationRate;
+            _cubRate = cubRate;
+            _guid = guid;
             _multiplicationRate = multiplicationRate;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
@@ -47,58 +51,64 @@ namespace SorterGenome.CompPool
                 case SorterCompPoolStageType.MakePhenotypes:
 
                     var randy = Rando.Fast(seed);
-                    return new SorterCompPoolStandard<T>
+                    return new SorterCompPoolPermutation<T>
                         (
-                        generation: Generation,
-                        genomes: Genomes,
-                        phenotypes: Genomes.Values
-                            .Select(g => Phenotyper(g, randy))
-                            .ToDictionary(p => p.Guid),
-                        phenotypeEvals: PhenotypeEvals,
-                        sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
-                        keyCount: KeyCount,
-                        orgCount: OrgCount,
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        multiplicationRate: MultiplicationRate
+                            guid: Guid.NewGuid(),
+                            generation: Generation,
+                            genomes: Genomes,
+                            phenotypes: Genomes.Values
+                                .Select(g => Phenotyper(g, randy))
+                                .ToDictionary(p => p.Guid),
+                            phenotypeEvals: PhenotypeEvals,
+                            sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
+                            keyCount: KeyCount,
+                            orgCount: OrgCount,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            multiplicationRate: MultiplicationRate,
+                            cubRate: CubRate
                         );
 
                 case SorterCompPoolStageType.EvaluatePhenotypes:
 
                     var randy2 = Rando.Fast(seed);
-                    return new SorterCompPoolStandard<T>
+                    return new SorterCompPoolPermutation<T>
                         (
-                        generation: Generation,
-                        genomes: Genomes,
-                        phenotypes: Phenotypes,
-                        phenotypeEvals: Phenotypes.Values
-                            .Select(p => PhenotypeEvaluator(p, randy2))
-                            .ToDictionary(pe => pe.Guid),
-                        sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
-                        keyCount: KeyCount,
-                        orgCount: OrgCount,
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        multiplicationRate: MultiplicationRate
+                            guid: Guid.NewGuid(),
+                            generation: Generation,
+                            genomes: Genomes,
+                            phenotypes: Phenotypes,
+                            phenotypeEvals: Phenotypes.Values
+                                .Select(p => PhenotypeEvaluator(p, randy2))
+                                .ToDictionary(pe => pe.Guid),
+                            sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
+                            keyCount: KeyCount,
+                            orgCount: OrgCount,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            multiplicationRate: MultiplicationRate,
+                            cubRate: CubRate
                         );
 
                 case SorterCompPoolStageType.MakeNextGeneration:
 
-                    return new SorterCompPoolStandard<T>
+                    return new SorterCompPoolPermutation<T>
                         (
-                        generation: Generation + 1,
-                        genomes: NextGenerator(PhenotypeEvals, seed),
-                        phenotypes: Phenotypes,
-                        phenotypeEvals: PhenotypeEvals,
-                        sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
-                        keyCount: KeyCount,
-                        orgCount: OrgCount,
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        multiplicationRate: MultiplicationRate
+                            guid: Guid.NewGuid(),
+                            generation: Generation + 1,
+                            genomes: NextGenerator(PhenotypeEvals, seed),
+                            phenotypes: Phenotypes,
+                            phenotypeEvals: PhenotypeEvals,
+                            sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
+                            keyCount: KeyCount,
+                            orgCount: OrgCount,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            multiplicationRate: MultiplicationRate,
+                            cubRate: CubRate
                         );
                 default:
                     throw new Exception(SorterCompPoolStageType + " not handled");
@@ -190,7 +200,7 @@ namespace SorterGenome.CompPool
 
         public Func<IGenome, IRando, IPhenotype<T>> Phenotyper
         {
-            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakeStandard<T>(KeyCount)); }
+            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuter<T>(KeyCount)); }
         }
 
         private Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> _phenotypeEvaluator;
@@ -199,7 +209,8 @@ namespace SorterGenome.CompPool
         {
             get
             {
-                return _phenotypeEvaluator ?? (_phenotypeEvaluator = PhenotypeEvaluators.MakeStandard<T>());
+                return _phenotypeEvaluator ?? 
+                    (_phenotypeEvaluator = PhenotypeEvaluators.MakeStandard<T>());
             }
         }
 
@@ -212,15 +223,15 @@ namespace SorterGenome.CompPool
             {
                 return _nextGenerator ??
                        (
-                           _nextGenerator = new NextGeneratorImpl<T>
+                           _nextGenerator = new NextGeneratorForStagedSorter<T>
                                (
-                               keyCount: KeyCount,
-                               orgCount: OrgCount,
-                               deletionRate: DeletionRate,
-                               insertionRate: InsertionRate,
-                               mutationRate: MutationRate,
-                               multiplicationRate: MultiplicationRate,
-                               cubRate: CubRate
+                                   keyCount: KeyCount,
+                                   orgCount: OrgCount,
+                                   deletionRate: DeletionRate,
+                                   insertionRate: InsertionRate,
+                                   mutationRate: MutationRate,
+                                   multiplicationRate: MultiplicationRate,
+                                   cubRate: CubRate
                                ).NextGenerator
                            );
             }
@@ -231,8 +242,7 @@ namespace SorterGenome.CompPool
             return Step(seed);
         }
 
-        private Guid _guid;
-
+        private readonly Guid _guid;
         public Guid Guid
         {
             get { return _guid; }

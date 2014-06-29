@@ -29,5 +29,19 @@ namespace SorterGenome
                 phenoFunc.ToPhenotype(g, r.NextGuid());
         }
 
+        public static Func<IGenome, IRando, IPhenotype<T>> MakePermuter<T>
+            (
+                int keyCount
+            )
+            where T : ISorter
+        {
+            Func<IGenome, T> phenoFunc =
+                g =>
+                    (T) g.Sequence.ToKeyPairs().ToSorter(keyCount);
+
+            return (g, r) =>
+
+                phenoFunc.ToPhenotype(g, r.NextGuid());
+        }
     }
 }

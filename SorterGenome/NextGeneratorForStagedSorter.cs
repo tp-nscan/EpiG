@@ -11,17 +11,10 @@ using Sorting.Sorters;
 
 namespace SorterGenome
 {
-    public static class NextGenerator
-    {
-
-
-
-    }
-
-    public class NextGeneratorImpl<T>
+    public class NextGeneratorForStagedSorter<T>
         where T : ISorter
     {
-        public NextGeneratorImpl(
+        public NextGeneratorForStagedSorter(
             int keyCount, 
             int orgCount,
             double deletionRate, 
@@ -55,10 +48,10 @@ namespace SorterGenome
                     .Take(eD.Count - winningGenomes.Count)
                     .Select
                     (
-                        g => g.ToSimpleGenomeBuilderMutator
+                        g => g.ToPermutationMutatorBuilder
                             (
                                 guid: randy.NextGuid(),
-                                symbolCount: (uint) KeyPairRepository.KeyPairSetSizeForKeyCount(keyCount),
+                                degree: keyCount,
                                 seed: randy.NextInt(),
                                 deletionRate: DeletionRate,
                                 insertionRate: InsertionRate,
@@ -67,7 +60,7 @@ namespace SorterGenome
                             ).Make()
                     ).ToList();
 
-                return winningGenomes.Concat(mutants).ToDictionary(g => g.GenomeBuilder.Guid);
+                return winningGenomes.Concat(mutants).ToDictionary(g => g.Guid);
             };
         }
 
@@ -130,6 +123,4 @@ namespace SorterGenome
             get { return _nextGenerator; }
         }
     }
-
-
 }

@@ -234,6 +234,40 @@ namespace WpfUtils.Converters
         }
     }
 
+
+    public class BoolNegateConverter : MarkupExtension, IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
+            {
+                return (!((bool?)value).Value);
+            }
+            catch
+            {
+                return value;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
+            {
+                return (!((bool?)value).Value);
+            }
+            catch
+            {
+                return value;
+            }
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return this;
+        }
+    }
+
+
     public class MaxValueConverter : MarkupExtension, IMultiValueConverter
     {
         #region IMultiValueConverter Members

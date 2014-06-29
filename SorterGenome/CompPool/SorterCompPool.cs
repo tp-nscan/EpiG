@@ -50,7 +50,9 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
-            return new SorterCompPoolStandard<ISorter>(
+            return new SorterCompPoolStandard<ISorter>
+                (
+                    guid: Guid.NewGuid(),
                     generation: 0,
                     genomes: Rando.Fast(seed).ToSimpleGenomeBuilders
                             (
@@ -66,11 +68,10 @@ namespace SorterGenome.CompPool
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    multiplicationRate: multiplicationRate
+                    multiplicationRate: multiplicationRate,
+                    cubRate: cubRate
                 );
         }
-
-
 
 
 
@@ -87,7 +88,9 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
-            return new SorterCompPoolStandard<ISorter>(
+            return new SorterCompPoolPermutation<ISorter>
+                (
+                    guid: Guid.NewGuid(),
                     generation: 0,
                     genomes: Rando.Fast(seed).ToPermutationGenomeBuilders
                             (
@@ -103,7 +106,8 @@ namespace SorterGenome.CompPool
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    multiplicationRate: multiplicationRate
+                    multiplicationRate: multiplicationRate,
+                    cubRate: cubRate
                 );
         }
 

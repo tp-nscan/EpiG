@@ -66,6 +66,7 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Margin" Value="5,2" />
                 <Setter Property="Padding" Value="5,2" />
+                <Setter Property="Width" Value="40"/>
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
@@ -76,93 +77,111 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border Margin="2" 
-            Padding="2"
-            CornerRadius="4" 
-            Background="#300F">
+        <DockPanel LastChildFill="True">
 
-            <WrapPanel>
+            <Grid DockPanel.Dock="Right" >
+                <Button Command="{Binding CancelSimulationCommand}" Content="Stop"/>
+                <Button Command="{Binding StartSimulationCommand}" Content="Run" 
+                        Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
+            </Grid>
 
-                <StackPanel>
-                    <TextBlock Text="Seed" />
-                    <TextBox Text="{Binding Seed}" 
+            <Border Margin="2"
+                   
+                IsEnabled="{Binding IsBusy, Converter={converters:BoolNegateConverter}}"
+                Padding="2"
+                CornerRadius="4" 
+                Background="#300F">
+
+                <WrapPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Seed" />
+                        <TextBox Text="{Binding Seed}" 
                         MinWidth="50"/>
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="Key Count" />
-                    <xctk:IntegerUpDown Value="{Binding KeyCount}" 
+                    <StackPanel>
+                        <TextBlock Text="Key Count" />
+                        <xctk:IntegerUpDown Value="{Binding KeyCount}" 
                         Minimum="2" 
                         Maximum="20" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="KeyPair Count" />
-                    <xctk:IntegerUpDown Value="{Binding KeyPairCount}"
+                    <StackPanel>
+                        <TextBlock Text="KeyPair Count" />
+                        <xctk:IntegerUpDown Value="{Binding KeyPairCount}"
                         Minimum="0" 
                         Increment="50" 
                         Maximum="10000" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="Sorter Count" />
-                    <xctk:IntegerUpDown Value="{Binding SorterCount}"
+                    <StackPanel>
+                        <TextBlock Text="Sorter Count" />
+                        <xctk:IntegerUpDown Value="{Binding SorterCount}"
                         Minimum="0" 
                         Increment="5" 
                         Maximum="10000" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="Mutation rate" />
-                    <xctk:DoubleUpDown Value="{Binding MutationRate}"
+                    <StackPanel>
+                        <TextBlock Text="Mutation rate" />
+                        <xctk:DoubleUpDown Value="{Binding MutationRate}"
                         Minimum="0.000" 
                         Increment="0.005" 
                         Maximum="0.1" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="Insertion rate" />
-                    <xctk:DoubleUpDown Value="{Binding InsertionRate}"
+                    <StackPanel>
+                        <TextBlock Text="Insertion rate" />
+                        <xctk:DoubleUpDown Value="{Binding InsertionRate}"
                         Minimum="0.000" 
                         Increment="0.005" 
                         Maximum="0.1" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="Deletion rate" />
-                    <xctk:DoubleUpDown Value="{Binding DeletionRate}"
+                    <StackPanel>
+                        <TextBlock Text="Deletion rate" />
+                        <xctk:DoubleUpDown Value="{Binding DeletionRate}"
                         Minimum="0.000" 
                         Increment="0.005" 
                         Maximum="0.1" />
-                </StackPanel>
-                
-                
-                <StackPanel>
-                    <TextBlock Text="Multiplication rate" />
-                    <xctk:DoubleUpDown Value="{Binding MultiplicationRate}"
+                    </StackPanel>
+
+
+                    <StackPanel>
+                        <TextBlock Text="Multiplication rate" />
+                        <xctk:DoubleUpDown Value="{Binding MultiplicationRate}"
                         Minimum="1.0" 
                         Increment="0.25" 
                         Maximum="10.0" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Text="Cub rate" />
-                    <xctk:DoubleUpDown Value="{Binding CubRate}"
+                    <StackPanel>
+                        <TextBlock Text="Cub rate" />
+                        <xctk:DoubleUpDown Value="{Binding CubRate}"
                         Minimum="0.0" 
                         Increment="0.1" 
                         Maximum="1.0" />
-                </StackPanel>
-                <Grid>
-                    <Button Command="{Binding CancelSimulationCommand}" Content="Stop"/>
-                    <Button Command="{Binding StartSimulationCommand}" Content="Run" 
-                        Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
-                </Grid>
+                    </StackPanel>
 
 
-            </WrapPanel>
-        </Border>
+                    <StackPanel>
+                        <CheckBox IsChecked="{Binding PermutationStyle}" Content="Permutation style"/>
+                    </StackPanel>
+                    
+
+                </WrapPanel>
+
+
+            </Border>
+            
+
+            
+        </DockPanel>
+
 
         <sorterControls:SorterPoolControl Grid.Row="1" DataContext="{Binding SorterPoolVm}"  />
 
     </Grid>
+    
 </UserControl>

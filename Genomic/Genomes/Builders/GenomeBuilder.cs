@@ -85,7 +85,7 @@ namespace Genomic.Genomes.Builders
             )
         {
             {
-                return new GenomeBuilderMutator
+                return new SimpleGenomeBuilderMutator
                     (
                         symbolCount: symbolCount,
                         sourceGenome: sourceGenome,
@@ -159,9 +159,9 @@ namespace Genomic.Genomes.Builders
 
     }
 
-    public class GenomeBuilderMutator : ISimpleGenomeBuilderMutator
+    public class SimpleGenomeBuilderMutator : ISimpleGenomeBuilderMutator
     {
-        public GenomeBuilderMutator
+        public SimpleGenomeBuilderMutator
             (
                 Guid guid,
                 IGenome sourceGenome,

@@ -43,7 +43,6 @@ namespace Genomic.Genomes.Builders
                 Guid guid,
                 int seed,
                 int degree,
-                int permutationCount,
                 double deletionRate,
                 double insertionRate,
                 double mutationRate
@@ -54,7 +53,6 @@ namespace Genomic.Genomes.Builders
                     guid: guid,
                     sourceGenome: sourceGenome,
                     degree: degree,
-                    permutationCount: permutationCount,
                     seed: seed,
                     mutationRate: mutationRate,
                     insertionRate: insertionRate,
@@ -128,7 +126,6 @@ namespace Genomic.Genomes.Builders
                 Guid guid,
                 int seed,
                 int degree,
-                int permutationCount,
                 double deletionRate,
                 double insertionRate,
                 double mutationRate
@@ -139,7 +136,6 @@ namespace Genomic.Genomes.Builders
             _mutationRate = mutationRate;
             _sourceGenome = sourceGenome;
             _degree = degree;
-            _permutationCount = permutationCount;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
         }
@@ -155,11 +151,21 @@ namespace Genomic.Genomes.Builders
             var randy = Rando.Fast(Seed);
             return Genome.Make
                 (
-                    sequence: SourceGenome.Sequence
-                                        .ToPermutations(Degree)
-                                        .Select(p=> p.Mutate(randy, MutationRate))
-                                        .SelectMany(p => p.Values.Cast<uint>())
-                                        .ToList(),
+                    sequence: SourceGenome
+                    .Sequence
+                    .ToPermutations(Degree)
+                    .ToList()
+                    .MutateInsertDelete
+                        (
+                            doMutation: randy.ToBoolEnumerator(1.0),
+                            doInsertion: randy.ToBoolEnumerator(InsertionRate),
+                            doDeletion: randy.ToBoolEnumerator(DeletionRate),
+                            mutator: p => p.Mutate(randy, MutationRate),
+                            inserter: x => randy.ToPermutations(Degree).First(),
+                            paddingFunc: x => randy.ToPermutations(Degree).First()
+                        )
+                    .SelectMany(p => p.Values.Cast<uint>())
+                    .ToList(),
                     genomeBuilder: this
                 );
         }
@@ -205,10 +211,9 @@ namespace Genomic.Genomes.Builders
             get { return _degree; }
         }
 
-        private readonly int _permutationCount;
         public int PermutationCount
         {
-            get { return _permutationCount; }
+            get { return _sourceGenome.SequenceLength/Degree; }
         }
     }
 
