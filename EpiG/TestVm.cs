@@ -121,27 +121,6 @@ namespace EpiG
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> MakeSorterEvalBackgroundWorker()
         {
             return null;
-            //_sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-            //        parameters: _rando.ToIntEnumerator().Take(3).ToList(),
-            //        recursion: (w, i, c) => IterationResult.Make
-            //            (
-            //                w.Update(i),
-            //                ProgressStatus.StepComplete
-            //            ),
-            //            initialState: SorterCompPool.MakeStandard
-            //            (
-            //                seed: Seed,
-            //                orgCount: SorterCount,
-            //                seqenceLength: 12,
-            //                keyCount: 1,
-            //                mutationRate: 0.0,
-            //                multiplicationRate: 0.0,
-            //                cubRate: 0.0,
-            //                guid:Guid.NewGuid()
-            //            )
-            //            .ToPassThroughWorkflow(Guid.NewGuid())
-            //             .ToRecursiveWorkflowRw()
-            //    );
         }
 
         void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<ISorter>>> result)

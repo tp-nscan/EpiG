@@ -26,7 +26,7 @@ namespace SorterGenome.CompPool
 
         IReadOnlyDictionary<Guid, IPhenotypeEval<T>> PhenotypeEvals { get; }
 
-        Func<IGenome, IRando, IPhenotype<T>> Phenotyper { get; }
+        Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> Phenotyper { get; }
 
         Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> PhenotypeEvaluator { get; }
 
@@ -46,7 +46,7 @@ namespace SorterGenome.CompPool
             double deletionRate, 
             double insertionRate,
             double mutationRate,
-            double multiplicationRate,
+            double legacyRate,
             double cubRate
         )
         {
@@ -68,7 +68,7 @@ namespace SorterGenome.CompPool
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    multiplicationRate: multiplicationRate,
+                    legacyRate: legacyRate,
                     cubRate: cubRate
                 );
         }
@@ -84,7 +84,7 @@ namespace SorterGenome.CompPool
             double deletionRate,
             double insertionRate,
             double mutationRate,
-            double multiplicationRate,
+            double legacyRate,
             double cubRate
         )
         {
@@ -106,7 +106,7 @@ namespace SorterGenome.CompPool
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    multiplicationRate: multiplicationRate,
+                    legacyRate: legacyRate,
                     cubRate: cubRate
                 );
         }

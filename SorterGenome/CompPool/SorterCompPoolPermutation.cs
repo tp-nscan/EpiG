@@ -22,7 +22,7 @@ namespace SorterGenome.CompPool
                 SorterCompPoolStageType sorterCompPoolStageType,
                 int keyCount,
                 int orgCount,
-                double multiplicationRate,
+                double legacyRate,
                 double deletionRate,
                 double insertionRate,
                 double mutationRate,
@@ -39,7 +39,7 @@ namespace SorterGenome.CompPool
             _mutationRate = mutationRate;
             _cubRate = cubRate;
             _guid = guid;
-            _multiplicationRate = multiplicationRate;
+            _legacyRate = legacyRate;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
         }
@@ -57,7 +57,7 @@ namespace SorterGenome.CompPool
                             generation: Generation,
                             genomes: Genomes,
                             phenotypes: Genomes.Values
-                                .Select(g => Phenotyper(g, randy))
+                                .SelectMany(g => Phenotyper(g, randy))
                                 .ToDictionary(p => p.Guid),
                             phenotypeEvals: PhenotypeEvals,
                             sorterCompPoolStageType: SorterCompPoolStageType.EvaluatePhenotypes,
@@ -66,7 +66,7 @@ namespace SorterGenome.CompPool
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            multiplicationRate: MultiplicationRate,
+                            legacyRate: LegacyRate,
                             cubRate: CubRate
                         );
 
@@ -88,7 +88,7 @@ namespace SorterGenome.CompPool
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            multiplicationRate: MultiplicationRate,
+                            legacyRate: LegacyRate,
                             cubRate: CubRate
                         );
 
@@ -107,7 +107,7 @@ namespace SorterGenome.CompPool
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            multiplicationRate: MultiplicationRate,
+                            legacyRate: LegacyRate,
                             cubRate: CubRate
                         );
                 default:
@@ -150,10 +150,10 @@ namespace SorterGenome.CompPool
             get { return _mutationRate; }
         }
 
-        private readonly double _multiplicationRate;
-        public double MultiplicationRate
+        private readonly double _legacyRate;
+        public double LegacyRate
         {
-            get { return _multiplicationRate; }
+            get { return _legacyRate; }
         }
 
         private readonly double _cubRate;
@@ -196,9 +196,9 @@ namespace SorterGenome.CompPool
             get { return _phenotypeEvals; }
         }
 
-        private Func<IGenome, IRando, IPhenotype<T>> _phenotyper;
+        private Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> _phenotyper;
 
-        public Func<IGenome, IRando, IPhenotype<T>> Phenotyper
+        public Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> Phenotyper
         {
             get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuter<T>(KeyCount)); }
         }
@@ -230,7 +230,7 @@ namespace SorterGenome.CompPool
                                    deletionRate: DeletionRate,
                                    insertionRate: InsertionRate,
                                    mutationRate: MutationRate,
-                                   multiplicationRate: MultiplicationRate,
+                                   legacyRate: LegacyRate,
                                    cubRate: CubRate
                                ).NextGenerator
                            );

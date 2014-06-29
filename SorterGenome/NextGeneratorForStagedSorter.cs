@@ -20,14 +20,14 @@ namespace SorterGenome
             double deletionRate, 
             double insertionRate,
             double mutationRate, 
-            double multiplicationRate, 
+            double legacyRate, 
             double cubRate
          )
         {
             _keyCount = keyCount;
             _orgCount = orgCount;
             _mutationRate = mutationRate;
-            _multiplicationRate = multiplicationRate;
+            _legacyRate = legacyRate;
             _cubRate = cubRate;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
@@ -37,15 +37,17 @@ namespace SorterGenome
 
                 var randy = Rando.Fast(i);
 
-                var winningGenomes =
+                var leaderBoard =
                     eD.Values.OrderBy(v => v)
-                        .Take((int) (eD.Count/multiplicationRate))
                         .Select(ev => ev.Phenotype.PhenotypeBuilder.Genome)
                         .ToList();
 
-                var mutants = winningGenomes
+                var legacies = leaderBoard.Take((int) (OrgCount*LegacyRate)).ToList();
+
+                var mutants =
+                    leaderBoard.Take((int)(OrgCount * CubRate))
                     .Repeat()
-                    .Take(eD.Count - winningGenomes.Count)
+                    .Take(OrgCount - legacies.Count)
                     .Select
                     (
                         g => g.ToPermutationMutatorBuilder
@@ -60,7 +62,7 @@ namespace SorterGenome
                             ).Make()
                     ).ToList();
 
-                return winningGenomes.Concat(mutants).ToDictionary(g => g.Guid);
+                return legacies.Concat(mutants).ToDictionaryIgnoreDupes(g => g.Guid);
             };
         }
 
@@ -94,10 +96,10 @@ namespace SorterGenome
             get { return _mutationRate; }
         }
 
-        private readonly double _multiplicationRate;
-        public double MultiplicationRate
+        private readonly double _legacyRate;
+        public double LegacyRate
         {
-            get { return _multiplicationRate; }
+            get { return _legacyRate; }
         }
 
         private readonly double _cubRate;

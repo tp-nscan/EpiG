@@ -4,9 +4,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:local="clr-namespace:SorterControls.View"
     mc:Ignorable="d"
     x:Class="SorterControls.View.SorterGalleryControl"
     x:Name="UserControl">
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+            <WrapPanel Width="{Binding ActualWidth, Mode=Default, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SorterGalleryControl}}}" IsItemsHost="True"/>
+        </ItemsPanelTemplate>
+    </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
         <Grid>
@@ -55,7 +61,9 @@
             <ListView Grid.Row="1"
                 ItemsSource="{Binding SorterEvalVms}" 
                 Background="#2FFF" 
-                ItemTemplateSelector="{DynamicResource SorterSelector}"/>
+                
+                ItemTemplateSelector="{DynamicResource SorterSelector}" 
+                ItemsPanel="{DynamicResource ItemsPanelTemplate1}"/>
 
 
         </Grid>

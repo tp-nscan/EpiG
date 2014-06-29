@@ -5,14 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils"
-             xmlns:view="clr-namespace:SorterControls.View"
              xmlns:sorterControls="clr-namespace:SorterControls"
              x:Class="SorterControls.View.SorterCompPoolControl"
-             mc:Ignorable="d" >
+             mc:Ignorable="d" 
+            d:DesignWidth="800">
 
     <UserControl.Resources>
         <converters:InvBoolToVisibilityConverter x:Key="InvBoolToVisibilityConverter"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -149,19 +148,19 @@
 
 
                     <StackPanel>
-                        <TextBlock Text="Multiplication rate" />
-                        <xctk:DoubleUpDown Value="{Binding MultiplicationRate}"
-                        Minimum="1.0" 
-                        Increment="0.25" 
-                        Maximum="10.0" />
+                        <TextBlock Text="Legacy rate" />
+                        <xctk:DoubleUpDown Value="{Binding LegacyRate}"
+                        Minimum="0.0" 
+                        Increment="0.02" 
+                        Maximum="0.4" />
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Cub rate" />
                         <xctk:DoubleUpDown Value="{Binding CubRate}"
                         Minimum="0.0" 
-                        Increment="0.1" 
-                        Maximum="1.0" />
+                        Increment="0.02" 
+                        Maximum="0.4" />
                     </StackPanel>
 
 

@@ -18,13 +18,13 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolVm()
         {
-            _multiplicationRate = 2.0;
+            _legacyRate = 0.04;
             _mutationRate = 0.03;
-            _cubRate = 0.25;
+            _cubRate = 0.24;
 
-            _sorterCount = 10;
+            _sorterCount = 500;
             _seed = 1234;
-            _keyPairCount = 100;
+            _keyPairCount = 450;
             _keyCount = 10;
 
             SorterPoolVm = new SorterPoolVm
@@ -169,7 +169,7 @@ namespace SorterControls.ViewModel
                     deletionRate: DeletionRate,
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
-                    multiplicationRate: MultiplicationRate,
+                    legacyRate: LegacyRate,
                     cubRate: CubRate
                 ).ToPassThroughWorkflow(Guid.NewGuid())
                 .ToRecursiveWorkflowRndWlk();
@@ -186,7 +186,7 @@ namespace SorterControls.ViewModel
                     deletionRate: DeletionRate,
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
-                    multiplicationRate: MultiplicationRate,
+                    legacyRate: LegacyRate,
                     cubRate: CubRate
                 ).ToPassThroughWorkflow(Guid.NewGuid())
                 .ToRecursiveWorkflowRndWlk();
@@ -292,15 +292,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private double _multiplicationRate;
-        public double MultiplicationRate
+        private double _legacyRate;
+        public double LegacyRate
         {
-            get { return _multiplicationRate; }
+            get { return _legacyRate; }
             set
             {
-                _multiplicationRate = value;
+                _legacyRate = value;
                 Reset();
-                OnPropertyChanged("MultiplicationRate");
+                OnPropertyChanged("LegacyRate");
             }
         }
 
