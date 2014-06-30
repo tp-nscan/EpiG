@@ -15,10 +15,6 @@ namespace MathUtils.Collections
         T Item { get; }
     }
 
-    public interface IGuidParts
-    {
-        object GetPart(Guid key);
-    }
 
     public static class GuidExt
     {
@@ -53,10 +49,10 @@ namespace MathUtils.Collections
                 );
         }
 
-        public static IGuid<T> WrapWithGuid<T>(this T item, Guid guid)
-        {
-            return new GuidWrapper<T>(guid, item);
-        }
+        //public static IGuid<T> WrapWithGuid<T>(this T item, Guid guid)
+        //{
+        //    return new GuidWrapper<T>(guid, item);
+        //}
 
         public static int ToHash(this Guid guid)
         {
@@ -111,41 +107,41 @@ namespace MathUtils.Collections
         }
     }
 
-    public class GuidWrapper<T> : IGuid<T>, IGuidParts
-    {
-        private readonly Guid _guid;
-        private readonly T _item;
+    //public class GuidWrapper<T> : IGuid<T>
+    //{
+    //    private readonly Guid _guid;
+    //    private readonly T _item;
 
-        public GuidWrapper(Guid guid, T item)
-        {
-            _guid = guid;
-            _item = item;
-        }
+    //    public GuidWrapper(Guid guid, T item)
+    //    {
+    //        _guid = guid;
+    //        _item = item;
+    //    }
 
-        public Guid Guid
-        {
-            get { return _guid; }
-        }
+    //    public Guid Guid
+    //    {
+    //        get { return _guid; }
+    //    }
 
-        public T Item
-        {
-            get { return _item; }
-        }
+    //    public T Item
+    //    {
+    //        get { return _item; }
+    //    }
 
-        public object GetPart(Guid key)
-        {
-            if (Guid == key)
-            {
-                return Item;
-            }
+    //    public object GetPart(Guid key)
+    //    {
+    //        if (Guid == key)
+    //        {
+    //            return Item;
+    //        }
 
-            var guidParts = Item as IGuidParts;
-            if (guidParts != null)
-            {
-                return guidParts.GetPart(key);
-            }
+    //        var guidParts = Item as IGuidParts;
+    //        if (guidParts != null)
+    //        {
+    //            return guidParts.GetPart(key);
+    //        }
 
-            return null;
-        }
-    }
+    //        return null;
+    //    }
+    //}
 }

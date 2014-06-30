@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MathUtils;
 using MathUtils.Collections;
 using MathUtils.Rand;
 
 namespace Genomic.Genomes.Builders
 {
-    public interface IGenomeBuilder : IGuid
+    public interface IGenomeBuilder : IEntity
     {
         IGenome Make();
-        string GenomeBuilderType { get; }
     }
 
     public interface ISimpleGenomeEncoding
@@ -133,11 +133,6 @@ namespace Genomic.Genomes.Builders
                 );
         }
 
-        public string GenomeBuilderType
-        {
-            get { return "SimpleGenomeBuilderRandom"; }
-        }
-
         private readonly int _seed;
         public int Seed
         {
@@ -157,6 +152,15 @@ namespace Genomic.Genomes.Builders
         }
 
 
+        public string EntityName
+        {
+            get { return "SimpleGenomeBuilderRandom"; }
+        }
+
+        public IEntity GetPart(Guid key)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class SimpleGenomeBuilderMutator : ISimpleGenomeBuilderMutator
@@ -218,11 +222,6 @@ namespace Genomic.Genomes.Builders
                 );
         }
 
-        public string GenomeBuilderType
-        {
-            get { return "SimpleGenomeBuilderRandom"; }
-        }
-
         private readonly int _seed;
         public int Seed
         {
@@ -251,6 +250,16 @@ namespace Genomic.Genomes.Builders
         public Guid Guid
         {
             get { return _guid; }
+        }
+
+        public string EntityName
+        {
+            get { return "SimpleGenomeBuilderRandom"; }
+        }
+
+        public IEntity GetPart(Guid key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

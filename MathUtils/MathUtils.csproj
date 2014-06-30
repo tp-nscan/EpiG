@@ -59,6 +59,7 @@
     <Compile Include="Collections\Matrix.cs" />
     <Compile Include="Collections\EnumerableExt.cs" />
     <Compile Include="Collections\TorusPoint.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="Expando\ExpandoJSONConverter.cs" />
     <Compile Include="Expando\DictionaryExtensions.cs" />
     <Compile Include="Interval\IntInterval.cs" />

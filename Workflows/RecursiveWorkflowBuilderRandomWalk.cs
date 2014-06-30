@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using MathUtils.Collections;
+using MathUtils;
 using Utils;
 
 namespace Workflows

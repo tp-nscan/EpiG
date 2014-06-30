@@ -1,62 +1,28 @@
 ﻿using System;
 using Genomic.Phenotypes;
-using MathUtils.Collections;
+using MathUtils;
 
 namespace Genomic.PhenotypeEvals
 {
-    public interface IPhenotypeEval<T> : IGuid, IComparable
+    public interface IPhenotypeEval<T> : IEntity, IComparable
+        where T : IEntity
     {
         IPhenotype<T> Phenotype { get; }
         IPhenotypeEvalBuilder<T> PhenotypeEvalBuilder { get; }
     }
 
 
-    public static class PhenotypeEval
+    public abstract class PhenotypeEvalDbl<T> : IPhenotypeEval<T>
+        where T : IEntity
     {
-        public static IPhenotypeEval<T> Make<T>(
-                Guid guid, 
-                IPhenotype<T> 
-                phenotype, 
-                double result,
-                IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
-            )
-        {
-            return new PhenotypeEvalDbl<T>(
-                guid: guid,
-                phenotype: phenotype,
-                result: result,
-                phenotypeEvalBuilder: phenotypeEvalBuilder
-             );
-        }
-
-        public static IPhenotypeEval<T> Make<T, C>(
-            Guid guid,
-            IPhenotype<T>
-            phenotype,
-            C result,
-            IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
-        )
-            where C : IComparable
-        {
-            return new PhenotypeEvalComparable<T, C>(
-                guid: guid,
-                phenotype: phenotype,
-                result: result,
-                phenotypeEvalBuilder: phenotypeEvalBuilder
-             );
-        }
-    }
-
-
-    public class PhenotypeEvalDbl<T> : IPhenotypeEval<T> 
-    {
-        public PhenotypeEvalDbl
+        protected PhenotypeEvalDbl
         (
             Guid guid, 
             IPhenotype<T> phenotype, 
             double result,
             IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
         )
+
         {
             _phenotype = phenotype;
             _result = result;
@@ -103,13 +69,18 @@ namespace Genomic.PhenotypeEvals
         {
             get { return _guid; }
         }
+
+        public abstract string EntityName { get; }
+
+        public abstract IEntity GetPart(Guid key);
     }
 
 
-    public class PhenotypeEvalComparable<T, C> : IPhenotypeEval<T>
+    public abstract class PhenotypeEvalComparable<T, C> : IPhenotypeEval<T>
         where C : IComparable
+        where T : IEntity
     {
-        public PhenotypeEvalComparable
+        protected PhenotypeEvalComparable
         (
             Guid guid,
             IPhenotype<T> phenotype,
@@ -152,5 +123,9 @@ namespace Genomic.PhenotypeEvals
         {
             get { return _guid; }
         }
+
+        public abstract string EntityName { get; }
+
+        public abstract IEntity GetPart(Guid key);
     }
 }

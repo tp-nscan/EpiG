@@ -1,70 +1,38 @@
 ﻿using System;
 using Genomic.Genomes;
-using MathUtils.Collections;
+using MathUtils;
 
 namespace Genomic.Phenotypes
 {
-    public interface IPhenotypeBuilder<T>: IGuid
+    public interface IPhenotypeBuilder<T>: IEntity where T : IEntity
     {
         IPhenotype<T> Make();
         IGenome Genome { get; }
-        string PhenotypeBuilderType { get; }
     }
 
-    public static class PhenotypeBuilder
+
+    public abstract class PhenotypeBuilderStandard<T> : PhenotypeBuilder<T>
+        where T : IEntity
     {
-        public static IPhenotype<T> ToPhenotype<T>
-            (
-                this Func<IGenome, T> phenoFunc,
+        protected PhenotypeBuilderStandard(
                 IGenome genome,
                 Guid guid
             )
+            : base(guid, genome)
         {
-            return new PhenotypeBuilderStandard<T>
-                (
-                    guid: guid,
-                    genome: genome,
-                    phenoFunc: phenoFunc
-                ).Make();
-        }
-    }
-
-    public class PhenotypeBuilderStandard<T> : PhenotypeBuilder<T>
-    {
-        public PhenotypeBuilderStandard(
-                Guid guid,
-                IGenome genome,
-                Func<IGenome, T> phenoFunc
-            )
-            : base(guid, "PhenotypeBuilder.Standard", genome)
-        {
-            _phenoFunc = phenoFunc;
         }
 
-        private readonly Func<IGenome, T> _phenoFunc;
-        public Func<IGenome, T> PhenoFunc
-        {
-            get { return _phenoFunc; }
-        }
-
-        public override IPhenotype<T> Make()
-        {
-            return Phenotype.Make(
-                value: PhenoFunc(Genome),
-                phenotypeBuilder: this
-                );
-        }
+        public abstract Func<IGenome, T> PhenoFunc { get; }
     }
 
     public abstract class PhenotypeBuilder<T> : IPhenotypeBuilder<T>
+        where T : IEntity
     {
         protected PhenotypeBuilder(
-            Guid guid, 
-            string phenotypeBuilderType,
+            Guid guid,
             IGenome genome
          )
         {
-            _phenotypeBuilderType = phenotypeBuilderType;
             _genome = genome;
             _guid = guid;
         }
@@ -77,16 +45,14 @@ namespace Genomic.Phenotypes
             get { return _genome; }
         }
 
-        private readonly string _phenotypeBuilderType;
-        public string PhenotypeBuilderType
-        {
-            get { return _phenotypeBuilderType; }
-        }
-
         private readonly Guid _guid;
         public Guid Guid
         {
             get { return _guid; }
         }
+
+        public abstract string EntityName { get; }
+
+        public abstract IEntity GetPart(Guid key);
     }
 }

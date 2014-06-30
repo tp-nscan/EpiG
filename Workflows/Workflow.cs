@@ -1,4 +1,5 @@
 ﻿using System;
+using MathUtils;
 
 namespace Workflows
 {
@@ -52,7 +53,7 @@ namespace Workflows
             get { return _result; }
         }
 
-        public object GetPart(Guid key)
+        public IEntity GetPart(Guid key)
         {
             if (Result.Guid == key)
             {

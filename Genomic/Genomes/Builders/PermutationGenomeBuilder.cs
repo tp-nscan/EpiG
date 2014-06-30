@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MathUtils;
 using MathUtils.Collections;
 using MathUtils.Rand;
 
@@ -105,15 +106,20 @@ namespace Genomic.Genomes.Builders
                 );
         }
 
-        public string GenomeBuilderType
-        {
-            get { return "PermutationGenomeBuilderRandom"; }
-        }
-
         private readonly int _seed;
         public int Seed
         {
             get { return _seed; }
+        }
+
+        public string EntityName
+        {
+            get { return "PermutationGenomeBuilderRandom"; }
+        }
+
+        public IEntity GetPart(Guid key)
+        {
+            return null;
         }
     }
 
@@ -214,6 +220,16 @@ namespace Genomic.Genomes.Builders
         public int PermutationCount
         {
             get { return _sourceGenome.SequenceLength/Degree; }
+        }
+
+        public string EntityName
+        {
+            get { return "PermutationGenomeBuilderMutator"; }
+        }
+
+        public IEntity GetPart(Guid key)
+        {
+            return SourceGenome.Guid == key ? SourceGenome : null;
         }
     }
 

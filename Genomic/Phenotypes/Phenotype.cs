@@ -1,29 +1,19 @@
 ﻿using System;
-using MathUtils.Collections;
+using MathUtils;
 
 namespace Genomic.Phenotypes
 {
-    public interface IPhenotype<T> : IGuid
+    public interface IPhenotype<T> : IEntity 
+        where T : IEntity
     {
         T Value { get; }
         IPhenotypeBuilder<T> PhenotypeBuilder { get; }
     }
 
-    public static class Phenotype
+    public abstract class PhenotypeImpl<T> : IPhenotype<T>
+        where T : IEntity
     {
-        public static IPhenotype<T> Make<T>        
-            (
-                T value, 
-                IPhenotypeBuilder<T> phenotypeBuilder
-            )        
-        {
-            return new PhenotypeImpl<T>(value, phenotypeBuilder);
-        }
-    }
-
-    public class PhenotypeImpl<T> : IPhenotype<T>
-    {
-        public PhenotypeImpl
+        protected PhenotypeImpl
         (
             T value,
             IPhenotypeBuilder<T> phenotypeBuilder
@@ -50,5 +40,11 @@ namespace Genomic.Phenotypes
             get { return PhenotypeBuilder.Guid; }
         }
 
+        public abstract string EntityName { get; }
+
+        public IEntity GetPart(Guid key)
+        {
+            return (PhenotypeBuilder.Guid == key) ? PhenotypeBuilder : null;
+        }
     }
 }

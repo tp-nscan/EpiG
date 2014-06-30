@@ -4,6 +4,7 @@ using System.Linq;
 using Genomic.Genomes;
 using Genomic.PhenotypeEvals;
 using Genomic.Phenotypes;
+using MathUtils;
 using MathUtils.Rand;
 using Sorting.Sorters;
 using Utils;
@@ -249,7 +250,7 @@ namespace SorterGenome.CompPool
             get { return _guid; }
         }
 
-        public object GetPart(Guid key)
+        public IEntity GetPart(Guid key)
         {
             if (Genomes.ContainsKey(key))
             {
