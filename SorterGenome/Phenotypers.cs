@@ -32,24 +32,96 @@ namespace SorterGenome
                 phenoFunc.ToPhenotype(g, r.NextGuid()).ToEnumerable();
         }
 
-        public static Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> MakePermuter<T>
+        public static Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> MakePermuterSlider<T>
             (
                 int keyCount
             )
             where T : ISorter
         {
+
             Func<IGenome, T> phenoFunc1 =
                 g =>
-                    (T) g.Sequence.ToKeyPairs().ToSorter(keyCount);
+                {
+                    var prefix = g.Sequence.Take(keyCount*0);
+                    return (T)
+                        prefix.Concat
+                        (
+                            g.Sequence.Skip(keyCount * 2)
+                        )
+                        .ToKeyPairs().ToSorter(keyCount);
+                };
 
             Func<IGenome, T> phenoFunc2 =
                 g =>
-                    (T)g.Sequence.Skip(keyCount).ToKeyPairs().ToSorter(keyCount);
+                {
+                    var prefix = g.Sequence.Take(keyCount * 1);
+                    return (T)
+                        prefix.Concat
+                        (
+                            g.Sequence.Skip(keyCount * 2)
+                        )
+                        .ToKeyPairs().ToSorter(keyCount);
+                };
+
+
+            Func<IGenome, T> phenoFunc3 =
+                g =>
+                {
+                    var prefix = g.Sequence.Take(keyCount * 2);
+                    return (T)
+                        prefix.Concat
+                        (
+                            g.Sequence.Skip(keyCount * 3)
+                        )
+                        .ToKeyPairs().ToSorter(keyCount);
+                };
+
+
+            Func<IGenome, T> phenoFunc4 =
+                g =>
+                {
+                    var prefix = g.Sequence.Take(keyCount * 3);
+                    return (T)
+                        prefix.Concat
+                        (
+                            g.Sequence.Skip(keyCount * 4)
+                        )
+                        .ToKeyPairs().ToSorter(keyCount);
+                };
+
+            Func<IGenome, T> phenoFunc5 =
+                g =>
+                {
+                    var prefix = g.Sequence.Take(keyCount*4);
+                    return (T)
+                        prefix.Concat
+                        (
+                            g.Sequence.Skip(keyCount * 5)
+                        )
+                        .ToKeyPairs().ToSorter(keyCount);
+                };
+
+            Func<IGenome, T> phenoFunc6 =
+                g =>
+                {
+                    var prefix = g.Sequence.Take(keyCount * 5);
+                    return (T)
+                        prefix.Concat
+                        (
+                            g.Sequence.Skip(keyCount * 6)
+                        )
+                        .ToKeyPairs().ToSorter(keyCount);
+                };
+
 
             return (g, r) => new List<IPhenotype<T>>
             {
-                phenoFunc1.ToPhenotype(g, r.NextGuid())
-               , phenoFunc2.ToPhenotype(g, r.NextGuid())
+                  phenoFunc1.ToPhenotype(g, r.NextGuid())
+                , phenoFunc2.ToPhenotype(g, r.NextGuid())
+                , phenoFunc3.ToPhenotype(g, r.NextGuid())
+                , phenoFunc4.ToPhenotype(g, r.NextGuid())
+                , phenoFunc5.ToPhenotype(g, r.NextGuid())
+                , phenoFunc6.ToPhenotype(g, r.NextGuid())
             };
         }
 

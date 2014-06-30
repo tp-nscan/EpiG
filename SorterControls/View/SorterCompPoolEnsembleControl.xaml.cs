@@ -3,9 +3,9 @@
     /// <summary>
     /// Interaction logic for StagedSorterCompPoolControl.xaml
     /// </summary>
-    public partial class StagedSorterCompPoolControl
+    public partial class SorterCompPoolEnsembleControl
     {
-        public StagedSorterCompPoolControl()
+        public SorterCompPoolEnsembleControl()
         {
             InitializeComponent();
         }

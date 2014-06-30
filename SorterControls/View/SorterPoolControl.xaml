@@ -70,7 +70,13 @@
             Background="#300F">
 
             <WrapPanel>
-
+                
+                <StackPanel>
+                    <TextBlock Text="Seed" />
+                    <TextBox Text="{Binding Seed}" 
+                        MinWidth="50"/>
+                </StackPanel>
+                
                 <StackPanel>
                     <TextBlock Text="Generation" />
                     <TextBlock Margin="5, 0, 10, 0" Text="{Binding Generation}" 

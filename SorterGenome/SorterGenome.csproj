@@ -61,7 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NextGeneratorForStagedSorter.cs" />
+    <Compile Include="CompPool\SorterCompPoolEnsemble.cs" />
+    <Compile Include="NextGeneratorForPermutationSorter.cs" />
     <Compile Include="NextGeneratorForStandardSorter.cs" />
     <Compile Include="PhenotypeEvaluators.cs" />
     <Compile Include="Phenotypers.cs" />

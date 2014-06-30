@@ -86,7 +86,7 @@
       <DependentUpon>SorterPoolControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\SorterCompPoolVm.cs" />
-    <Compile Include="ViewModel\StagedSorterCompPoolVm.cs" />
+    <Compile Include="ViewModel\SorterCompPoolEnsembleVm.cs" />
     <Compile Include="View\SorterCompPoolControl.xaml.cs">
       <DependentUpon>SorterCompPoolControl.xaml</DependentUpon>
     </Compile>
@@ -111,8 +111,8 @@
     <Compile Include="View\MakeRandomSortersControl.xaml.cs">
       <DependentUpon>MakeRandomSortersControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StagedSorterCompPoolControl.xaml.cs">
-      <DependentUpon>StagedSorterCompPoolControl.xaml</DependentUpon>
+    <Compile Include="View\SorterCompPoolEnsembleControl.xaml.cs">
+      <DependentUpon>SorterCompPoolEnsembleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StagedSorterControl.xaml.cs">
       <DependentUpon>StagedSorterControl.xaml</DependentUpon>
@@ -145,7 +145,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StagedSorterCompPoolControl.xaml">
+    <Page Include="View\SorterCompPoolEnsembleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

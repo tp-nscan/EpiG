@@ -200,7 +200,7 @@ namespace SorterGenome.CompPool
 
         public Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> Phenotyper
         {
-            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuter<T>(KeyCount)); }
+            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuterSlider<T>(KeyCount)); }
         }
 
         private Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> _phenotypeEvaluator;
@@ -223,7 +223,7 @@ namespace SorterGenome.CompPool
             {
                 return _nextGenerator ??
                        (
-                           _nextGenerator = new NextGeneratorForStagedSorter<T>
+                           _nextGenerator = new NextGeneratorForPermutationSorter<T>
                                (
                                    keyCount: KeyCount,
                                    orgCount: OrgCount,

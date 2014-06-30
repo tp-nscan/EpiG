@@ -14,16 +14,16 @@ using WpfUtils;
 
 namespace SorterControls.ViewModel
 {
-    public class SorterCompPoolVm : ViewModelBase
+    public class SorterCompPoolEnsembleVm : ViewModelBase
     {
-        public SorterCompPoolVm()
+        public SorterCompPoolEnsembleVm()
         {
             _legacyRate = 0.04;
             _mutationRate = 0.03;
             _cubRate = 0.24;
 
             _sorterCount = 500;
-            Seed = 1234;
+            _seed = 1234;
             _keyPairCount = 450;
             _keyCount = 10;
 
@@ -368,7 +368,7 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private IRando _rando;
+        private IRando _rando = Rando.Fast(123);
         private int _seed;
         public int Seed
         {
@@ -414,5 +414,3 @@ namespace SorterControls.ViewModel
 
     }
 }
-
-

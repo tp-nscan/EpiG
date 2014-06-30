@@ -24,9 +24,9 @@
         </TabItem>
 
 
-        <TabItem Header="Staged comp pool">
+        <TabItem Header="Comp pool ensemble">
             <Grid Background="#F333">
-                <view:StagedSorterCompPoolControl DataContext="{Binding StagedSorterCompPoolVm}"/>
+                <view:SorterCompPoolEnsembleControl DataContext="{Binding SorterCompPoolEnsembleControl}"/>
             </Grid>
         </TabItem>
     </TabControl>

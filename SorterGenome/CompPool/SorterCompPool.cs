@@ -37,7 +37,6 @@ namespace SorterGenome.CompPool
     public static class SorterCompPool
     {
         public static ISorterCompPool<ISorter> InitStandardFromSeed
-
         (
             int seed,
             int orgCount,

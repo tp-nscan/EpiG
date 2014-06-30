@@ -6,15 +6,14 @@ using Genomic.Genomes.Builders;
 using Genomic.PhenotypeEvals;
 using MathUtils.Collections;
 using MathUtils.Rand;
-using Sorting.KeyPairs;
 using Sorting.Sorters;
 
 namespace SorterGenome
 {
-    public class NextGeneratorForStagedSorter<T>
+    public class NextGeneratorForPermutationSorter<T>
         where T : ISorter
     {
-        public NextGeneratorForStagedSorter(
+        public NextGeneratorForPermutationSorter(
             int keyCount, 
             int orgCount,
             double deletionRate, 
