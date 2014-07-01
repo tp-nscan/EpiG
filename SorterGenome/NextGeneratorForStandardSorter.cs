@@ -7,13 +7,11 @@ using Genomic.PhenotypeEvals;
 using MathUtils.Collections;
 using MathUtils.Rand;
 using Sorting.KeyPairs;
-using Sorting.Sorters;
 
 namespace SorterGenome
 {
 
-    public class NextGeneratorForStandardSorter<T>
-        where T : ISorter
+    public class NextGeneratorForStandardSorter
     {
         public NextGeneratorForStandardSorter(
             int keyCount, 
@@ -40,7 +38,7 @@ namespace SorterGenome
 
                 var leaderBoard =
                     eD.Values.OrderBy(v => v)
-                        .Select(ev => ev.Phenotype.PhenotypeBuilder.Genome)
+                        .Select(ev => ev.PhenotypeEvalBuilder.Phenotype.PhenotypeBuilder.Genome)
                         .ToList();
 
                 var legacies = leaderBoard.Take((int)(OrgCount * LegacyRate)).ToList();

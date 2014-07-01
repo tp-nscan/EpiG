@@ -11,7 +11,7 @@ using Utils;
 
 namespace SorterGenome.CompPool
 {
-    public class SorterCompPoolPermutation<T> : ISorterCompPool<T> where T : ISorter
+    public class SorterCompPoolPermutation : ISorterCompPool
     {
         public SorterCompPoolPermutation
             (
@@ -45,14 +45,14 @@ namespace SorterGenome.CompPool
             _insertionRate = insertionRate;
         }
 
-        public ISorterCompPool<T> Step(int seed)
+        public ISorterCompPool Step(int seed)
         {
             switch (SorterCompPoolStageType)
             {
                 case SorterCompPoolStageType.MakePhenotypes:
 
                     var randy = Rando.Fast(seed);
-                    return new SorterCompPoolPermutation<T>
+                    return new SorterCompPoolPermutation
                         (
                             guid: Guid.NewGuid(),
                             generation: Generation,
@@ -74,7 +74,7 @@ namespace SorterGenome.CompPool
                 case SorterCompPoolStageType.EvaluatePhenotypes:
 
                     var randy2 = Rando.Fast(seed);
-                    return new SorterCompPoolPermutation<T>
+                    return new SorterCompPoolPermutation
                         (
                             guid: Guid.NewGuid(),
                             generation: Generation,
@@ -95,7 +95,7 @@ namespace SorterGenome.CompPool
 
                 case SorterCompPoolStageType.MakeNextGeneration:
 
-                    return new SorterCompPoolPermutation<T>
+                    return new SorterCompPoolPermutation
                         (
                             guid: Guid.NewGuid(),
                             generation: Generation + 1,
@@ -201,7 +201,7 @@ namespace SorterGenome.CompPool
 
         public Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper
         {
-            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuterSlider<T>(KeyCount)); }
+            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuterSlider(KeyCount)); }
         }
 
         private Func<IPhenotype, IRando, IPhenotypeEval> _phenotypeEvaluator;
@@ -224,7 +224,7 @@ namespace SorterGenome.CompPool
             {
                 return _nextGenerator ??
                        (
-                           _nextGenerator = new NextGeneratorForPermutationSorter<T>
+                           _nextGenerator = new NextGeneratorForPermutationSorter
                                (
                                    keyCount: KeyCount,
                                    orgCount: OrgCount,
@@ -238,7 +238,7 @@ namespace SorterGenome.CompPool
             }
         }
 
-        ISorterCompPool<T> IRandomWalk<ISorterCompPool<T>>.Step(int seed)
+        ISorterCompPool IRandomWalk<ISorterCompPool>.Step(int seed)
         {
             return Step(seed);
         }

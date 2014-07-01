@@ -10,8 +10,7 @@ using Sorting.Sorters;
 
 namespace SorterGenome
 {
-    public class NextGeneratorForPermutationSorter<T>
-        where T : ISorter
+    public class NextGeneratorForPermutationSorter
     {
         public NextGeneratorForPermutationSorter(
             int keyCount, 
@@ -38,7 +37,7 @@ namespace SorterGenome
 
                 var leaderBoard =
                     eD.Values.OrderBy(v => v)
-                        .Select(ev => ev.Phenotype.PhenotypeBuilder.Genome)
+                        .Select(ev => ev.PhenotypeEvalBuilder.Phenotype.PhenotypeBuilder.Genome)
                         .ToList();
 
                 var legacies = leaderBoard.Take((int) (OrgCount*LegacyRate)).ToList();

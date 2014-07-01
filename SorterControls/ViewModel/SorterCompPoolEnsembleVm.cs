@@ -137,8 +137,8 @@ namespace SorterControls.ViewModel
             IsBusy = false;
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> _sorterCompPoolBackgroundWorker;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> SorterCompPoolBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -146,8 +146,8 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private IRecursiveWorkflow<ISorterCompPool<ISorter>> _initialState;
-        private IRecursiveWorkflow<ISorterCompPool<ISorter>> InitialState
+        private IRecursiveWorkflow<ISorterCompPool> _initialState;
+        private IRecursiveWorkflow<ISorterCompPool> InitialState
         {
             get
             {
@@ -158,7 +158,7 @@ namespace SorterControls.ViewModel
             }
         }
 
-        IRecursiveWorkflow<ISorterCompPool<ISorter>> MakeStandard()
+        IRecursiveWorkflow<ISorterCompPool> MakeStandard()
         {
             return SorterCompPool.InitStandardFromSeed
                 (
@@ -175,7 +175,7 @@ namespace SorterControls.ViewModel
                 .ToRecursiveWorkflowRndWlk();
         }
 
-        IRecursiveWorkflow<ISorterCompPool<ISorter>> MakePermutation()
+        IRecursiveWorkflow<ISorterCompPool> MakePermutation()
         {
             return SorterCompPool.InitPermuterFromSeed
                 (
@@ -198,7 +198,7 @@ namespace SorterControls.ViewModel
             _initialState = null;
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int>
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int>
                         MakeSorterEvalBackgroundWorker()
         {
             return
@@ -213,7 +213,7 @@ namespace SorterControls.ViewModel
                         );
         }
 
-        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<ISorter>>> result)
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
 
@@ -222,17 +222,13 @@ namespace SorterControls.ViewModel
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
                     {
-                        var phenotypeEvals = result.Data.Result.PhenotypeEvals
-                            .Select(ev => (PhenotypeEvalComparable<ISorter, ISorterEval>) ev.Value)
-                            .OrderBy(v => v)
-                            .Select(v => v.Result)
-                            .Take(SorterPoolVm.SorterGalleryVm.SorterDisplayCount)
-                            .ToList();
+                        var sorterEvals =
+                            result.Data.Result.PhenotypeEvals.Select(ev => (ISorterEval) ev.Value.Result).ToList();
 
                         SorterPoolVm = new SorterPoolVm
                             (
                                 keyCount: KeyCount,
-                                sorterEvals: phenotypeEvals,
+                                sorterEvals: sorterEvals,
                                 displaySize: SorterPoolVm.SorterGalleryVm.DisplaySize,
                                 showStages: SorterPoolVm.SorterGalleryVm.ShowStages,
                                 showUnused: SorterPoolVm.SorterGalleryVm.ShowUnused,

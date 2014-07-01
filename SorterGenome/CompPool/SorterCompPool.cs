@@ -13,8 +13,7 @@ using Utils;
 
 namespace SorterGenome.CompPool
 {
-    public interface ISorterCompPool<T> : IRandomWalk<ISorterCompPool<T>>, IEntity
-        where T : ISorter
+    public interface ISorterCompPool : IRandomWalk<ISorterCompPool>, IEntity
     {
         int Generation { get; }
 
@@ -36,7 +35,7 @@ namespace SorterGenome.CompPool
 
     public static class SorterCompPool
     {
-        public static ISorterCompPool<ISorter> InitStandardFromSeed
+        public static ISorterCompPool InitStandardFromSeed
         (
             int seed,
             int orgCount,
@@ -49,7 +48,7 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
-            return new SorterCompPoolStandard<ISorter>
+            return new SorterCompPoolStandard
                 (
                     guid: Guid.NewGuid(),
                     generation: 0,
@@ -74,7 +73,7 @@ namespace SorterGenome.CompPool
 
 
 
-        public static ISorterCompPool<ISorter> InitPermuterFromSeed
+        public static ISorterCompPool InitPermuterFromSeed
         (
             int seed,
             int orgCount,
@@ -87,7 +86,7 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
-            return new SorterCompPoolPermutation<ISorter>
+            return new SorterCompPoolPermutation
                 (
                     guid: Guid.NewGuid(),
                     generation: 0,

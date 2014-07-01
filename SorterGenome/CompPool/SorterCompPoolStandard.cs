@@ -6,12 +6,11 @@ using Genomic.PhenotypeEvals;
 using Genomic.Phenotypes;
 using MathUtils;
 using MathUtils.Rand;
-using Sorting.Sorters;
 using Utils;
 
 namespace SorterGenome.CompPool
 {
-    public class SorterCompPoolStandard<T> : ISorterCompPool<T> where T : ISorter
+    public class SorterCompPoolStandard : ISorterCompPool
     {
         public SorterCompPoolStandard
             (
@@ -45,14 +44,14 @@ namespace SorterGenome.CompPool
             _insertionRate = insertionRate;
         }
 
-        public ISorterCompPool<T> Step(int seed)
+        public ISorterCompPool Step(int seed)
         {
             switch (SorterCompPoolStageType)
             {
                 case SorterCompPoolStageType.MakePhenotypes:
 
                     var randy = Rando.Fast(seed);
-                    return new SorterCompPoolStandard<T>
+                    return new SorterCompPoolStandard
                         (
                             guid: Guid.NewGuid(),
                             generation: Generation,
@@ -74,7 +73,7 @@ namespace SorterGenome.CompPool
                 case SorterCompPoolStageType.EvaluatePhenotypes:
 
                     var randy2 = Rando.Fast(seed);
-                    return new SorterCompPoolStandard<T>
+                    return new SorterCompPoolStandard
                         (
                             guid: Guid.NewGuid(),
                             generation: Generation,
@@ -95,7 +94,7 @@ namespace SorterGenome.CompPool
 
                 case SorterCompPoolStageType.MakeNextGeneration:
 
-                    return new SorterCompPoolStandard<T>
+                    return new SorterCompPoolStandard
                         (
                             guid: Guid.NewGuid(),
                             generation: Generation + 1,
@@ -198,7 +197,7 @@ namespace SorterGenome.CompPool
 
         public Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper
         {
-            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakeStandard<T>(KeyCount)); }
+            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakeStandard(KeyCount)); }
         }
 
         private Func<IPhenotype, IRando, IPhenotypeEval> _phenotypeEvaluator;
@@ -221,7 +220,7 @@ namespace SorterGenome.CompPool
             { 
                 return _nextGenerator ?? 
                        (
-                           _nextGenerator = new NextGeneratorForStandardSorter<T>
+                           _nextGenerator = new NextGeneratorForStandardSorter
                                (
                                    keyCount : KeyCount, 
                                    orgCount : OrgCount,
@@ -235,7 +234,7 @@ namespace SorterGenome.CompPool
             }
         }
 
-        ISorterCompPool<T> IRandomWalk<ISorterCompPool<T>>.Step(int seed)
+        ISorterCompPool IRandomWalk<ISorterCompPool>.Step(int seed)
         {
             return Step(seed);
         }

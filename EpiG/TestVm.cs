@@ -3,9 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MathUtils.Rand;
-using SorterGenome;
 using SorterGenome.CompPool;
-using Sorting.Sorters;
 using Utils.BackgroundWorkers;
 using Workflows;
 using WpfUtils;
@@ -109,8 +107,8 @@ namespace EpiG
         }
 
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> _sorterCompPoolBackgroundWorker;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> SorterCompPoolBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -118,12 +116,12 @@ namespace EpiG
             }
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool<ISorter>>, int> MakeSorterEvalBackgroundWorker()
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> MakeSorterEvalBackgroundWorker()
         {
             return null;
         }
 
-        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool<ISorter>>> result)
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
             {

@@ -10,14 +10,14 @@ namespace Genomic.PhenotypeEvals
         IPhenotype Phenotype { get; }
     }
 
-    public abstract class PhenotypeEvalBuilder<T, E> : IPhenotypeEvalBuilder
-        where T : IPhenotype
+    public abstract class PhenotypeEvalBuilder<P, E> : IPhenotypeEvalBuilder
+        where P : IPhenotype
         where E : IPhenotypeEval
     {
         protected PhenotypeEvalBuilder
             (
                 Guid guid, 
-                T phenotype
+                P phenotype
          )
         {
             _guid = guid;
@@ -35,13 +35,13 @@ namespace Genomic.PhenotypeEvals
             return EvaluatorFunc(_phenotype);
         }
 
-        private readonly T _phenotype;
+        private readonly P _phenotype;
         public IPhenotype Phenotype
         {
             get { return _phenotype; }
         }
 
-        protected abstract Func<T, E> EvaluatorFunc { get; } 
+        protected abstract Func<P, E> EvaluatorFunc { get; } 
 
         public abstract string EntityName { get; }
 
