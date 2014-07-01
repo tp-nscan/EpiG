@@ -4,29 +4,13 @@ using MathUtils;
 
 namespace Genomic.Phenotypes
 {
-    public interface IPhenotypeBuilder<T>: IEntity where T : IEntity
+    public interface IPhenotypeBuilder : IEntity
     {
-        IPhenotype<T> Make();
+        IPhenotype Make();
         IGenome Genome { get; }
     }
 
-
-    public abstract class PhenotypeBuilderStandard<T> : PhenotypeBuilder<T>
-        where T : IEntity
-    {
-        protected PhenotypeBuilderStandard(
-                IGenome genome,
-                Guid guid
-            )
-            : base(guid, genome)
-        {
-        }
-
-        public abstract Func<IGenome, T> PhenoFunc { get; }
-    }
-
-    public abstract class PhenotypeBuilder<T> : IPhenotypeBuilder<T>
-        where T : IEntity
+    public abstract class PhenotypeBuilder : IPhenotypeBuilder
     {
         protected PhenotypeBuilder(
             Guid guid,
@@ -37,7 +21,7 @@ namespace Genomic.Phenotypes
             _guid = guid;
         }
 
-        public abstract IPhenotype<T> Make();
+        public abstract IPhenotype Make();
 
         private readonly IGenome _genome;
         public IGenome Genome

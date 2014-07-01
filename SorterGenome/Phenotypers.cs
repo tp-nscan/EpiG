@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
 using Genomic.Phenotypes;
-using MathUtils.Collections;
 using MathUtils.Rand;
 using Sorting.KeyPairs;
 using Sorting.Sorters;
@@ -12,7 +11,7 @@ namespace SorterGenome
 {
     public static class Phenotypers
     {
-        public static Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> MakeStandard<T>
+        public static Func<IGenome, IRando, IEnumerable<IPhenotype>> MakeStandard<T>
         (
             int keyCount
         )
@@ -27,12 +26,12 @@ namespace SorterGenome
                            keyCount: keyCount
                        );
 
-            return (g, r) =>
+            return (g, r) => null;
 
-                phenoFunc.ToPhenotype(g, r.NextGuid()).ToEnumerable();
+                ///phenoFunc.ToPhenotype(g, r.NextGuid()).ToEnumerable();
         }
 
-        public static Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> MakePermuterSlider<T>
+        public static Func<IGenome, IRando, IEnumerable<IPhenotype>> MakePermuterSlider<T>
             (
                 int keyCount
             )
@@ -114,15 +113,20 @@ namespace SorterGenome
                 };
 
 
-            return (g, r) => new List<IPhenotype<T>>
-            {
-                  phenoFunc1.ToPhenotype(g, r.NextGuid())
-                , phenoFunc2.ToPhenotype(g, r.NextGuid())
-                , phenoFunc3.ToPhenotype(g, r.NextGuid())
-                , phenoFunc4.ToPhenotype(g, r.NextGuid())
-                , phenoFunc5.ToPhenotype(g, r.NextGuid())
-                , phenoFunc6.ToPhenotype(g, r.NextGuid())
-            };
+            return (g, r) => Enumerable.Empty<IPhenotype>();
+
+
+
+
+            //    new List<IPhenotype>
+            //{
+            //      phenoFunc1.ToPhenotype(g, r.NextGuid())
+            //    , phenoFunc2.ToPhenotype(g, r.NextGuid())
+            //    , phenoFunc3.ToPhenotype(g, r.NextGuid())
+            //    , phenoFunc4.ToPhenotype(g, r.NextGuid())
+            //    , phenoFunc5.ToPhenotype(g, r.NextGuid())
+            //    , phenoFunc6.ToPhenotype(g, r.NextGuid())
+            //};
         }
 
 

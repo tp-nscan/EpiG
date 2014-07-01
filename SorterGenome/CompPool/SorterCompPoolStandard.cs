@@ -18,8 +18,8 @@ namespace SorterGenome.CompPool
                 Guid guid,
                 int generation,
                 IReadOnlyDictionary<Guid, IGenome> genomes,
-                IReadOnlyDictionary<Guid, IPhenotype<T>> phenotypes,
-                IReadOnlyDictionary<Guid, IPhenotypeEval<T>> phenotypeEvals,
+                IReadOnlyDictionary<Guid, IPhenotype> phenotypes,
+                IReadOnlyDictionary<Guid, IPhenotypeEval> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
                 int keyCount, 
                 int orgCount, 
@@ -114,9 +114,6 @@ namespace SorterGenome.CompPool
                 default:
                     throw new Exception(SorterCompPoolStageType + " not handled");
             }
-
-            return null;
-
         }
 
         private readonly int _keyCount;
@@ -183,42 +180,42 @@ namespace SorterGenome.CompPool
             get { return _genomes; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IPhenotype<T>> _phenotypes;
+        private readonly IReadOnlyDictionary<Guid, IPhenotype> _phenotypes;
 
-        public IReadOnlyDictionary<Guid, IPhenotype<T>> Phenotypes
+        public IReadOnlyDictionary<Guid, IPhenotype> Phenotypes
         {
             get { return _phenotypes; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IPhenotypeEval<T>> _phenotypeEvals;
+        private readonly IReadOnlyDictionary<Guid, IPhenotypeEval> _phenotypeEvals;
 
-        public IReadOnlyDictionary<Guid, IPhenotypeEval<T>> PhenotypeEvals
+        public IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals
         {
             get { return _phenotypeEvals; }
         }
 
-        private Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> _phenotyper;
+        private Func<IGenome, IRando, IEnumerable<IPhenotype>> _phenotyper;
 
-        public Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> Phenotyper
+        public Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper
         {
             get { return _phenotyper ?? (_phenotyper = Phenotypers.MakeStandard<T>(KeyCount)); }
         }
 
-        private Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> _phenotypeEvaluator;
+        private Func<IPhenotype, IRando, IPhenotypeEval> _phenotypeEvaluator;
 
-        public Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> PhenotypeEvaluator
+        public Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator
         {
             get
             {
                 return _phenotypeEvaluator ?? 
-                    (_phenotypeEvaluator = PhenotypeEvaluators.MakeStandard<T>());
+                    (_phenotypeEvaluator = null);
             }
         }
 
-        private Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>>
+        private Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>>
             _nextGenerator;
 
-        public Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator
+        public Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator
         {
             get 
             { 

@@ -22,15 +22,15 @@ namespace SorterGenome.CompPool
 
         IReadOnlyDictionary<Guid, IGenome> Genomes { get; }
 
-        IReadOnlyDictionary<Guid, IPhenotype<T>> Phenotypes { get; }
+        IReadOnlyDictionary<Guid, IPhenotype> Phenotypes { get; }
 
-        IReadOnlyDictionary<Guid, IPhenotypeEval<T>> PhenotypeEvals { get; }
+        IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals { get; }
 
-        Func<IGenome, IRando, IEnumerable<IPhenotype<T>>> Phenotyper { get; }
+        Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper { get; }
 
-        Func<IPhenotype<T>, IRando, IPhenotypeEval<T>> PhenotypeEvaluator { get; }
+        Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator { get; }
 
-        Func<IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
+        Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
 
     }
 

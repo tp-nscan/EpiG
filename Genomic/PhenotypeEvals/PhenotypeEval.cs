@@ -4,23 +4,20 @@ using MathUtils;
 
 namespace Genomic.PhenotypeEvals
 {
-    public interface IPhenotypeEval<T> : IEntity, IComparable
-        where T : IEntity
+    public interface IPhenotypeEval : IEntity
     {
-        IPhenotype<T> Phenotype { get; }
-        IPhenotypeEvalBuilder<T> PhenotypeEvalBuilder { get; }
+        IPhenotype Phenotype { get; }
+        IPhenotypeEvalBuilder PhenotypeEvalBuilder { get; }
     }
 
-
-    public abstract class PhenotypeEvalDbl<T> : IPhenotypeEval<T>
-        where T : IEntity
+    public abstract class PhenotypeEvalDbl : IPhenotypeEval
     {
         protected PhenotypeEvalDbl
         (
             Guid guid, 
-            IPhenotype<T> phenotype, 
+            IPhenotype phenotype, 
             double result,
-            IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
+            IPhenotypeEvalBuilder phenotypeEvalBuilder
         )
 
         {
@@ -30,14 +27,14 @@ namespace Genomic.PhenotypeEvals
             _guid = guid;
         }
 
-        private readonly IPhenotype<T> _phenotype;
-        public IPhenotype<T> Phenotype
+        private readonly IPhenotype _phenotype;
+        public IPhenotype Phenotype
         {
             get { return _phenotype; }
         }
 
-        private readonly IPhenotypeEvalBuilder<T> _phenotypeEvalBuilder;
-        public IPhenotypeEvalBuilder<T> PhenotypeEvalBuilder
+        private readonly IPhenotypeEvalBuilder _phenotypeEvalBuilder;
+        public IPhenotypeEvalBuilder PhenotypeEvalBuilder
         {
             get { return _phenotypeEvalBuilder; }
         }
@@ -50,7 +47,7 @@ namespace Genomic.PhenotypeEvals
 
         public int CompareTo(object obj)
         {
-            var c1 = (PhenotypeEvalDbl<T>)obj;
+            var c1 = (PhenotypeEvalDbl)obj;
 
             if (c1.Result > Result)
             {
@@ -76,16 +73,16 @@ namespace Genomic.PhenotypeEvals
     }
 
 
-    public abstract class PhenotypeEvalComparable<T, C> : IPhenotypeEval<T>
+    public abstract class PhenotypeEvalComparable<T, C> : IPhenotypeEval
         where C : IComparable
         where T : IEntity
     {
         protected PhenotypeEvalComparable
         (
             Guid guid,
-            IPhenotype<T> phenotype,
+            IPhenotype phenotype,
             C result,
-            IPhenotypeEvalBuilder<T> phenotypeEvalBuilder
+            IPhenotypeEvalBuilder phenotypeEvalBuilder
         )
         {
             _phenotype = phenotype;
@@ -94,14 +91,14 @@ namespace Genomic.PhenotypeEvals
             _guid = guid;
         }
 
-        private readonly IPhenotype<T> _phenotype;
-        public IPhenotype<T> Phenotype
+        private readonly IPhenotype _phenotype;
+        public IPhenotype Phenotype
         {
             get { return _phenotype; }
         }
 
-        private readonly IPhenotypeEvalBuilder<T> _phenotypeEvalBuilder;
-        public IPhenotypeEvalBuilder<T> PhenotypeEvalBuilder
+        private readonly IPhenotypeEvalBuilder _phenotypeEvalBuilder;
+        public IPhenotypeEvalBuilder PhenotypeEvalBuilder
         {
             get { return _phenotypeEvalBuilder; }
         }

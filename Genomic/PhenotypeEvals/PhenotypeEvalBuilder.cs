@@ -1,77 +1,27 @@
 ﻿using System;
 using Genomic.Phenotypes;
-using MathUtils.Collections;
+using MathUtils;
 
 namespace Genomic.PhenotypeEvals
 {
-    public interface IPhenotypeEvalBuilder<T> : IGuid
+    public interface IPhenotypeEvalBuilder : IEntity 
     {
-        IPhenotypeEval<T> Make();
-        IPhenotype<T> Phenotype { get; }
-        string PhenotypeEvalBuilderType { get; }
+        IPhenotypeEval Make();
+        IPhenotype Phenotype { get; }
     }
 
-    public static class PhenotypeEavlBuilder
+    public abstract class PhenotypeEvalBuilder<T, E> : IPhenotypeEvalBuilder
+        where T : IPhenotype
+        where E : IPhenotypeEval
     {
-        public static IPhenotypeEval<T> ToPhenotypeEval<T, C>
-            (
-                this Func<T, C> evaluatorFunc,
-                IPhenotype<T> phenotype, 
-                Guid guid
-            )
-            where C : IComparable
-        {
-            return new PhenotypeEvalBuilder<T, C>
-                (
-                    guid: guid,
-                    phenotype: phenotype,
-                    evaluatorFunc: evaluatorFunc
-                ).Make();
-        }
-    }
-
-    public class PhenotypeEvalBuilder<T, C> : PhenotypeEvalBuilder<T> 
-        where C : IComparable
-    {
-        public PhenotypeEvalBuilder
+        protected PhenotypeEvalBuilder
             (
                 Guid guid, 
-                IPhenotype<T> phenotype, 
-                Func<T, C> evaluatorFunc
-            )
-            : base(guid, phenotype, "PhenotypeEvalBuilder." + typeof(C).Name)
-        {
-            _evaluatorFunc = evaluatorFunc;
-        }
-
-        private readonly Func<T, C> _evaluatorFunc;
-        public Func<T, C> EvaluatorFunc
-        {
-            get { return _evaluatorFunc; }
-        }
-
-        public override IPhenotypeEval<T> Make()
-        {
-            return PhenotypeEval.Make(
-                    guid: Guid,
-                    phenotype:Phenotype,
-                    result: _evaluatorFunc(Phenotype.Value),
-                    phenotypeEvalBuilder: this
-                );
-        }
-    }
-
-    public abstract class PhenotypeEvalBuilder<T> : IPhenotypeEvalBuilder<T>
-    {
-        protected PhenotypeEvalBuilder(
-            Guid guid, 
-            IPhenotype<T> phenotype, 
-            string phenotypeEvalBuilderType
+                T phenotype
          )
         {
             _guid = guid;
             _phenotype = phenotype;
-            _phenotypeEvalBuilderType = phenotypeEvalBuilderType;
         }
 
         private readonly Guid _guid;
@@ -80,19 +30,22 @@ namespace Genomic.PhenotypeEvals
             get { return _guid; }
         }
 
-        public abstract  IPhenotypeEval<T> Make();
+        public IPhenotypeEval Make()
+        {
+            return EvaluatorFunc(_phenotype);
+        }
 
-        private readonly IPhenotype<T> _phenotype;
-        public IPhenotype<T> Phenotype
+        private readonly T _phenotype;
+        public IPhenotype Phenotype
         {
             get { return _phenotype; }
         }
 
-        private readonly string _phenotypeEvalBuilderType;
-        public string PhenotypeEvalBuilderType
-        {
-            get { return _phenotypeEvalBuilderType; }
-        }
+        protected abstract Func<T, E> EvaluatorFunc { get; } 
+
+        public abstract string EntityName { get; }
+
+        public abstract IEntity GetPart(Guid key);
     }
 
 

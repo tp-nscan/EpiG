@@ -111,13 +111,13 @@ namespace SorterGenome
 
         private readonly 
             Func<
-                    IReadOnlyDictionary<Guid, IPhenotypeEval<T>>, 
+                    IReadOnlyDictionary<Guid, IPhenotypeEval>, 
                     int, 
                     IReadOnlyDictionary<Guid, IGenome>
                 >
             _nextGenerator;
         public Func<
-                     IReadOnlyDictionary<Guid, IPhenotypeEval<T>>,
+                     IReadOnlyDictionary<Guid, IPhenotypeEval>,
                      int,
                      IReadOnlyDictionary<Guid, IGenome>
                     >

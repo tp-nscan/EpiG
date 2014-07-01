@@ -3,20 +3,17 @@ using MathUtils;
 
 namespace Genomic.Phenotypes
 {
-    public interface IPhenotype<T> : IEntity 
-        where T : IEntity
+    public interface IPhenotype : IEntity
     {
-        T Value { get; }
-        IPhenotypeBuilder<T> PhenotypeBuilder { get; }
+        IPhenotypeBuilder PhenotypeBuilder { get; }
     }
 
-    public abstract class PhenotypeImpl<T> : IPhenotype<T>
-        where T : IEntity
+    public abstract class PhenotypeImpl<T> : IPhenotype
     {
         protected PhenotypeImpl
         (
             T value,
-            IPhenotypeBuilder<T> phenotypeBuilder
+            IPhenotypeBuilder phenotypeBuilder
         )
         {
             _value = value;
@@ -29,8 +26,8 @@ namespace Genomic.Phenotypes
             get { return _value; }
         }
 
-        private readonly IPhenotypeBuilder<T> _phenotypeBuilder;
-        public IPhenotypeBuilder<T> PhenotypeBuilder
+        private readonly IPhenotypeBuilder _phenotypeBuilder;
+        public IPhenotypeBuilder PhenotypeBuilder
         {
             get { return _phenotypeBuilder; }
         }
@@ -42,9 +39,6 @@ namespace Genomic.Phenotypes
 
         public abstract string EntityName { get; }
 
-        public IEntity GetPart(Guid key)
-        {
-            return (PhenotypeBuilder.Guid == key) ? PhenotypeBuilder : null;
-        }
+        public abstract IEntity GetPart(Guid key);
     }
 }
