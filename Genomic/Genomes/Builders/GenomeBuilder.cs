@@ -126,6 +126,7 @@ namespace Genomic.Genomes.Builders
         {
             var randy = Rando.Fast(Seed);
             return Genome.Make(
+                    guid: randy.NextGuid(),
                     sequence: Enumerable.Range(0, SequenceLength)
                                         .Select(i => randy.NextUint(SymbolCount))
                                         .ToList(),
@@ -159,7 +160,11 @@ namespace Genomic.Genomes.Builders
 
         public IEntity GetPart(Guid key)
         {
-            throw new NotImplementedException();
+            if (key == Guid)
+            {
+                return this;
+            }
+            return null;
         }
     }
 
@@ -207,6 +212,7 @@ namespace Genomic.Genomes.Builders
 
             return Genome.Make
                 (
+                    guid: randy.NextGuid(),
                     sequence: SourceGenome
                                 .Sequence
                                 .MutateInsertDelete
@@ -259,7 +265,11 @@ namespace Genomic.Genomes.Builders
 
         public IEntity GetPart(Guid key)
         {
-            throw new NotImplementedException();
+            if (key == Guid)
+            {
+                return this;
+            }
+            return null;
         }
     }
 }

@@ -153,7 +153,7 @@ namespace SorterControls.ViewModel
             {
                 return _initialState ??
                     (
-                    _initialState = PermutationStyle ? MakePermutation() : MakeStandard()
+                        _initialState = PermutationStyle ? MakePermutation() : MakeStandard()
                     );
             }
         }

@@ -49,11 +49,6 @@ namespace MathUtils.Collections
                 );
         }
 
-        //public static IGuid<T> WrapWithGuid<T>(this T item, Guid guid)
-        //{
-        //    return new GuidWrapper<T>(guid, item);
-        //}
-
         public static int ToHash(this Guid guid)
         {
             var aw = guid.ToByteArray();
@@ -106,42 +101,4 @@ namespace MathUtils.Collections
             return rhs.Aggregate(lhs, (current, rh) => current.Add(rh));
         }
     }
-
-    //public class GuidWrapper<T> : IGuid<T>
-    //{
-    //    private readonly Guid _guid;
-    //    private readonly T _item;
-
-    //    public GuidWrapper(Guid guid, T item)
-    //    {
-    //        _guid = guid;
-    //        _item = item;
-    //    }
-
-    //    public Guid Guid
-    //    {
-    //        get { return _guid; }
-    //    }
-
-    //    public T Item
-    //    {
-    //        get { return _item; }
-    //    }
-
-    //    public object GetPart(Guid key)
-    //    {
-    //        if (Guid == key)
-    //        {
-    //            return Item;
-    //        }
-
-    //        var guidParts = Item as IGuidParts;
-    //        if (guidParts != null)
-    //        {
-    //            return guidParts.GetPart(key);
-    //        }
-
-    //        return null;
-    //    }
-    //}
 }

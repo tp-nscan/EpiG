@@ -16,11 +16,13 @@ namespace Genomic.Genomes
     {
         public static IGenome Make
             (
+                Guid guid,
                 IReadOnlyList<uint> sequence,
                 IGenomeBuilder genomeBuilder
             )
         {
             return new SimpleGenome(
+                    guid: guid,
                     sequence: sequence,
                     genomeBuilder: genomeBuilder
                 );
@@ -31,12 +33,13 @@ namespace Genomic.Genomes
     {
         public SimpleGenome
         (
+            Guid guid,
             IReadOnlyList<uint> sequence,
-            IGenomeBuilder genomeBuilder
-        )
+            IGenomeBuilder genomeBuilder)
         {
             _sequence = sequence;
             _genomeBuilder = genomeBuilder;
+            _guid = guid;
         }
 
         private readonly IReadOnlyList<uint> _sequence;
@@ -56,11 +59,6 @@ namespace Genomic.Genomes
             get { return _sequence.Count; }
         }
 
-        public Guid Guid
-        {
-            get { return _genomeBuilder.Guid; }
-        }
-
         public string EntityName
         {
             get { return "SimpleGenome"; }
@@ -68,7 +66,21 @@ namespace Genomic.Genomes
 
         public IEntity GetPart(Guid key)
         {
-            throw new NotImplementedException();
+            if (key == Guid)
+            {
+                return this;
+            }
+            if (key == GenomeBuilder.Guid)
+            {
+                return GenomeBuilder;
+            }
+            return null;
+        }
+
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
         }
     }
 }
