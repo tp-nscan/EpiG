@@ -11,13 +11,15 @@ namespace Genomic.Phenotypes
     public abstract class PhenotypeImpl<T> : IPhenotype
     {
         protected PhenotypeImpl
-        (
+        (                
+            Guid guid,
             T value,
             IPhenotypeBuilder phenotypeBuilder
         )
         {
             _value = value;
             _phenotypeBuilder = phenotypeBuilder;
+            _guid = guid;
         }
 
         private readonly T _value;
@@ -32,13 +34,14 @@ namespace Genomic.Phenotypes
             get { return _phenotypeBuilder; }
         }
 
-        public Guid Guid
-        {
-            get { return PhenotypeBuilder.Guid; }
-        }
-
         public abstract string EntityName { get; }
 
         public abstract IEntity GetPart(Guid key);
+
+        private readonly Guid _guid;
+        public Guid Guid
+        {
+            get { return _guid; }
+        }
     }
 }

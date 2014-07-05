@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
-using Genomic.PhenotypeEvals;
-using Genomic.Phenotypes;
 using MathUtils;
 using MathUtils.Rand;
-using Sorting.Sorters;
+using SorterGenome.PhenotypeEvals;
+using SorterGenome.Phenotypes;
 using Utils;
 
 namespace SorterGenome.CompPool
@@ -18,8 +17,8 @@ namespace SorterGenome.CompPool
                 Guid guid,
                 int generation,
                 IReadOnlyDictionary<Guid, IGenome> genomes,
-                IReadOnlyDictionary<Guid, IPhenotype> phenotypes,
-                IReadOnlyDictionary<Guid, IPhenotypeEval> phenotypeEvals,
+                IReadOnlyDictionary<Guid, ISorterPhenotype> phenotypes,
+                IReadOnlyDictionary<Guid, ISorterPhenotypeEval> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
                 int keyCount,
                 int orgCount,
@@ -27,7 +26,9 @@ namespace SorterGenome.CompPool
                 double deletionRate,
                 double insertionRate,
                 double mutationRate,
-                double cubRate
+                double cubRate, 
+                string phenotyperName, 
+                string phenotyperEvaluatorName
             )
         {
             _generation = generation;
@@ -39,6 +40,8 @@ namespace SorterGenome.CompPool
             _orgCount = orgCount;
             _mutationRate = mutationRate;
             _cubRate = cubRate;
+            _phenotyperName = phenotyperName;
+            _phenotyperEvaluatorName = phenotyperEvaluatorName;
             _guid = guid;
             _legacyRate = legacyRate;
             _deletionRate = deletionRate;
@@ -68,7 +71,9 @@ namespace SorterGenome.CompPool
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
-                            cubRate: CubRate
+                            cubRate: CubRate,
+                            phenotyperName: PhenotyperName,
+                            phenotyperEvaluatorName: PhenotyperEvaluatorName
                         );
 
                 case SorterCompPoolStageType.EvaluatePhenotypes:
@@ -90,7 +95,9 @@ namespace SorterGenome.CompPool
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
-                            cubRate: CubRate
+                            cubRate: CubRate,
+                            phenotyperName: PhenotyperName,
+                            phenotyperEvaluatorName: PhenotyperEvaluatorName
                         );
 
                 case SorterCompPoolStageType.MakeNextGeneration:
@@ -109,14 +116,14 @@ namespace SorterGenome.CompPool
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
-                            cubRate: CubRate
+                            cubRate: CubRate,
+                            phenotyperName: PhenotyperName,
+                            phenotyperEvaluatorName: PhenotyperEvaluatorName
                         );
+
                 default:
                     throw new Exception(SorterCompPoolStageType + " not handled");
             }
-
-            return null;
-
         }
 
         private readonly int _keyCount;
@@ -183,30 +190,62 @@ namespace SorterGenome.CompPool
             get { return _genomes; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IPhenotype> _phenotypes;
+        private readonly IReadOnlyDictionary<Guid, ISorterPhenotype> _phenotypes;
 
-        public IReadOnlyDictionary<Guid, IPhenotype> Phenotypes
+        public IReadOnlyDictionary<Guid, ISorterPhenotype> Phenotypes
         {
             get { return _phenotypes; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IPhenotypeEval> _phenotypeEvals;
+        private readonly IReadOnlyDictionary<Guid, ISorterPhenotypeEval> _phenotypeEvals;
 
-        public IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals
+        public IReadOnlyDictionary<Guid, ISorterPhenotypeEval> PhenotypeEvals
         {
             get { return _phenotypeEvals; }
         }
 
-        private Func<IGenome, IRando, IEnumerable<IPhenotype>> _phenotyper;
-
-        public Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper
+        private readonly string _phenotyperName;
+        public string PhenotyperName
         {
-            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakePermuterSlider(KeyCount)); }
+            get { return _phenotyperName; }
         }
 
-        private Func<IPhenotype, IRando, IPhenotypeEval> _phenotypeEvaluator;
+        private readonly string _phenotyperEvaluatorName;
+        public string PhenotyperEvaluatorName
+        {
+            get { return _phenotyperEvaluatorName; }
+        }
 
-        public Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator
+        private Func
+            <
+                IGenome, 
+                IRando, 
+                IEnumerable<ISorterPhenotype>
+            > _phenotyper;
+
+        public Func<
+            IGenome, 
+            IRando, 
+            IEnumerable<ISorterPhenotype>> Phenotyper
+        {
+            get
+            {
+                return _phenotyper ?? 
+                    (
+                        _phenotyper = Phenotypers.MakePermuterSlider(KeyCount)
+                    );
+            }
+        }
+
+        private Func<
+            ISorterPhenotype, 
+            IRando, 
+            ISorterPhenotypeEval> _phenotypeEvaluator;
+
+        public Func<
+            ISorterPhenotype, 
+            IRando, 
+            ISorterPhenotypeEval> PhenotypeEvaluator
         {
             get
             {
@@ -215,10 +254,16 @@ namespace SorterGenome.CompPool
             }
         }
 
-        private Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>>
-            _nextGenerator;
+        private Func<
+            IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, 
+            int, 
+            IReadOnlyDictionary<Guid, IGenome>> _nextGenerator;
 
-        public Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator
+        public Func
+            <
+                IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, 
+                int, 
+                IReadOnlyDictionary<Guid, IGenome>> NextGenerator
         {
             get
             {

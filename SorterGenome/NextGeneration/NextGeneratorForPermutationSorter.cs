@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
 using Genomic.Genomes.Builders;
-using Genomic.PhenotypeEvals;
 using MathUtils.Collections;
 using MathUtils.Rand;
-using Sorting.KeyPairs;
+using SorterGenome.PhenotypeEvals;
 
 namespace SorterGenome
 {
-
-    public class NextGeneratorForStandardSorter
+    public class NextGeneratorForPermutationSorter
     {
-        public NextGeneratorForStandardSorter(
+        public NextGeneratorForPermutationSorter(
             int keyCount, 
             int orgCount,
             double deletionRate, 
@@ -33,15 +31,18 @@ namespace SorterGenome
 
             _nextGenerator = (eD, i) =>
             {
-
                 var randy = Rando.Fast(i);
 
                 var leaderBoard =
-                    eD.Values.OrderBy(v => v)
-                        .Select(ev => ev.PhenotypeEvalBuilder.Phenotype.PhenotypeBuilder.Genome)
+                    eD.Values.OrderBy(v => v.SorterEval)
+                        .Select(ev => ev.SorterPhenotypeEvalBuilder
+                                        .SorterPhenotype
+                                        .SorterPhenotypeBuilder
+                                        .Genome
+                            )
                         .ToList();
 
-                var legacies = leaderBoard.Take((int)(OrgCount * LegacyRate)).ToList();
+                var legacies = leaderBoard.Take((int) (OrgCount*LegacyRate)).ToList();
 
                 var mutants =
                     leaderBoard.Take((int)(OrgCount * CubRate))
@@ -49,10 +50,10 @@ namespace SorterGenome
                     .Take(OrgCount - legacies.Count)
                     .Select
                     (
-                        g => g.ToSimpleGenomeBuilderMutator
+                        g => g.ToPermutationMutatorBuilder
                             (
                                 guid: randy.NextGuid(),
-                                symbolCount: (uint)KeyPairRepository.KeyPairSetSizeForKeyCount(keyCount),
+                                degree: keyCount,
                                 seed: randy.NextInt(),
                                 deletionRate: DeletionRate,
                                 insertionRate: InsertionRate,
@@ -109,13 +110,13 @@ namespace SorterGenome
 
         private readonly 
             Func<
-                    IReadOnlyDictionary<Guid, IPhenotypeEval>, 
+                    IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, 
                     int, 
                     IReadOnlyDictionary<Guid, IGenome>
                 >
             _nextGenerator;
         public Func<
-                     IReadOnlyDictionary<Guid, IPhenotypeEval>,
+                     IReadOnlyDictionary<Guid, ISorterPhenotypeEval>,
                      int,
                      IReadOnlyDictionary<Guid, IGenome>
                     >
@@ -124,6 +125,4 @@ namespace SorterGenome
             get { return _nextGenerator; }
         }
     }
-
-
 }

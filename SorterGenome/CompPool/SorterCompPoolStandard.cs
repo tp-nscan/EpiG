@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
-using Genomic.PhenotypeEvals;
-using Genomic.Phenotypes;
 using MathUtils;
 using MathUtils.Rand;
+using SorterGenome.NextGeneration;
+using SorterGenome.PhenotypeEvals;
+using SorterGenome.Phenotypes;
 using Utils;
 
 namespace SorterGenome.CompPool
@@ -17,8 +18,8 @@ namespace SorterGenome.CompPool
                 Guid guid,
                 int generation,
                 IReadOnlyDictionary<Guid, IGenome> genomes,
-                IReadOnlyDictionary<Guid, IPhenotype> phenotypes,
-                IReadOnlyDictionary<Guid, IPhenotypeEval> phenotypeEvals,
+                IReadOnlyDictionary<Guid, ISorterPhenotype> phenotypes,
+                IReadOnlyDictionary<Guid, ISorterPhenotypeEval> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
                 int keyCount, 
                 int orgCount, 
@@ -26,8 +27,9 @@ namespace SorterGenome.CompPool
                 double deletionRate, 
                 double insertionRate,
                 double mutationRate, 
-                double cubRate
-            )
+                double cubRate, 
+                string phenotyperName, 
+                string phenotyperEvaluatorName, string nextGeneratorrName)
         {
             _generation = generation;
             _genomes = genomes;
@@ -38,6 +40,9 @@ namespace SorterGenome.CompPool
             _orgCount = orgCount;
             _mutationRate = mutationRate;
             _cubRate = cubRate;
+            _phenotyperName = phenotyperName;
+            _phenotyperEvaluatorName = phenotyperEvaluatorName;
+            _nextGeneratorrName = nextGeneratorrName;
             _guid = guid;
             _legacyRate = legacyRate;
             _deletionRate = deletionRate;
@@ -67,7 +72,10 @@ namespace SorterGenome.CompPool
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
-                            cubRate: CubRate
+                            cubRate: CubRate,
+                            phenotyperName: PhenotyperName,
+                            phenotyperEvaluatorName: PhenotyperEvaluatorName,
+                            nextGeneratorrName: NextGeneratorrName
                         );
 
                 case SorterCompPoolStageType.EvaluatePhenotypes:
@@ -89,7 +97,10 @@ namespace SorterGenome.CompPool
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
-                            cubRate: CubRate
+                            cubRate: CubRate,
+                            phenotyperName: PhenotyperName,
+                            phenotyperEvaluatorName: PhenotyperEvaluatorName,
+                            nextGeneratorrName: NextGeneratorrName
                         );
 
                 case SorterCompPoolStageType.MakeNextGeneration:
@@ -108,7 +119,10 @@ namespace SorterGenome.CompPool
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
-                            cubRate: CubRate
+                            cubRate: CubRate,
+                            phenotyperName: PhenotyperName,
+                            phenotyperEvaluatorName: PhenotyperEvaluatorName,
+                            nextGeneratorrName: NextGeneratorrName
                         );
                 default:
                     throw new Exception(SorterCompPoolStageType + " not handled");
@@ -179,49 +193,89 @@ namespace SorterGenome.CompPool
             get { return _genomes; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IPhenotype> _phenotypes;
+        private readonly IReadOnlyDictionary<Guid, ISorterPhenotype> _phenotypes;
 
-        public IReadOnlyDictionary<Guid, IPhenotype> Phenotypes
+        public IReadOnlyDictionary<Guid, ISorterPhenotype> Phenotypes
         {
             get { return _phenotypes; }
         }
 
-        private readonly IReadOnlyDictionary<Guid, IPhenotypeEval> _phenotypeEvals;
+        private readonly IReadOnlyDictionary<Guid, ISorterPhenotypeEval> _phenotypeEvals;
 
-        public IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals
+        public IReadOnlyDictionary<Guid, ISorterPhenotypeEval> PhenotypeEvals
         {
             get { return _phenotypeEvals; }
         }
 
-        private Func<IGenome, IRando, IEnumerable<IPhenotype>> _phenotyper;
-
-        public Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper
+        private readonly string _nextGeneratorrName;
+        public string NextGeneratorrName
         {
-            get { return _phenotyper ?? (_phenotyper = Phenotypers.MakeStandard(KeyCount)); }
+            get { return _nextGeneratorrName; }
         }
 
-        private Func<IPhenotype, IRando, IPhenotypeEval> _phenotypeEvaluator;
+        private readonly string _phenotyperName;
+        public string PhenotyperName
+        {
+            get { return _phenotyperName; }
+        }
 
-        public Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator
+        private readonly string _phenotyperEvaluatorName;
+        public string PhenotyperEvaluatorName
+        {
+            get { return _phenotyperEvaluatorName; }
+        }
+
+        private Func<
+            IGenome, 
+            IRando, 
+            IEnumerable<ISorterPhenotype>> _phenotyper;
+
+        public Func<
+            IGenome, 
+            IRando, 
+            IEnumerable<ISorterPhenotype>> Phenotyper
         {
             get
             {
-                return _phenotypeEvaluator ?? 
-                    (_phenotypeEvaluator = null);
+                return _phenotyper ?? (_phenotyper = Phenotypers.LookupPhenotyper(PhenotyperName, KeyCount));
+                
             }
         }
 
-        private Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>>
-            _nextGenerator;
+        private Func<
+            ISorterPhenotype, 
+            IRando, 
+            ISorterPhenotypeEval> _phenotypeEvaluator;
 
-        public Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator
+        public Func<
+            ISorterPhenotype, 
+            IRando, 
+            ISorterPhenotypeEval> PhenotypeEvaluator
+        {
+            get
+            {
+                return _phenotypeEvaluator ??
+                       (_phenotypeEvaluator = PhenotypeEvaluators.LookupPhenotypeEvaluator(PhenotyperEvaluatorName));
+            }
+        }
+
+        private Func<
+            IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, 
+            int, 
+            IReadOnlyDictionary<Guid, IGenome>> _nextGenerator;
+
+        public Func<
+            IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, 
+            int, 
+            IReadOnlyDictionary<Guid, IGenome>> NextGenerator
         {
             get 
             { 
                 return _nextGenerator ?? 
                        (
-                           _nextGenerator = new NextGeneratorForStandardSorter
+                           _nextGenerator = NextGenerators.LookupPhenotypeEvaluator    
                                (
+                                   name: NextGeneratorrName,
                                    keyCount : KeyCount, 
                                    orgCount : OrgCount,
                                    deletionRate: DeletionRate,
@@ -229,7 +283,7 @@ namespace SorterGenome.CompPool
                                    mutationRate: MutationRate,
                                    legacyRate: LegacyRate,
                                    cubRate: CubRate
-                               ).NextGenerator
+                               )
                            ); 
             }
         }
@@ -240,7 +294,6 @@ namespace SorterGenome.CompPool
         }
 
         private readonly Guid _guid;
-
         public Guid Guid
         {
             get { return _guid; }

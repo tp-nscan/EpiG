@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Genomic.Genomes;
 using Genomic.Genomes.Builders;
-using Genomic.PhenotypeEvals;
-using Genomic.Phenotypes;
 using MathUtils;
 using MathUtils.Rand;
+using SorterGenome.PhenotypeEvals;
+using SorterGenome.Phenotypes;
 using Sorting.KeyPairs;
-using Sorting.Sorters;
 using Utils;
 
 namespace SorterGenome.CompPool
@@ -21,15 +20,22 @@ namespace SorterGenome.CompPool
 
         IReadOnlyDictionary<Guid, IGenome> Genomes { get; }
 
-        IReadOnlyDictionary<Guid, IPhenotype> Phenotypes { get; }
+        IReadOnlyDictionary<Guid, ISorterPhenotype> Phenotypes { get; }
 
-        IReadOnlyDictionary<Guid, IPhenotypeEval> PhenotypeEvals { get; }
+        IReadOnlyDictionary<Guid, ISorterPhenotypeEval> PhenotypeEvals { get; }
 
-        Func<IGenome, IRando, IEnumerable<IPhenotype>> Phenotyper { get; }
+        string NextGeneratorrName { get; }
 
-        Func<IPhenotype, IRando, IPhenotypeEval> PhenotypeEvaluator { get; }
+        string PhenotyperName { get; }
 
-        Func<IReadOnlyDictionary<Guid, IPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
+        string PhenotyperEvaluatorName { get; }
+
+
+        //Func<IGenome, IRando, IEnumerable<ISorterPhenotype>> Phenotyper { get; }
+
+        //Func<ISorterPhenotype, IRando, ISorterPhenotypeEval> PhenotypeEvaluator { get; }
+
+        //Func<IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
 
     }
 
@@ -67,7 +73,10 @@ namespace SorterGenome.CompPool
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
                     legacyRate: legacyRate,
-                    cubRate: cubRate
+                    cubRate: cubRate,
+                    phenotyperName: "Standard",
+                    phenotyperEvaluatorName: "Standard",
+                    nextGeneratorrName: "Standard"
                 );
         }
 
@@ -86,7 +95,7 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
-            return new SorterCompPoolPermutation
+            return new SorterCompPoolStandard
                 (
                     guid: Guid.NewGuid(),
                     generation: 0,
@@ -105,7 +114,10 @@ namespace SorterGenome.CompPool
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
                     legacyRate: legacyRate,
-                    cubRate: cubRate
+                    cubRate: cubRate,
+                    phenotyperName: "MakePermuterSlider",
+                    phenotyperEvaluatorName: "Standard",
+                    nextGeneratorrName: "Permutation"
                 );
         }
 

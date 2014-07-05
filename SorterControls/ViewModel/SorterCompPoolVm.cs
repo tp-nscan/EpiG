@@ -224,7 +224,7 @@ namespace SorterControls.ViewModel
                     {
 
                         var sorterEvals =
-                            result.Data.Result.PhenotypeEvals.Select(ev => (ISorterEval)ev.Value.Result).ToList();
+                            result.Data.Result.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
 
                         SorterPoolVm = new SorterPoolVm
                             (
