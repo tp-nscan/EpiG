@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Genomic.PhenotypeEvals;
 using MathUtils.Rand;
 using SorterGenome.CompPool;
+using SorterGenome.CompPool.Ensemble;
 using Sorting.Evals;
 using System.Linq;
-using Sorting.Sorters;
 using Utils.BackgroundWorkers;
 using Workflows;
 using WpfUtils;
@@ -19,24 +19,48 @@ namespace SorterControls.ViewModel
         public SorterCompPoolEnsembleVm()
         {
             _legacyRate = 0.04;
-            _mutationRate = 0.03;
+            _mutationRate = 0.02;
             _cubRate = 0.24;
 
-            _sorterCount = 500;
+            _sorterCount = 50;
             _seed = 1234;
             _keyPairCount = 450;
             _keyCount = 10;
 
-            SorterPoolVm = new SorterPoolVm
-                (
-                    keyCount: KeyCount,
-                    sorterEvals: Enumerable.Empty<ISorterEval>(),
-                    displaySize: 3,
-                    showStages: false,
-                    showUnused: false,
-                    generation: 0,
-                    sorterDisplayCount: 10
+            _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
+            _replicas = 5;
+            _increment = 0.005;
+
+            SorterPoolVms.AddMany
+                ( 
+                
+                    Enumerable.Range(0, Replicas).Select
+                    (
+                
+                        i=> new SorterPoolVm
+                        (
+                            keyCount: KeyCount,
+                            sorterEvals: Enumerable.Empty<ISorterEval>(),
+                            displaySize: 3,
+                            showStages: false,
+                            showUnused: false,
+                            generation: 0,
+                            sorterDisplayCount: 10
+                        )
+                    )
+                
                 );
+
+            //SorterPoolVms = new SorterPoolVm
+            //    (
+            //        keyCount: KeyCount,
+            //        sorterEvals: Enumerable.Empty<ISorterEval>(),
+            //        displaySize: 3,
+            //        showStages: false,
+            //        showUnused: false,
+            //        generation: 0,
+            //        sorterDisplayCount: 10
+            //    );
         }
 
         private int _generationCount;
@@ -217,27 +241,27 @@ namespace SorterControls.ViewModel
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
 
-                SorterPoolVm.SorterCompPoolStageType = result.Data.Result.SorterCompPoolStageType;
+                //SorterPoolVms.SorterCompPoolStageType = result.Data.Result.SorterCompPoolStageType;
 
-                if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
-                {
-                    {
-                        var sorterEvals =
-                            result.Data.Result.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
+                //if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
+                //{
+                //    {
+                //        var sorterEvals =
+                //            result.Data.Result.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
 
-                        SorterPoolVm = new SorterPoolVm
-                            (
-                                keyCount: KeyCount,
-                                sorterEvals: sorterEvals,
-                                displaySize: SorterPoolVm.SorterGalleryVm.DisplaySize,
-                                showStages: SorterPoolVm.SorterGalleryVm.ShowStages,
-                                showUnused: SorterPoolVm.SorterGalleryVm.ShowUnused,
-                                generation: result.Data.Result.Generation,
-                                sorterDisplayCount: SorterPoolVm.SorterGalleryVm.SorterDisplayCount
-                            );
+                //        SorterPoolVms = new SorterPoolVm
+                //            (
+                //                keyCount: KeyCount,
+                //                sorterEvals: sorterEvals,
+                //                displaySize: SorterPoolVms.SorterGalleryVm.DisplaySize,
+                //                showStages: SorterPoolVms.SorterGalleryVm.ShowStages,
+                //                showUnused: SorterPoolVms.SorterGalleryVm.ShowUnused,
+                //                generation: result.Data.Result.Generation,
+                //                sorterDisplayCount: SorterPoolVms.SorterGalleryVm.SorterDisplayCount
+                //            );
 
-                    }
-                }
+                //    }
+                //}
             _initialState = result.Data;
         }
 
@@ -277,6 +301,42 @@ namespace SorterControls.ViewModel
                 _keyCount = value;
                 Reset();
                 OnPropertyChanged("KeyCount");
+            }
+        }
+
+        private int _replicas;
+        public int Replicas
+        {
+            get { return _replicas; }
+            set
+            {
+                _replicas = value;
+                Reset();
+                OnPropertyChanged("Replicas");
+            }
+        }
+
+        private double _increment;
+        public double Increment
+        {
+            get { return _increment; }
+            set
+            {
+                _increment = value;
+                Reset();
+                OnPropertyChanged("Increment");
+            }
+        }
+
+        private SorterCompPoolParameterType _sorterCompPoolParameterType;
+        public SorterCompPoolParameterType SorterCompPoolParameterType
+        {
+            get { return _sorterCompPoolParameterType; }
+            set
+            {
+                _sorterCompPoolParameterType = value;
+                Reset();
+                OnPropertyChanged("SorterCompPoolParameterType");
             }
         }
 
@@ -395,14 +455,14 @@ namespace SorterControls.ViewModel
 
         #region SorterPoolVm related
 
-        private SorterPoolVm _sorterPoolVm;
-        public SorterPoolVm SorterPoolVm
+        private ObservableCollection<SorterPoolVm>  _sorterPoolVms  = new ObservableCollection<SorterPoolVm>();
+        public ObservableCollection<SorterPoolVm> SorterPoolVms
         {
-            get { return _sorterPoolVm; }
+            get { return _sorterPoolVms; }
             set
             {
-                _sorterPoolVm = value;
-                OnPropertyChanged("SorterPoolVm");
+                _sorterPoolVms = value;
+                OnPropertyChanged("SorterPoolVms");
             }
         }
 

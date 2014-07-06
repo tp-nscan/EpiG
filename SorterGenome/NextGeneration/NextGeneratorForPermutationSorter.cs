@@ -7,7 +7,7 @@ using MathUtils.Collections;
 using MathUtils.Rand;
 using SorterGenome.PhenotypeEvals;
 
-namespace SorterGenome
+namespace SorterGenome.NextGeneration
 {
     public class NextGeneratorForPermutationSorter
     {

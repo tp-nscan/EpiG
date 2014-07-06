@@ -8,7 +8,7 @@ using MathUtils.Rand;
 using SorterGenome.PhenotypeEvals;
 using Sorting.KeyPairs;
 
-namespace SorterGenome
+namespace SorterGenome.NextGeneration
 {
 
     public class NextGeneratorForStandardSorter

@@ -61,7 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompPool\SorterCompPoolEnsemble.cs" />
+    <Compile Include="CompPool\Ensemble\SorterCompPoolEnsemble.cs" />
+    <Compile Include="CompPool\Ensemble\SorterCompPoolParameters.cs" />
+    <Compile Include="CompPool\Ensemble\SorterCompPoolParameterType.cs" />
     <Compile Include="NextGeneration\NextGeneratorForPermutationSorter.cs" />
     <Compile Include="NextGeneration\NextGeneratorForStandardSorter.cs" />
     <Compile Include="NextGeneration\NextGenerators.cs" />

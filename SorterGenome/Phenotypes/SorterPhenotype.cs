@@ -75,14 +75,14 @@ namespace SorterGenome.Phenotypes
 
         public IEntity GetPart(Guid key)
         {
-            if (SorterPhenotypeBuilder.GetPart(key) != null)
-            {
-                return SorterPhenotypeBuilder.GetPart(key);
-            }
-
             if (Guid == key)
             {
                 return this;
+            }
+
+            if (SorterPhenotypeBuilder.GetPart(key) != null)
+            {
+                return SorterPhenotypeBuilder.GetPart(key);
             }
 
             return null;

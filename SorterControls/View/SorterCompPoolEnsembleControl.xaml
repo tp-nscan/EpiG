@@ -1,16 +1,29 @@
-﻿<UserControl x:Class="SorterControls.View.SorterCompPoolEnsembleControl"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils"
-             xmlns:sorterControls="clr-namespace:SorterControls"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:compPool="clr-namespace:SorterGenome.CompPool;assembly=SorterGenome"
+             xmlns:view="clr-namespace:SorterControls.View"
+             xmlns:ensemble="clr-namespace:SorterGenome.CompPool.Ensemble;assembly=SorterGenome"
+             x:Class="SorterControls.View.SorterCompPoolEnsembleControl"
              mc:Ignorable="d"             
              d:DesignWidth="800">
 
     <UserControl.Resources>
         <converters:InvBoolToVisibilityConverter x:Key="InvBoolToVisibilityConverter"/>
+        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="ensemble:SorterCompPoolParameterType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
+        
     </UserControl.Resources>
 
     <Grid>
@@ -27,6 +40,8 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Focusable" Value="True" />
                 <Setter Property="FontSize" Value="18" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type ComboBox}" >
@@ -46,6 +61,8 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type xctk:DoubleUpDown}">
@@ -53,6 +70,8 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type StackPanel}">
@@ -80,7 +99,7 @@
             <Grid DockPanel.Dock="Right" >
                 <Button Command="{Binding CancelSimulationCommand}" Content="Stop"/>
                 <Button Command="{Binding StartSimulationCommand}" Content="Run" 
-                        Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
+                    Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
             </Grid>
 
             <Border Margin="2"
@@ -95,71 +114,71 @@
                     <StackPanel>
                         <TextBlock Text="Seed" />
                         <TextBox Text="{Binding Seed}" 
-                        MinWidth="50"/>
+                            MinWidth="50"/>
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Key Count" />
                         <xctk:IntegerUpDown Value="{Binding KeyCount}" 
-                        Minimum="2" 
-                        Maximum="20" />
+                            Minimum="2" 
+                            Maximum="20" />
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="KeyPair Count" />
                         <xctk:IntegerUpDown Value="{Binding KeyPairCount}"
-                        Minimum="0" 
-                        Increment="50" 
-                        Maximum="10000" />
+                            Minimum="0" 
+                            Increment="50" 
+                            Maximum="10000"/>
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Sorter Count" />
                         <xctk:IntegerUpDown Value="{Binding SorterCount}"
-                        Minimum="0" 
-                        Increment="5" 
-                        Maximum="10000" />
+                            Minimum="0" 
+                            Increment="5" 
+                            Maximum="10000" />
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Mutation rate" />
                         <xctk:DoubleUpDown Value="{Binding MutationRate}"
-                        Minimum="0.000" 
-                        Increment="0.005" 
-                        Maximum="0.1" />
+                            Minimum="0.000" 
+                            Increment="0.005" 
+                            Maximum="0.1" />
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Insertion rate" />
                         <xctk:DoubleUpDown Value="{Binding InsertionRate}"
-                        Minimum="0.000" 
-                        Increment="0.005" 
-                        Maximum="0.1" />
+                            Minimum="0.000" 
+                            Increment="0.005" 
+                            Maximum="0.1" />
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Deletion rate" />
                         <xctk:DoubleUpDown Value="{Binding DeletionRate}"
-                        Minimum="0.000" 
-                        Increment="0.005" 
-                        Maximum="0.1" />
+                            Minimum="0.000" 
+                            Increment="0.005" 
+                            Maximum="0.1" />
                     </StackPanel>
 
 
                     <StackPanel>
                         <TextBlock Text="Legacy rate" />
                         <xctk:DoubleUpDown Value="{Binding LegacyRate}"
-                        Minimum="0.0" 
-                        Increment="0.02" 
-                        Maximum="0.5" />
+                            Minimum="0.0" 
+                            Increment="0.02" 
+                            Maximum="0.5" />
                     </StackPanel>
 
                     <StackPanel>
                         <TextBlock Text="Cub rate" />
                         <xctk:DoubleUpDown Value="{Binding CubRate}"
-                        Minimum="0.0" 
-                        Increment="0.02" 
-                        Maximum="0.4" />
+                            Minimum="0.0" 
+                            Increment="0.02" 
+                            Maximum="0.4" />
                     </StackPanel>
 
 
@@ -170,9 +189,29 @@
                     <StackPanel>
                         <TextBlock Text="Replicas" />
                         <xctk:IntegerUpDown Value="{Binding Replicas}"
-                        Minimum="0" 
-                        Increment="1" 
-                        Maximum="100" />
+                            Minimum="0" 
+                            Increment="1" 
+                            Maximum="100" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Variable param" />
+                        <ComboBox 
+                            ItemsSource="{Binding Source={StaticResource dataFromEnum}}" 
+                            SelectedItem="{Binding SorterCompPoolParameterType}" 
+                            ItemsPanel="{DynamicResource BlueItemsPanel}" 
+                            Template="{DynamicResource ComboBoxBlueControlTemplate}" 
+                            />
+
+                    </StackPanel>
+
+
+                    <StackPanel>
+                        <TextBlock Text="Variable increment" />
+                        <xctk:DoubleUpDown Value="{Binding Increment}"
+                            Minimum="0.0" 
+                            Increment="0.02" 
+                            Maximum="0.4" />
                     </StackPanel>
 
                 </WrapPanel>
@@ -184,9 +223,15 @@
 
         </DockPanel>
 
-
-        <sorterControls:SorterPoolControl Grid.Row="1" DataContext="{Binding SorterPoolVm}"  />
-
+        <ListBox Background="Transparent" Grid.Row="1" ItemsSource="{Binding SorterPoolVms}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <view:SorterPoolControl />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        
     </Grid>
 
 </UserControl>

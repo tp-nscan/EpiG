@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils"
-             xmlns:sorterControls="clr-namespace:SorterControls"
+             xmlns:view="clr-namespace:SorterControls.View"
              x:Class="SorterControls.View.SorterCompPoolControl"
              mc:Ignorable="d" 
             d:DesignWidth="800">
@@ -28,6 +28,8 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Focusable" Value="True" />
                 <Setter Property="FontSize" Value="18" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type ComboBox}" >
@@ -47,6 +49,8 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type xctk:DoubleUpDown}">
@@ -54,8 +58,10 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
-            
+
             <Style TargetType="{x:Type StackPanel}">
                 <Setter Property="Margin" Value="5,2" />
                 <Setter Property="Orientation" Value="Horizontal" />
@@ -65,7 +71,6 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Margin" Value="5,2" />
                 <Setter Property="Padding" Value="5,2" />
-                <Setter Property="Width" Value="40"/>
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
@@ -179,7 +184,7 @@
         </DockPanel>
 
 
-        <sorterControls:SorterPoolControl Grid.Row="1" DataContext="{Binding SorterPoolVm}"  />
+        <view:SorterPoolControl Grid.Row="1" DataContext="{Binding SorterPoolVm}"  />
 
     </Grid>
     

@@ -24,19 +24,11 @@ namespace SorterGenome.CompPool
 
         IReadOnlyDictionary<Guid, ISorterPhenotypeEval> PhenotypeEvals { get; }
 
-        string NextGeneratorrName { get; }
+        string NextGeneratorName { get; }
 
         string PhenotyperName { get; }
 
         string PhenotyperEvaluatorName { get; }
-
-
-        //Func<IGenome, IRando, IEnumerable<ISorterPhenotype>> Phenotyper { get; }
-
-        //Func<ISorterPhenotype, IRando, ISorterPhenotypeEval> PhenotypeEvaluator { get; }
-
-        //Func<IReadOnlyDictionary<Guid, ISorterPhenotypeEval>, int, IReadOnlyDictionary<Guid, IGenome>> NextGenerator { get; }
-
     }
 
     public static class SorterCompPool
@@ -76,7 +68,7 @@ namespace SorterGenome.CompPool
                     cubRate: cubRate,
                     phenotyperName: "Standard",
                     phenotyperEvaluatorName: "Standard",
-                    nextGeneratorrName: "Standard"
+                    nextGeneratorName: "Standard"
                 );
         }
 
@@ -117,7 +109,7 @@ namespace SorterGenome.CompPool
                     cubRate: cubRate,
                     phenotyperName: "MakePermuterSlider",
                     phenotyperEvaluatorName: "Standard",
-                    nextGeneratorrName: "Permutation"
+                    nextGeneratorName: "Permutation"
                 );
         }
 

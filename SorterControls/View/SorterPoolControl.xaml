@@ -6,7 +6,7 @@
     xmlns:View="clr-namespace:SorterControls.View"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     mc:Ignorable="d"
-    x:Class="SorterControls.SorterPoolControl"
+    x:Class="SorterControls.View.SorterPoolControl"
     x:Name="UserControl">
 
     <Grid x:Name="LayoutRoot">
@@ -24,6 +24,8 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Focusable" Value="True" />
                 <Setter Property="FontSize" Value="18" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type ComboBox}" >
@@ -43,6 +45,17 @@
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+
+            <Style TargetType="{x:Type xctk:DoubleUpDown}">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Height" Value="25" />
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Margin" Value="0,0,4,0" />
+                <Setter Property="Foreground" Value="Gold" />
+                <Setter Property="Background" Value="Transparent" />
             </Style>
 
             <Style TargetType="{x:Type StackPanel}">
@@ -70,12 +83,6 @@
             Background="#300F">
 
             <WrapPanel>
-                
-                <StackPanel>
-                    <TextBlock Text="Seed" />
-                    <TextBox Text="{Binding Seed}" 
-                        MinWidth="50"/>
-                </StackPanel>
                 
                 <StackPanel>
                     <TextBlock Text="Generation" />

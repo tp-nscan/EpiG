@@ -29,7 +29,9 @@ namespace SorterGenome.CompPool
                 double mutationRate, 
                 double cubRate, 
                 string phenotyperName, 
-                string phenotyperEvaluatorName, string nextGeneratorrName)
+                string phenotyperEvaluatorName, 
+                string nextGeneratorName
+            )
         {
             _generation = generation;
             _genomes = genomes;
@@ -42,7 +44,7 @@ namespace SorterGenome.CompPool
             _cubRate = cubRate;
             _phenotyperName = phenotyperName;
             _phenotyperEvaluatorName = phenotyperEvaluatorName;
-            _nextGeneratorrName = nextGeneratorrName;
+            _nextGeneratorName = nextGeneratorName;
             _guid = guid;
             _legacyRate = legacyRate;
             _deletionRate = deletionRate;
@@ -75,7 +77,7 @@ namespace SorterGenome.CompPool
                             cubRate: CubRate,
                             phenotyperName: PhenotyperName,
                             phenotyperEvaluatorName: PhenotyperEvaluatorName,
-                            nextGeneratorrName: NextGeneratorrName
+                            nextGeneratorName: NextGeneratorName
                         );
 
                 case SorterCompPoolStageType.EvaluatePhenotypes:
@@ -100,7 +102,7 @@ namespace SorterGenome.CompPool
                             cubRate: CubRate,
                             phenotyperName: PhenotyperName,
                             phenotyperEvaluatorName: PhenotyperEvaluatorName,
-                            nextGeneratorrName: NextGeneratorrName
+                            nextGeneratorName: NextGeneratorName
                         );
 
                 case SorterCompPoolStageType.MakeNextGeneration:
@@ -122,7 +124,7 @@ namespace SorterGenome.CompPool
                             cubRate: CubRate,
                             phenotyperName: PhenotyperName,
                             phenotyperEvaluatorName: PhenotyperEvaluatorName,
-                            nextGeneratorrName: NextGeneratorrName
+                            nextGeneratorName: NextGeneratorName
                         );
                 default:
                     throw new Exception(SorterCompPoolStageType + " not handled");
@@ -207,10 +209,10 @@ namespace SorterGenome.CompPool
             get { return _phenotypeEvals; }
         }
 
-        private readonly string _nextGeneratorrName;
-        public string NextGeneratorrName
+        private readonly string _nextGeneratorName;
+        public string NextGeneratorName
         {
-            get { return _nextGeneratorrName; }
+            get { return _nextGeneratorName; }
         }
 
         private readonly string _phenotyperName;
@@ -275,7 +277,7 @@ namespace SorterGenome.CompPool
                        (
                            _nextGenerator = NextGenerators.LookupPhenotypeEvaluator    
                                (
-                                   name: NextGeneratorrName,
+                                   name: NextGeneratorName,
                                    keyCount : KeyCount, 
                                    orgCount : OrgCount,
                                    deletionRate: DeletionRate,
