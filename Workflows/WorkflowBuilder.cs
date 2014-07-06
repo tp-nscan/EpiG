@@ -1,14 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using MathUtils;
-using MathUtils.Collections;
 
 namespace Workflows
 {
-    public interface IWorkflowBuilder<T> : IGuid where T : IEntity
+    public interface IWorkflowBuilder<T> : IEntity where T : IEntity
     {
         Task<IWorkflow<T>> Make();
-        string WorkflowBuilderType { get; }
     }
 
     public static class WorkflowBuilder
@@ -30,19 +28,18 @@ namespace Workflows
     public class WorkflowBuilderPassThrough<T> : WorkflowBuilderBase<T>
         where T : IEntity
     {
-        public const string Name = "WorkflowBuilder.Passthrough";
-
         public WorkflowBuilderPassThrough
             (
                 Guid guid, 
                 T result
             )
-            : base(guid, Name)
+            : base(guid)
         {
             _result = result;
         }
 
         private readonly T _result;
+
         public T Result
         {
             get { return _result; }
@@ -60,18 +57,26 @@ namespace Workflows
             );
             return taskSource.Task;
         }
+
+        public override string EntityName
+        {
+            get { return "WorkflowBuilder.Passthrough"; }
+        }
+
+        public override IEntity GetPart(Guid key)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public abstract class WorkflowBuilderBase<T> : IWorkflowBuilder<T> where T : IEntity
     {
         protected WorkflowBuilderBase
             (
-                Guid guid, 
-                string workflowBuilderType
+                Guid guid
             )
         {
             _guid = guid;
-            _workflowBuilderType = workflowBuilderType;
         }
 
         private readonly Guid _guid;
@@ -82,12 +87,8 @@ namespace Workflows
 
         public abstract Task<IWorkflow<T>> Make();
 
-        private readonly string _workflowBuilderType;
-        public string WorkflowBuilderType
-        {
-            get { return _workflowBuilderType; }
-        }
-
+        public abstract string EntityName { get; }
+        public abstract IEntity GetPart(Guid key);
     }
 
 }

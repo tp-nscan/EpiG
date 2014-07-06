@@ -7,7 +7,7 @@ using Utils;
 
 namespace Workflows
 {
-    public interface IRecursiveWorkflowBuilder<T> : IGuid where T : IEntity
+    public interface IRecursiveWorkflowBuilder<T> : IEntity where T : IEntity
     {
         IWorkflow<T> InitialWorkflow { get; }
         IRecursiveWorkflowBuilder<T> Iterate(int seed);
@@ -17,19 +17,19 @@ namespace Workflows
 
     public static class RecursiveWorkflowBuilder
     {
-        public static IRecursiveWorkflowBuilder<T> ToRecursiveFunctionWorkflowBuilder<T>
-            (
-                this IWorkflow<T> initialWorkflow, 
-                Func<T, int, T> updateFunc
-            ) where T : IEntity
-        {
-            return new RecursiveWorkflowBuilderFunc<T>
-                (
-                    seeds: ImmutableList<int>.Empty, 
-                    initialWorkflow: initialWorkflow, 
-                    updateFunc: updateFunc
-                );
-        }
+        //public static IRecursiveWorkflowBuilder<T> ToRecursiveFunctionWorkflowBuilder<T>
+        //    (
+        //        this IWorkflow<T> initialWorkflow, 
+        //        Func<T, int, T> updateFunc
+        //    ) where T : IEntity
+        //{
+        //    return new RecursiveWorkflowBuilderFunc<T>
+        //        (
+        //            seeds: ImmutableList<int>.Empty, 
+        //            initialWorkflow: initialWorkflow, 
+        //            updateFunc: updateFunc
+        //        );
+        //}
 
         public static IRecursiveWorkflowBuilder<T> ToRecursiveRndWlkWorkflowBuilder<T>
         (
@@ -84,38 +84,41 @@ namespace Workflows
         {
             get { return _initialWorkflow; }
         }
+
+        public abstract string EntityName { get; }
+        public abstract IEntity GetPart(Guid key);
     }
 
-    public class RecursiveWorkflowBuilderFunc<T> : RecursiveWorkflowBuilderBase<T>
-        where T : IEntity
-    {
-        public RecursiveWorkflowBuilderFunc(
-                IImmutableList<int> seeds, 
-                IWorkflow<T> initialWorkflow, 
-                Func<T, int, T> updateFunc
-            ) : base(seeds, initialWorkflow)
-        {
-            _updateFunc = updateFunc;
-        }
+    //public abstract class RecursiveWorkflowBuilderFunc<T> : RecursiveWorkflowBuilderBase<T>
+    //    where T : IEntity
+    //{
+    //    public RecursiveWorkflowBuilderFunc(
+    //            IImmutableList<int> seeds, 
+    //            IWorkflow<T> initialWorkflow, 
+    //            Func<T, int, T> updateFunc
+    //        ) : base(seeds, initialWorkflow)
+    //    {
+    //        _updateFunc = updateFunc;
+    //    }
 
-        public override T Make(T initial, int seed)
-        {
-            return UpdateFunc(initial, seed);
-        }
+    //    public override T Make(T initial, int seed)
+    //    {
+    //        return UpdateFunc(initial, seed);
+    //    }
 
-        public override IRecursiveWorkflowBuilder<T> Iterate(int seed)
-        {
-            return new RecursiveWorkflowBuilderFunc<T>(
-                    seeds: Seeds.Add(seed),
-                    initialWorkflow: InitialWorkflow,
-                    updateFunc: UpdateFunc
-                );
-        }
+    //    public override IRecursiveWorkflowBuilder<T> Iterate(int seed)
+    //    {
+    //        return new RecursiveWorkflowBuilderFunc<T>(
+    //                seeds: Seeds.Add(seed),
+    //                initialWorkflow: InitialWorkflow,
+    //                updateFunc: UpdateFunc
+    //            );
+    //    }
         
-        private readonly Func<T, int, T> _updateFunc;
-        public Func<T, int, T> UpdateFunc
-        {
-            get { return _updateFunc; }
-        }
-    }
+    //    private readonly Func<T, int, T> _updateFunc;
+    //    public Func<T, int, T> UpdateFunc
+    //    {
+    //        get { return _updateFunc; }
+    //    }
+    //}
 }

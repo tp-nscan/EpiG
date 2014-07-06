@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using MathUtils;
 using MathUtils.Rand;
 using Utils;
@@ -24,50 +25,11 @@ namespace SorterGenome.CompPool.Ensemble
         public SorterCompPoolEnsembleStandard
             (
                 Guid guid,
-                int seed,
-                int orgCount,
-                int seqenceLength,
-                int keyCount,
-                double deletionRate,
-                double insertionRate,
-                double mutationRate,
-                double legacyRate,
-                double cubRate,
-                int replicaCount
+                IEnumerable<ISorterCompPool> sorterCompPools 
             )
         {
             _guid = guid;
-
-            var randy = Rando.Fast(seed);
-
-            //_sorterCompPools = Enumerable.Range(0, ReplicaCount).Select(
-                
-            //    i=> SorterCompPool.InitStandardFromSeed(
-                    
-            //                    return SorterCompPool.InitStandardFromSeed
-            //    (
-            //        seed: Seed,
-            //        orgCount: SorterCount,
-            //        seqenceLength: KeyPairCount,
-            //        keyCount: KeyCount,
-            //        deletionRate: DeletionRate,
-            //        insertionRate: InsertionRate,
-            //        mutationRate: MutationRate,
-            //        legacyRate: LegacyRate,
-            //        cubRate: CubRate
-            //    ).ToPassThroughWorkflow(Guid.NewGuid())
-            //    .ToRecursiveWorkflowRndWlk();
-            //        )
-                
-                
-            //    )
-                
-                
-                
-                
-                
-                
-                //new List<ISorterCompPool<T>>();
+            _sorterCompPools = sorterCompPools.ToList();
 
         }
 
@@ -90,7 +52,16 @@ namespace SorterGenome.CompPool.Ensemble
 
         public ISorterCompPoolEnsemble Step(int seed)
         {
-            throw new NotImplementedException();
+            var randy = Rando.Fast(seed);
+            var newSorterCompPools = new List<ISorterCompPool>();
+            foreach (var sorterCompPool in SorterCompPools)
+            {
+                newSorterCompPools.Add(sorterCompPool.Step(randy.NextInt()));
+            }
+            return new SorterCompPoolEnsembleStandard(
+                    guid: randy.NextGuid(),
+                    sorterCompPools: newSorterCompPools
+                );
         }
 
         public IEntity GetPart(Guid key)

@@ -46,11 +46,12 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
+            var randy = Rando.Fast(seed);
             return new SorterCompPoolStandard
                 (
-                    guid: Guid.NewGuid(),
+                    guid: randy.NextGuid(),
                     generation: 0,
-                    genomes: Rando.Fast(seed).ToSimpleGenomeBuilders
+                    genomes: randy.ToSimpleGenomeBuilders
                             (
                                builderCount: orgCount,
                                symbolCount: (uint)KeyPairRepository.KeyPairSetSizeForKeyCount(keyCount),
@@ -87,11 +88,12 @@ namespace SorterGenome.CompPool
             double cubRate
         )
         {
+            var randy = Rando.Fast(seed);
             return new SorterCompPoolStandard
                 (
-                    guid: Guid.NewGuid(),
+                    guid: randy.NextGuid(),
                     generation: 0,
-                    genomes: Rando.Fast(seed).ToPermutationGenomeBuilders
+                    genomes: randy.ToPermutationGenomeBuilders
                             (
                                builderCount: orgCount,
                                degree: degree,

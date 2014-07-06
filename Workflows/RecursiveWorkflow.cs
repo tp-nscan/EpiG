@@ -1,11 +1,10 @@
 ﻿using System;
 using MathUtils;
-using MathUtils.Collections;
 using Utils;
 
 namespace Workflows
 {
-    public interface IRecursiveWorkflow<T> : IGuid where T : IEntity
+    public interface IRecursiveWorkflow<T> : IEntity where T : IEntity
     {
         IRecursiveWorkflowBuilder<T> RecursiveWorkflowBuilder { get; }
         T Result { get; }
@@ -14,33 +13,38 @@ namespace Workflows
 
     public static class RecursiveWorkflow
     {
-        public static IRecursiveWorkflow<T> ToRecursiveWorkflowRndWlk<T>(
-            this IWorkflow<T> initialWorkflow
+        public static IRecursiveWorkflow<T> ToRecursiveWorkflowRndWlk<T>
+            (
+                this IWorkflow<T> initialWorkflow,
+                Guid guid
             ) where T : IRandomWalk<T>, IEntity
         {
             return new RecursiveWorkflowImpl<T>(
-                result: initialWorkflow.Result,
-                recursiveWorkflowBuilder: initialWorkflow.ToRecursiveRndWlkWorkflowBuilder()
+                    guid: guid,
+                    result: initialWorkflow.Result,
+                    recursiveWorkflowBuilder: initialWorkflow.ToRecursiveRndWlkWorkflowBuilder()
                 );
         }
 
-        public static IRecursiveWorkflow<T> ToRecursiveWorkflow<T>(
-                this IWorkflow<T> initialWorkflow,
-                Func<T, int, T> updateFunc
-        ) where T : IEntity
-        {
-            return new RecursiveWorkflowImpl<T>(
-                result: initialWorkflow.Result,
-                recursiveWorkflowBuilder: initialWorkflow.ToRecursiveFunctionWorkflowBuilder(updateFunc)
-                );
-        }
+        //public static IRecursiveWorkflow<T> ToRecursiveWorkflow<T>(
+        //        this IWorkflow<T> initialWorkflow,
+        //        Func<T, int, T> updateFunc
+        //) where T : IEntity
+        //{
+        //    return new RecursiveWorkflowImpl<T>(
+        //        result: initialWorkflow.Result,
+        //        recursiveWorkflowBuilder: initialWorkflow.ToRecursiveFunctionWorkflowBuilder(updateFunc)
+        //        );
+        //}
 
         public static IRecursiveWorkflow<T> Update<T>(
                 this IRecursiveWorkflow<T> precursor,
+                Guid guid,
                 int seed
             ) where T : IEntity
         {
             return new RecursiveWorkflowImpl<T>(
+                guid: guid,
                 result: precursor.RecursiveWorkflowBuilder.Make(precursor.Result, seed),
                 recursiveWorkflowBuilder: precursor.RecursiveWorkflowBuilder.Iterate(seed));
         }
@@ -52,16 +56,13 @@ namespace Workflows
     {
         private readonly IRecursiveWorkflowBuilder<T> _recursiveWorkflowBuilder;
         private readonly T _result;
+        private readonly Guid _guid;
 
-        public RecursiveWorkflowImpl(T result, IRecursiveWorkflowBuilder<T> recursiveWorkflowBuilder)
+        public RecursiveWorkflowImpl(Guid guid, T result, IRecursiveWorkflowBuilder<T> recursiveWorkflowBuilder)
         {
+            _guid = guid;
             _result = result;
             _recursiveWorkflowBuilder = recursiveWorkflowBuilder;
-        }
-
-        public Guid Guid
-        {
-            get { return RecursiveWorkflowBuilder.Guid; }
         }
 
         public IRecursiveWorkflowBuilder<T> RecursiveWorkflowBuilder
@@ -72,6 +73,25 @@ namespace Workflows
         public T Result
         {
             get { return _result; }
+        }
+
+        public Guid Guid
+        {
+            get { return _guid; }
+        }
+
+        public string EntityName
+        {
+            get { return "RecursiveWorkflowImpl"; }
+        }
+
+        public IEntity GetPart(Guid key)
+        {
+            if (Guid == key)
+            {
+                return this;
+            }
+            return RecursiveWorkflowBuilder.GetPart(key);
         }
     }
 }

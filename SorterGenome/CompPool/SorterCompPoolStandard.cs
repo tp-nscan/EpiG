@@ -53,14 +53,14 @@ namespace SorterGenome.CompPool
 
         public ISorterCompPool Step(int seed)
         {
+            var randy = Rando.Fast(seed);
             switch (SorterCompPoolStageType)
             {
                 case SorterCompPoolStageType.MakePhenotypes:
 
-                    var randy = Rando.Fast(seed);
                     return new SorterCompPoolStandard
                         (
-                            guid: Guid.NewGuid(),
+                            guid: randy.NextGuid(),
                             generation: Generation,
                             genomes: Genomes,
                             phenotypes: Genomes.Values
@@ -82,15 +82,14 @@ namespace SorterGenome.CompPool
 
                 case SorterCompPoolStageType.EvaluatePhenotypes:
 
-                    var randy2 = Rando.Fast(seed);
                     return new SorterCompPoolStandard
                         (
-                            guid: Guid.NewGuid(),
+                            guid: randy.NextGuid(),
                             generation: Generation,
                             genomes: Genomes,
                             phenotypes: Phenotypes,
                             phenotypeEvals: Phenotypes.Values
-                                .Select(p => PhenotypeEvaluator(p, randy2))
+                                .Select(p => PhenotypeEvaluator(p, randy))
                                 .ToDictionary(pe => pe.Guid),
                             sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
                             keyCount: KeyCount,
@@ -109,7 +108,7 @@ namespace SorterGenome.CompPool
 
                     return new SorterCompPoolStandard
                         (
-                            guid: Guid.NewGuid(),
+                            guid: randy.NextGuid(),
                             generation: Generation + 1,
                             genomes: NextGenerator(PhenotypeEvals, seed),
                             phenotypes: Phenotypes,

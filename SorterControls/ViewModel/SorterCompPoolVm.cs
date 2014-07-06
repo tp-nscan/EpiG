@@ -169,8 +169,8 @@ namespace SorterControls.ViewModel
                     mutationRate: MutationRate,
                     legacyRate: LegacyRate,
                     cubRate: CubRate
-                ).ToPassThroughWorkflow(Guid.NewGuid())
-                .ToRecursiveWorkflowRndWlk();
+                ).ToPassThroughWorkflow(_rando.NextGuid())
+                .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
         }
 
         IRecursiveWorkflow<ISorterCompPool> MakePermutation()
@@ -186,8 +186,8 @@ namespace SorterControls.ViewModel
                     mutationRate: MutationRate,
                     legacyRate: LegacyRate,
                     cubRate: CubRate
-                ).ToPassThroughWorkflow(Guid.NewGuid())
-                .ToRecursiveWorkflowRndWlk();
+                ).ToPassThroughWorkflow(_rando.NextGuid())
+                .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
         }
 
 
@@ -204,7 +204,7 @@ namespace SorterControls.ViewModel
                             parameters: _rando.ToIntEnumerator().Take(1).ToList(),
                             recursion: (w, i, c) => IterationResult.Make
                                 (
-                                    w.Update(i),
+                                    w.Update(_rando.NextGuid(), i),
                                     ProgressStatus.StepComplete
                                 ),
                             initialState: InitialState

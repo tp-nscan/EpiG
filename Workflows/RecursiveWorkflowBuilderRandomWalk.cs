@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using MathUtils;
 using Utils;
 
@@ -26,6 +27,24 @@ namespace Workflows
                     seeds: Seeds.Add(seed),
                     initialWorkflow: InitialWorkflow
                 );
+        }
+
+        public override string EntityName
+        {
+            get { return "RecursiveWorkflowBuilderRandomWalk"; }
+        }
+
+        public override IEntity GetPart(Guid key)
+        {
+            if (InitialWorkflow.GetPart(key) != null)
+            {
+                return InitialWorkflow.GetPart(key);
+            }
+            if (this.Guid == key)
+            {
+                return this;
+            }
+            return null;
         }
     }
 }
