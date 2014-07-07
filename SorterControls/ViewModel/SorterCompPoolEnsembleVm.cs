@@ -31,36 +31,24 @@ namespace SorterControls.ViewModel
             _replicas = 5;
             _increment = 0.005;
 
-            SorterPoolVms.AddMany
-                ( 
-                
-                    Enumerable.Range(0, Replicas).Select
-                    (
-                
-                        i=> new SorterPoolVm
-                        (
-                            keyCount: KeyCount,
-                            sorterEvals: Enumerable.Empty<ISorterEval>(),
-                            displaySize: 3,
-                            showStages: false,
-                            showUnused: false,
-                            generation: 0,
-                            sorterDisplayCount: 10
-                        )
-                    )
-                
-                );
-
-            //SorterPoolVms = new SorterPoolVm
+            //SorterPoolVms.AddMany
+            //( 
+            //    Enumerable.Range(0, Replicas).Select
             //    (
-            //        keyCount: KeyCount,
-            //        sorterEvals: Enumerable.Empty<ISorterEval>(),
-            //        displaySize: 3,
-            //        showStages: false,
-            //        showUnused: false,
-            //        generation: 0,
-            //        sorterDisplayCount: 10
-            //    );
+            //        i => new SorterPoolVm
+            //        (
+            //            keyCount: KeyCount,
+            //            sorterEvals: Enumerable.Empty<ISorterEval>(),
+            //            displaySize: 3,
+            //            showStages: false,
+            //            showUnused: false,
+            //            generation: 0,
+            //            sorterDisplayCount: 10,
+            //            sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
+            //            name: ""
+            //        )
+            //    )
+            //);
         }
 
         private int _generationCount;
@@ -161,8 +149,8 @@ namespace SorterControls.ViewModel
             IsBusy = false;
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> _sorterCompPoolBackgroundWorker;
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int> SorterCompPoolBackgroundWorker
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPoolEnsemble>, int> _sorterCompPoolBackgroundWorker;
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPoolEnsemble>, int> SorterCompPoolBackgroundWorker
         {
             get
             {
@@ -170,8 +158,8 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private IRecursiveWorkflow<ISorterCompPool> _initialState;
-        private IRecursiveWorkflow<ISorterCompPool> InitialState
+        private IRecursiveWorkflow<ISorterCompPoolEnsemble> _initialState;
+        private IRecursiveWorkflow<ISorterCompPoolEnsemble> InitialState
         {
             get
             {
@@ -182,9 +170,9 @@ namespace SorterControls.ViewModel
             }
         }
 
-        IRecursiveWorkflow<ISorterCompPool> MakeStandard()
+        IRecursiveWorkflow<ISorterCompPoolEnsemble> MakeStandard()
         {
-            return SorterCompPool.InitStandardFromSeed
+            return SorterCompPoolEnsemble.InitStandardFromSeed
                 (
                     seed: Seed,
                     orgCount: SorterCount,
@@ -194,26 +182,37 @@ namespace SorterControls.ViewModel
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
                     legacyRate: LegacyRate,
-                    cubRate: CubRate
+                    cubRate: CubRate,
+                    startingValue: StartingValue,
+                    increment: Increment,
+                    replicas: Replicas,
+                    sorterCompPoolParameterType: SorterCompPoolParameterType
+                
                 ).ToPassThroughWorkflow(_rando.NextGuid())
-                .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
+                 .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
+
         }
 
-        IRecursiveWorkflow<ISorterCompPool> MakePermutation()
+        IRecursiveWorkflow<ISorterCompPoolEnsemble> MakePermutation()
         {
-            return SorterCompPool.InitPermuterFromSeed
-                (
-                    seed: Seed,
-                    orgCount: SorterCount,
-                    permutationCount: (KeyPairCount * 2) / KeyCount,
-                    degree: KeyCount,
-                    deletionRate: DeletionRate,
-                    insertionRate: InsertionRate,
-                    mutationRate: MutationRate,
-                    legacyRate: LegacyRate,
-                    cubRate: CubRate
-                ).ToPassThroughWorkflow(_rando.NextGuid())
-                .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
+            return SorterCompPoolEnsemble.InitPermuterFromSeed
+            (
+                seed: Seed,
+                orgCount: SorterCount,
+                permutationCount: (KeyPairCount * 2) / KeyCount,
+                degree: KeyCount,
+                deletionRate: DeletionRate,
+                insertionRate: InsertionRate,
+                mutationRate: MutationRate,
+                legacyRate: LegacyRate,
+                cubRate: CubRate,
+                startingValue: StartingValue,
+                increment: Increment,
+                replicas: Replicas,
+                sorterCompPoolParameterType: SorterCompPoolParameterType
+
+            ).ToPassThroughWorkflow(_rando.NextGuid())
+             .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
         }
 
 
@@ -222,46 +221,55 @@ namespace SorterControls.ViewModel
             _initialState = null;
         }
 
-        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPool>, int>
+        private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPoolEnsemble>, int>
                         MakeSorterEvalBackgroundWorker()
         {
             return
-                    _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
-                            parameters: _rando.ToIntEnumerator().Take(1).ToList(),
-                            recursion: (w, i, c) => IterationResult.Make
-                                (
-                                    w.Update(_rando.NextGuid(), i),
-                                    ProgressStatus.StepComplete
-                                ),
-                            initialState: InitialState
-                        );
+                _sorterCompPoolBackgroundWorker = RecursiveParamBackgroundWorker.Make(
+                        parameters: _rando.ToIntEnumerator().Take(1).ToList(),
+                        recursion: (w, i, c) => IterationResult.Make
+                            (
+                                w.Update(_rando.NextGuid(), i),
+                                ProgressStatus.StepComplete
+                            ),
+                        initialState: InitialState
+                    );
         }
 
-        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPool>> result)
+        void UpdateResults(IIterationResult<IRecursiveWorkflow<ISorterCompPoolEnsemble>> result)
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
 
-                //SorterPoolVms.SorterCompPoolStageType = result.Data.Result.SorterCompPoolStageType;
+                if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
+                {
+                    var newSorterPoolVms = new ObservableCollection<SorterPoolVm>();
 
-                //if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
-                //{
-                //    {
-                //        var sorterEvals =
-                //            result.Data.Result.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
+                    foreach (var sorterCompPool in result.Data.Result.SorterCompPools)
+                    {
+                        var sorterEvals =
+                            sorterCompPool.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
 
-                //        SorterPoolVms = new SorterPoolVm
-                //            (
-                //                keyCount: KeyCount,
-                //                sorterEvals: sorterEvals,
-                //                displaySize: SorterPoolVms.SorterGalleryVm.DisplaySize,
-                //                showStages: SorterPoolVms.SorterGalleryVm.ShowStages,
-                //                showUnused: SorterPoolVms.SorterGalleryVm.ShowUnused,
-                //                generation: result.Data.Result.Generation,
-                //                sorterDisplayCount: SorterPoolVms.SorterGalleryVm.SorterDisplayCount
-                //            );
+                        newSorterPoolVms.Add
+                        (
+                            new SorterPoolVm
+                            (
+                                keyCount: KeyCount,
+                                sorterEvals: sorterEvals,
+                                displaySize: 3, //  SorterPoolVms.SorterGalleryVm.DisplaySize,
+                                showStages: false, //  SorterPoolVms.SorterGalleryVm.ShowStages,
+                                showUnused: false, //  SorterPoolVms.SorterGalleryVm.ShowUnused,
+                                generation: sorterCompPool.Generation,
+                                sorterDisplayCount: 10, //SorterPoolVms.SorterGalleryVm.SorterDisplayCount
+                                sorterCompPoolStageType: result.Data.Result.SorterCompPoolStageType,
+                                name: sorterCompPool.Name
+                            )
+                        );
+                    }
 
-                //    }
-                //}
+                    SorterPoolVms = newSorterPoolVms;
+                    System.Diagnostics.Debug.WriteLine("SSSSSSSSSSet");
+                }
+
             _initialState = result.Data;
         }
 
@@ -284,8 +292,6 @@ namespace SorterControls.ViewModel
 
             _updateSubscription = _sorterCompPoolBackgroundWorker.OnIterationResult.Subscribe(UpdateResults);
 
-            //_sorterEvals.Clear();
-            //_sorterVms.Clear();
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -313,6 +319,16 @@ namespace SorterControls.ViewModel
                 _replicas = value;
                 Reset();
                 OnPropertyChanged("Replicas");
+            }
+        }
+
+        public double StartingValue
+        {
+            get { return _startingValue; }
+            set
+            {
+                _startingValue = value;
+                OnPropertyChanged("StartingValue");
             }
         }
 
@@ -456,6 +472,8 @@ namespace SorterControls.ViewModel
         #region SorterPoolVm related
 
         private ObservableCollection<SorterPoolVm>  _sorterPoolVms  = new ObservableCollection<SorterPoolVm>();
+        private double _startingValue;
+
         public ObservableCollection<SorterPoolVm> SorterPoolVms
         {
             get { return _sorterPoolVms; }

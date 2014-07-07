@@ -16,6 +16,8 @@ namespace SorterGenome.CompPool
     {
         int Generation { get; }
 
+        string Name { get; }
+        
         SorterCompPoolStageType SorterCompPoolStageType { get; }
 
         IReadOnlyDictionary<Guid, IGenome> Genomes { get; }
@@ -43,7 +45,8 @@ namespace SorterGenome.CompPool
             double insertionRate,
             double mutationRate,
             double legacyRate,
-            double cubRate
+            double cubRate,
+            string name
         )
         {
             var randy = Rando.Fast(seed);
@@ -69,7 +72,8 @@ namespace SorterGenome.CompPool
                     cubRate: cubRate,
                     phenotyperName: "Standard",
                     phenotyperEvaluatorName: "Standard",
-                    nextGeneratorName: "Standard"
+                    nextGeneratorName: "Standard",
+                    name: name
                 );
         }
 
@@ -85,7 +89,8 @@ namespace SorterGenome.CompPool
             double insertionRate,
             double mutationRate,
             double legacyRate,
-            double cubRate
+            double cubRate,
+            string name
         )
         {
             var randy = Rando.Fast(seed);
@@ -111,7 +116,8 @@ namespace SorterGenome.CompPool
                     cubRate: cubRate,
                     phenotyperName: "MakePermuterSlider",
                     phenotyperEvaluatorName: "Standard",
-                    nextGeneratorName: "Permutation"
+                    nextGeneratorName: "Permutation",
+                    name: name
                 );
         }
 

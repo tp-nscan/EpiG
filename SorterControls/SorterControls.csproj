@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\SorterPoolSummaryVm.cs" />
     <Compile Include="ViewModel\SorterPoolVm.cs" />
     <Compile Include="View\SorterPoolControl.xaml.cs">
       <DependentUpon>SorterPoolControl.xaml</DependentUpon>

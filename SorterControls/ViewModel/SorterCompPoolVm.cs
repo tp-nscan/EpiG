@@ -33,7 +33,9 @@ namespace SorterControls.ViewModel
                     showStages: false,
                     showUnused: false,
                     generation: 0,
-                    sorterDisplayCount: 10
+                    sorterDisplayCount: 10,
+                    sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
+                    name: ""
                 );
         }
 
@@ -168,7 +170,8 @@ namespace SorterControls.ViewModel
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
                     legacyRate: LegacyRate,
-                    cubRate: CubRate
+                    cubRate: CubRate,
+                    name: ""
                 ).ToPassThroughWorkflow(_rando.NextGuid())
                 .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
         }
@@ -185,7 +188,8 @@ namespace SorterControls.ViewModel
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
                     legacyRate: LegacyRate,
-                    cubRate: CubRate
+                    cubRate: CubRate,
+                    name: ""
                 ).ToPassThroughWorkflow(_rando.NextGuid())
                 .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
         }
@@ -232,7 +236,9 @@ namespace SorterControls.ViewModel
                                 showStages: SorterPoolVm.SorterGalleryVm.ShowStages,
                                 showUnused: SorterPoolVm.SorterGalleryVm.ShowUnused,
                                 generation: result.Data.Result.Generation,
-                                sorterDisplayCount: SorterPoolVm.SorterGalleryVm.SorterDisplayCount
+                                sorterDisplayCount: SorterPoolVm.SorterGalleryVm.SorterDisplayCount,
+                                sorterCompPoolStageType: result.Data.Result.SorterCompPoolStageType,
+                                name:""
                             );
 
                     }
@@ -259,8 +265,6 @@ namespace SorterControls.ViewModel
 
             _updateSubscription = _sorterCompPoolBackgroundWorker.OnIterationResult.Subscribe(UpdateResults);
 
-            //_sorterEvals.Clear();
-            //_sorterVms.Clear();
             _cancellationTokenSource = new CancellationTokenSource();
         }
 

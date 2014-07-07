@@ -205,31 +205,43 @@
 
                     </StackPanel>
 
+                    <StackPanel>
+                        <TextBlock Text="Starting value" />
+                        <xctk:DoubleUpDown 
+                            Value="{Binding StartingValue}"
+                            Minimum="0.0" 
+                            Increment="0.02" 
+                            Maximum="0.4" />
+                    </StackPanel>
+
 
                     <StackPanel>
-                        <TextBlock Text="Variable increment" />
-                        <xctk:DoubleUpDown Value="{Binding Increment}"
+                        <TextBlock Text="Increment" />
+                        <xctk:DoubleUpDown 
+                            Value="{Binding Increment}"
                             Minimum="0.0" 
                             Increment="0.02" 
                             Maximum="0.4" />
                     </StackPanel>
 
                 </WrapPanel>
-
-
             </Border>
-
-
-
         </DockPanel>
 
-        <ListBox Background="Transparent" Grid.Row="1" ItemsSource="{Binding SorterPoolVms}">
-            <ListBox.ItemTemplate>
+        
+        <ListView 
+            ScrollViewer.CanContentScroll ="False"
+            Background="Transparent" Grid.Row="1" ItemsSource="{Binding SorterPoolVms}">
+            <ListView.ItemTemplate>
                 <DataTemplate>
-                    <view:SorterPoolControl />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5,0" Foreground="Wheat" Text="{Binding Generation}"/>
+                        <TextBlock Margin="5,0" Foreground="Wheat" Text="{Binding Name}"/>
+                    </StackPanel>
+                    <!--<view:SorterPoolControl />-->
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ListView.ItemTemplate>
+        </ListView>
         
         
     </Grid>

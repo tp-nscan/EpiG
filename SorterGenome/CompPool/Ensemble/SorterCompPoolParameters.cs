@@ -1,20 +1,92 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MathUtils.Rand;
 
 namespace SorterGenome.CompPool.Ensemble
 {
+
+    public static class SorterCompPoolParametersExt
+    {
+        public static IReadOnlyList<SorterCompPoolParameters> GetParameterSet
+        (
+                int seed,
+                int orgCount,
+                double deletionRate,
+                double insertionRate,
+                double mutationRate,
+                double legacyRate,
+                double cubRate,
+                double startingValue,
+                double increment,
+                SorterCompPoolParameterType sorterCompPoolParameterType,
+                int replicas
+        )
+        {
+            var randy = Rando.Fast(seed);
+
+            return new SorterCompPoolParameters
+                (
+                    name: startingValue.ToString("0.000"),
+                    seed: randy.NextInt(),
+                    orgCount: orgCount,
+                    legacyRate: legacyRate,
+                    deletionRate: deletionRate,
+                    insertionRate: insertionRate,
+                    mutationRate: mutationRate,
+                    cubRate: cubRate
+                ).GetRange
+                (
+                    sorterCompPoolParameterType: sorterCompPoolParameterType,
+                    incrementValue: increment
+                ).Take(replicas).ToList();
+        }
+
+        public static IEnumerable<SorterCompPoolParameters> GetRange
+            (
+                this SorterCompPoolParameters initial,
+                SorterCompPoolParameterType sorterCompPoolParameterType,
+                Func<double, double> mutator
+            )
+        {
+            var current = initial;
+            while (true)
+            {
+                yield return current;
+                current = current.Modify(sorterCompPoolParameterType, mutator);
+            }
+        }
+
+        public static IEnumerable<SorterCompPoolParameters> GetRange
+            (
+                this SorterCompPoolParameters initial,
+                SorterCompPoolParameterType sorterCompPoolParameterType,
+                double incrementValue
+            )
+        {
+            Func<double, double> mutator = d => d + incrementValue;
+            var current = initial;
+            while (true)
+            {
+                yield return current;
+                current = current.Modify(sorterCompPoolParameterType, mutator);
+            }
+        }
+
+    }
+
     public class SorterCompPoolParameters
     {
         public SorterCompPoolParameters
             (
-            string name,
-            double seed,
-            double orgCount, 
-            double legacyRate, 
-            double deletionRate, 
-            double insertionRate,
-            double mutationRate, 
-            double cubRate
+                string name,
+                double seed,
+                double orgCount, 
+                double legacyRate, 
+                double deletionRate, 
+                double insertionRate,
+                double mutationRate, 
+                double cubRate
             )
         {
             _name = name;
@@ -86,86 +158,86 @@ namespace SorterGenome.CompPool.Ensemble
                 case SorterCompPoolParameterType.Seed:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: mutator(Seed),
-                        orgCount:OrgCount, 
-                        legacyRate: LegacyRate, 
-                        deletionRate: DeletionRate, 
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate, 
-                        cubRate: CubRate
+                            name: mutator(Seed).ToString("0.000"),
+                            seed: mutator(Seed),
+                            orgCount:OrgCount, 
+                            legacyRate: LegacyRate, 
+                            deletionRate: DeletionRate, 
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate, 
+                            cubRate: CubRate
                         );
                 case SorterCompPoolParameterType.OrgCount:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: Seed,
-                        orgCount: mutator(OrgCount),
-                        legacyRate: LegacyRate,
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        cubRate: CubRate
+                            name: mutator(OrgCount).ToString("0.000"),
+                            seed: Seed,
+                            orgCount: mutator(OrgCount),
+                            legacyRate: LegacyRate,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            cubRate: CubRate
                         );
                 case SorterCompPoolParameterType.LegacyRate:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: Seed,
-                        orgCount: OrgCount,
-                        legacyRate: mutator(LegacyRate),
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        cubRate: CubRate
+                            name: mutator(LegacyRate).ToString("0.000"),
+                            seed: Seed,
+                            orgCount: OrgCount,
+                            legacyRate: mutator(LegacyRate),
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            cubRate: CubRate
                         );
                 case SorterCompPoolParameterType.CubRate:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: Seed,
-                        orgCount: OrgCount,
-                        legacyRate: LegacyRate,
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        cubRate: mutator(CubRate)
+                            name: mutator(CubRate).ToString("0.000"),
+                            seed: Seed,
+                            orgCount: OrgCount,
+                            legacyRate: LegacyRate,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            cubRate: mutator(CubRate)
                         );
                 case SorterCompPoolParameterType.DeletionRate:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: Seed,
-                        orgCount: OrgCount,
-                        legacyRate: LegacyRate,
-                        deletionRate: mutator(DeletionRate),
-                        insertionRate: InsertionRate,
-                        mutationRate: MutationRate,
-                        cubRate: CubRate
+                            name: mutator(DeletionRate).ToString("0.000"),
+                            seed: Seed,
+                            orgCount: OrgCount,
+                            legacyRate: LegacyRate,
+                            deletionRate: mutator(DeletionRate),
+                            insertionRate: InsertionRate,
+                            mutationRate: MutationRate,
+                            cubRate: CubRate
                         );
                 case SorterCompPoolParameterType.InsertionRate:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: Seed,
-                        orgCount: OrgCount,
-                        legacyRate: LegacyRate,
-                        deletionRate: DeletionRate,
-                        insertionRate: mutator(InsertionRate),
-                        mutationRate: MutationRate,
-                        cubRate: CubRate
+                            name: mutator(InsertionRate).ToString("0.000"),
+                            seed: Seed,
+                            orgCount: OrgCount,
+                            legacyRate: LegacyRate,
+                            deletionRate: DeletionRate,
+                            insertionRate: mutator(InsertionRate),
+                            mutationRate: MutationRate,
+                            cubRate: CubRate
                         );
                 case SorterCompPoolParameterType.MutationRate:
                     return new SorterCompPoolParameters
                         (
-                        name: mutator(Seed).ToString("0.000"),
-                        seed: Seed,
-                        orgCount: OrgCount,
-                        legacyRate: LegacyRate,
-                        deletionRate: DeletionRate,
-                        insertionRate: InsertionRate,
-                        mutationRate: mutator(MutationRate),
-                        cubRate: CubRate
+                            name: mutator(MutationRate).ToString("0.000"),
+                            seed: Seed,
+                            orgCount: OrgCount,
+                            legacyRate: LegacyRate,
+                            deletionRate: DeletionRate,
+                            insertionRate: InsertionRate,
+                            mutationRate: mutator(MutationRate),
+                            cubRate: CubRate
                         );
                 default:
                     throw new Exception(string.Format("unhandled SorterCompPoolParameterType: {0}", sorterCompPoolParameterType));;
@@ -173,33 +245,6 @@ namespace SorterGenome.CompPool.Ensemble
                         
         }
 
-        public IEnumerable<SorterCompPoolParameters> GetRange(
-            SorterCompPoolParameters initial,
-            SorterCompPoolParameterType sorterCompPoolParameterType,
-            Func<double, double> mutator
-            )
-        {
-            var current = initial;
-            while (true)
-            {
-                yield return current;
-                current = current.Modify(sorterCompPoolParameterType, mutator);
-            }
-        }
 
-        public IEnumerable<SorterCompPoolParameters> GetRange(
-            SorterCompPoolParameters initial,
-            SorterCompPoolParameterType sorterCompPoolParameterType,
-            double incrementValue
-            )
-        {
-            Func<double, double> mutator = d => d + incrementValue;
-            var current = initial;
-            while (true)
-            {
-                yield return current;
-                current = current.Modify(sorterCompPoolParameterType, mutator);
-            }
-        }
     }
 }
