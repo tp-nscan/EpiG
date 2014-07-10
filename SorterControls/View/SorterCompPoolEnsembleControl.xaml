@@ -143,7 +143,7 @@
                     <StackPanel>
                         <TextBlock Text="Mutation rate" />
                         <xctk:DoubleUpDown Value="{Binding MutationRate}"
-                            Minimum="0.000" 
+                            Minimum="0.0000" 
                             Increment="0.005" 
                             Maximum="0.1" />
                     </StackPanel>
@@ -151,7 +151,7 @@
                     <StackPanel>
                         <TextBlock Text="Insertion rate" />
                         <xctk:DoubleUpDown Value="{Binding InsertionRate}"
-                            Minimum="0.000" 
+                            Minimum="0.0000" 
                             Increment="0.005" 
                             Maximum="0.1" />
                     </StackPanel>
@@ -159,7 +159,7 @@
                     <StackPanel>
                         <TextBlock Text="Deletion rate" />
                         <xctk:DoubleUpDown Value="{Binding DeletionRate}"
-                            Minimum="0.000" 
+                            Minimum="0.0000" 
                             Increment="0.005" 
                             Maximum="0.1" />
                     </StackPanel>
@@ -229,7 +229,7 @@
         </DockPanel>
 
         
-        <ListView 
+        <!--<ListView 
             ScrollViewer.CanContentScroll ="False"
             Background="Transparent" Grid.Row="1" ItemsSource="{Binding SorterPoolVms}">
             <ListView.ItemTemplate>
@@ -238,12 +238,22 @@
                         <TextBlock Margin="5,0" Foreground="Wheat" Text="{Binding Generation}"/>
                         <TextBlock Margin="5,0" Foreground="Wheat" Text="{Binding Name}"/>
                     </StackPanel>
-                    <!--<view:SorterPoolControl />-->
+                    --><!--<view:SorterPoolControl />--><!--
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
+
+
+        <DataGrid 
+                x:Name="dataGrid" 
+                Grid.Row="1"
+                VerticalScrollBarVisibility="Auto"
+                DockPanel.Dock="Bottom"
+                AutoGenerateColumns="True"
+                ItemsSource="{Binding SorterPoolSummaryVms}">
+        </DataGrid>
         
-        
+
     </Grid>
 
 </UserControl>

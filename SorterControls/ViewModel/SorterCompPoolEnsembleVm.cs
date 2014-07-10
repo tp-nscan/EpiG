@@ -22,33 +22,15 @@ namespace SorterControls.ViewModel
             _mutationRate = 0.02;
             _cubRate = 0.24;
 
-            _sorterCount = 50;
+            _sorterCount = 100;
             _seed = 1234;
-            _keyPairCount = 450;
-            _keyCount = 10;
+            _keyPairCount = 750;
+            _keyCount = 12;
 
             _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
-            _replicas = 5;
-            _increment = 0.005;
-
-            //SorterPoolVms.AddMany
-            //( 
-            //    Enumerable.Range(0, Replicas).Select
-            //    (
-            //        i => new SorterPoolVm
-            //        (
-            //            keyCount: KeyCount,
-            //            sorterEvals: Enumerable.Empty<ISorterEval>(),
-            //            displaySize: 3,
-            //            showStages: false,
-            //            showUnused: false,
-            //            generation: 0,
-            //            sorterDisplayCount: 10,
-            //            sorterCompPoolStageType: SorterCompPoolStageType.MakePhenotypes,
-            //            name: ""
-            //        )
-            //    )
-            //);
+            _replicas = 100;
+            _increment = 0.0005;
+            _startingValue = 0.01;
         }
 
         private int _generationCount;
@@ -242,7 +224,7 @@ namespace SorterControls.ViewModel
 
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
-                    var newSorterPoolVms = new ObservableCollection<SorterPoolVm>();
+                    var newSorterPoolVms = new ObservableCollection<SorterPoolSummaryVm>();
 
                     foreach (var sorterCompPool in result.Data.Result.SorterCompPools)
                     {
@@ -251,23 +233,18 @@ namespace SorterControls.ViewModel
 
                         newSorterPoolVms.Add
                         (
-                            new SorterPoolVm
+                            new SorterPoolSummaryVm
                             (
                                 keyCount: KeyCount,
                                 sorterEvals: sorterEvals,
-                                displaySize: 3, //  SorterPoolVms.SorterGalleryVm.DisplaySize,
-                                showStages: false, //  SorterPoolVms.SorterGalleryVm.ShowStages,
-                                showUnused: false, //  SorterPoolVms.SorterGalleryVm.ShowUnused,
                                 generation: sorterCompPool.Generation,
-                                sorterDisplayCount: 10, //SorterPoolVms.SorterGalleryVm.SorterDisplayCount
                                 sorterCompPoolStageType: result.Data.Result.SorterCompPoolStageType,
                                 name: sorterCompPool.Name
                             )
                         );
                     }
 
-                    SorterPoolVms = newSorterPoolVms;
-                    System.Diagnostics.Debug.WriteLine("SSSSSSSSSSet");
+                    SorterPoolSummaryVms = newSorterPoolVms;
                 }
 
             _initialState = result.Data;
@@ -322,6 +299,7 @@ namespace SorterControls.ViewModel
             }
         }
 
+        private double _startingValue;
         public double StartingValue
         {
             get { return _startingValue; }
@@ -468,23 +446,17 @@ namespace SorterControls.ViewModel
 
         #endregion
 
-
-        #region SorterPoolVm related
-
-        private ObservableCollection<SorterPoolVm>  _sorterPoolVms  = new ObservableCollection<SorterPoolVm>();
-        private double _startingValue;
-
-        public ObservableCollection<SorterPoolVm> SorterPoolVms
+        private ObservableCollection<SorterPoolSummaryVm>  _sorterPoolVms 
+            = new ObservableCollection<SorterPoolSummaryVm>();
+        public ObservableCollection<SorterPoolSummaryVm> SorterPoolSummaryVms
         {
             get { return _sorterPoolVms; }
             set
             {
                 _sorterPoolVms = value;
-                OnPropertyChanged("SorterPoolVms");
+                OnPropertyChanged("SorterPoolSummaryVms");
             }
         }
-
-        #endregion
 
     }
 }
