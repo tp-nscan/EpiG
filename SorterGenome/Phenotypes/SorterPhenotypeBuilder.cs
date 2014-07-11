@@ -1,8 +1,6 @@
 ﻿using System;
 using Genomic.Genomes;
 using MathUtils;
-using Sorting.KeyPairs;
-using Sorting.Sorters;
 
 namespace SorterGenome.Phenotypes
 {

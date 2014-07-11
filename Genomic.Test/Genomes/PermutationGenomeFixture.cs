@@ -60,8 +60,6 @@ namespace Genomic.Test.Genomes
             Assert.AreEqual(guid, mutantGenome.Guid);
             Assert.AreEqual(permutationGenome.SequenceLength, mutantGenome.SequenceLength);
             Assert.AreEqual(0, permutationGenome.Sequence.GetDiffs(mutantGenome.Sequence).ToList().Count);
-
-
         }
 
 
@@ -99,7 +97,6 @@ namespace Genomic.Test.Genomes
             Assert.AreEqual(guid, mutantGenome.Guid);
             Assert.AreEqual(permutationGenome.SequenceLength, mutantGenome.SequenceLength);
             var diffs= permutationGenome.Sequence.GetDiffs(mutantGenome.Sequence).ToList();
-
 
         }
     }

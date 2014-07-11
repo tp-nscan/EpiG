@@ -92,6 +92,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <DockPanel LastChildFill="True">
@@ -229,20 +230,9 @@
         </DockPanel>
 
         
-        <!--<ListView 
-            ScrollViewer.CanContentScroll ="False"
-            Background="Transparent" Grid.Row="1" ItemsSource="{Binding SorterPoolVms}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5,0" Foreground="Wheat" Text="{Binding Generation}"/>
-                        <TextBlock Margin="5,0" Foreground="Wheat" Text="{Binding Name}"/>
-                    </StackPanel>
-                    --><!--<view:SorterPoolControl />--><!--
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
+        <Button Grid.Row="2" Click="Button_Click"> Copy</Button>
 
+        
 
         <DataGrid 
                 x:Name="dataGrid" 

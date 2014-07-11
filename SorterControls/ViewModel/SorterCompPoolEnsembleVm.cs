@@ -6,7 +6,6 @@ using System.Windows.Input;
 using MathUtils.Rand;
 using SorterGenome.CompPool;
 using SorterGenome.CompPool.Ensemble;
-using Sorting.Evals;
 using System.Linq;
 using Utils.BackgroundWorkers;
 using Workflows;
@@ -28,9 +27,10 @@ namespace SorterControls.ViewModel
             _keyCount = 12;
 
             _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
-            _replicas = 100;
-            _increment = 0.0005;
-            _startingValue = 0.01;
+            _replicas = 40;
+            _increment = 0.001;
+            _startingValue = 0.005;
+            _deletionRate = 0.005;
         }
 
         private int _generationCount;
@@ -222,29 +222,28 @@ namespace SorterControls.ViewModel
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
 
+
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
-                    var newSorterPoolVms = new ObservableCollection<SorterPoolSummaryVm>();
-
-                    foreach (var sorterCompPool in result.Data.Result.SorterCompPools)
+                    var scps = result.Data.Result.SorterCompPools.ToList();
+                    if (scps[0].Generation % 5 == 0)
                     {
-                        var sorterEvals =
-                            sorterCompPool.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
+                        foreach (var sorterCompPool in scps)
+                        {
+                            var sorterEvals =
+                                sorterCompPool.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
 
-                        newSorterPoolVms.Add
-                        (
-                            new SorterPoolSummaryVm
+                            SorterPoolSummaryVms.Add
                             (
-                                keyCount: KeyCount,
-                                sorterEvals: sorterEvals,
-                                generation: sorterCompPool.Generation,
-                                sorterCompPoolStageType: result.Data.Result.SorterCompPoolStageType,
-                                name: sorterCompPool.Name
-                            )
-                        );
+                                new SorterPoolSummaryVm2
+                                (
+                                    sorterEvals: sorterEvals,
+                                    generation: sorterCompPool.Generation,
+                                    name: sorterCompPool.Name
+                                )
+                            );
+                        }
                     }
-
-                    SorterPoolSummaryVms = newSorterPoolVms;
                 }
 
             _initialState = result.Data;
@@ -446,9 +445,9 @@ namespace SorterControls.ViewModel
 
         #endregion
 
-        private ObservableCollection<SorterPoolSummaryVm>  _sorterPoolVms 
-            = new ObservableCollection<SorterPoolSummaryVm>();
-        public ObservableCollection<SorterPoolSummaryVm> SorterPoolSummaryVms
+        private ObservableCollection<SorterPoolSummaryVm2> _sorterPoolVms
+            = new ObservableCollection<SorterPoolSummaryVm2>();
+        public ObservableCollection<SorterPoolSummaryVm2> SorterPoolSummaryVms
         {
             get { return _sorterPoolVms; }
             set
