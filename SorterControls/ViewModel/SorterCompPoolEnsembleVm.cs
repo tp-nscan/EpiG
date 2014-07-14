@@ -21,15 +21,15 @@ namespace SorterControls.ViewModel
             _mutationRate = 0.02;
             _cubRate = 0.24;
 
-            _sorterCount = 100;
+            _sorterCount = 50;
             _seed = 1234;
-            _keyPairCount = 750;
-            _keyCount = 12;
+            _keyPairCount = 1250;
+            _keyCount = 14;
 
             _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
-            _replicas = 40;
-            _increment = 0.001;
-            _startingValue = 0.005;
+            _replicas = 10;
+            _increment = 0.002;
+            _startingValue = 0.02;
             _deletionRate = 0.005;
         }
 
@@ -226,7 +226,7 @@ namespace SorterControls.ViewModel
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
                     var scps = result.Data.Result.SorterCompPools.ToList();
-                    if (scps[0].Generation % 5 == 0)
+                    if (scps[0].Generation % 1 == 0)
                     {
                         foreach (var sorterCompPool in scps)
                         {
@@ -239,7 +239,8 @@ namespace SorterControls.ViewModel
                                 (
                                     sorterEvals: sorterEvals,
                                     generation: sorterCompPool.Generation,
-                                    name: sorterCompPool.Name
+                                    name: sorterCompPool.Name,
+                                    tweak: Double.Parse(sorterCompPool.Name) * 10 - 0.2
                                 )
                             );
                         }

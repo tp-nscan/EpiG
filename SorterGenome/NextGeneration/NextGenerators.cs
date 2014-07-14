@@ -47,6 +47,17 @@ namespace SorterGenome.NextGeneration
                                     legacyRate: legacyRate,
                                     cubRate: cubRate
                                 ).NextGenerator;
+                case "PermutationAggregator":
+                    return new NextGeneratorForPermutationSorterAggregator
+                                (
+                                    keyCount: keyCount,
+                                    orgCount: orgCount,
+                                    deletionRate: deletionRate,
+                                    insertionRate: insertionRate,
+                                    mutationRate: mutationRate,
+                                    legacyRate: legacyRate,
+                                    cubRate: cubRate
+                                ).NextGenerator;
                 default:
                     throw new Exception(String.Format("LookupPhenotyper: {0} not found", name));
             }

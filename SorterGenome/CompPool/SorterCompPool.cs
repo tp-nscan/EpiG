@@ -114,9 +114,9 @@ namespace SorterGenome.CompPool
                     mutationRate: mutationRate,
                     legacyRate: legacyRate,
                     cubRate: cubRate,
-                    phenotyperName: "MakePermuterSlider",
+                    phenotyperName: "MakePermuterCubeCombo",
                     phenotyperEvaluatorName: "Standard",
-                    nextGeneratorName: "Permutation",
+                    nextGeneratorName: "PermutationAggregator",
                     name: name
                 );
         }

@@ -40,7 +40,7 @@ namespace SorterGenome.Phenotypes
             int skips
         )
         {
-            var sorterPhenotypeBuilderStandard = new SorterPhenotypeBuilderPermuter
+            var sorterPhenotypeBuilderStandard = new SorterPhenotypeBuilderPermuterSkip
                 (
                     guid: builderGuid,
                     genome: genome,
@@ -49,6 +49,51 @@ namespace SorterGenome.Phenotypes
                 );
 
             return sorterPhenotypeBuilderStandard.Make(phenotypeGuid);
+        }
+
+
+        public static ISorterPhenotype ToSorterPhenotypeComposer
+        (
+            this IGenome genome,
+            Guid builderGuid,
+            Guid phenotypeGuid,
+            int keyCount,
+            int skips
+        )
+        {
+            var sorterPhenotypeBuilderStandard = new SorterPhenotypeBuilderComposer
+                (
+                    guid: builderGuid,
+                    genome: genome,
+                    keyCount: keyCount,
+                    skips: skips
+                );
+
+            return sorterPhenotypeBuilderStandard.Make(phenotypeGuid);
+        }
+
+        public static ISorterPhenotype ToSorterPhenotypePermuterCubeCombo
+        (
+            this IGenome genome,
+            Guid builderGuid,
+            Guid phenotypeGuid,
+            int keyCount,
+            bool marginA,
+            bool marginB,
+            bool marginC
+        )
+        {
+            var sorterPhenotypeBuilderPermuterCubeCombo = new SorterPhenotypeBuilderPermuterCubeCombo
+                (
+                    guid: builderGuid,
+                    genome: genome,
+                    keyCount: keyCount,
+                    positionA: marginA,
+                    positionB: marginB,
+                    positionC: marginC
+                );
+
+            return sorterPhenotypeBuilderPermuterCubeCombo.Make(phenotypeGuid);
         }
 
 

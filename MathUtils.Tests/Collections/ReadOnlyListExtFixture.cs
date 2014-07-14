@@ -339,5 +339,70 @@ namespace MathUtils.Tests.Collections
 
             var lst2 = lst.Where((t, i) => lst[i] > 0).ToList();
         }
+
+
+        [TestMethod]
+        public void TestCueSub()
+        {
+            const int blockSize = 4;
+
+            var list2 =
+                Enumerable.Repeat("A", blockSize)
+                    .Concat(Enumerable.Repeat("B", blockSize))
+                    .Concat(Enumerable.Repeat("C", blockSize))
+                    .Concat(Enumerable.Repeat("D", blockSize))
+                    .Concat(Enumerable.Repeat("E", blockSize))
+                    .Concat(Enumerable.Repeat("F", blockSize))
+                    .Concat(Enumerable.Repeat("G", blockSize))
+                    .Concat(Enumerable.Repeat("H", blockSize))
+                    .Concat(Enumerable.Repeat("I", blockSize))
+                    .Concat(Enumerable.Repeat("J", blockSize))
+                    .ToList();
+
+            var results = list2.CubeSub
+                (
+                    blockSize: 4,
+                    marginA: 1,
+                    marginB: 1,
+                    marginC: 1
+                ).ToList();
+        }
+
+        [TestMethod]
+        public void TestCubeCorner()
+        {
+            const int blockSize = 4;
+
+            var list2 =
+                    Enumerable.Repeat("A", blockSize)
+                    .Concat(Enumerable.Repeat("B", blockSize))
+                    .Concat(Enumerable.Repeat("C", blockSize))
+                    .Concat(Enumerable.Repeat("D", blockSize))
+                    .Concat(Enumerable.Repeat("E", blockSize))
+                    .Concat(Enumerable.Repeat("F", blockSize))
+                    .Concat(Enumerable.Repeat("G", blockSize))
+                    .Concat(Enumerable.Repeat("H", blockSize))
+                    .Concat(Enumerable.Repeat("I", blockSize))
+                    .Concat(Enumerable.Repeat("J", blockSize))
+                    .Concat(Enumerable.Repeat("K", blockSize))
+                    .Concat(Enumerable.Repeat("L", blockSize))
+                    .Concat(Enumerable.Repeat("M", blockSize))
+                    .ToList();
+
+            var results = list2.CubeCorner
+                (
+                    blockSize: 4,
+                    marginA: 1,
+                    marginB: 1,
+                    marginC: 1,
+                    positionA: false,
+                    positionB: false,
+                    positionC: false
+                );
+
+            //"AAAABBBBDDDDEEEEGGGGHHHHJJJJKKKKLLLLMMMM"
+            Assert.AreEqual(results.Count, 40);
+        }
+
     }
 }

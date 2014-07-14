@@ -12,10 +12,10 @@ namespace EpiG
         public MainWindow()
         {
             InitializeComponent();
-            var context = new EpiGContext();
-            context.Sorters.Add(new Sorter() { Created = DateTime.Now });
-            context.SaveChanges();
-            Title = context.Sorters.Count().ToString();
+            //var context = new EpiGContext();
+            //context.Sorters.Add(new Sorter() { Created = DateTime.Now });
+            //context.SaveChanges();
+            //Title = context.Sorters.Count().ToString();
             DataContext = new EpiGAppVm();
         }
     }

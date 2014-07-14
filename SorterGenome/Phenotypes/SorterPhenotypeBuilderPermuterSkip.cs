@@ -7,9 +7,14 @@ using Sorting.Sorters;
 
 namespace SorterGenome.Phenotypes
 {
-    public class SorterPhenotypeBuilderPermuter : ISorterPhenotypeBuilder
+    public class SorterPhenotypeBuilderPermuterSkip : ISorterPhenotypeBuilder
     {
-        public SorterPhenotypeBuilderPermuter(Guid guid, IGenome genome, int keyCount, int skips)
+        public SorterPhenotypeBuilderPermuterSkip(
+            Guid guid, 
+            IGenome genome, 
+            int keyCount, 
+            int skips
+            )
         {
             _guid = guid;
             _genome = genome;
@@ -57,7 +62,7 @@ namespace SorterGenome.Phenotypes
 
         public string EntityName
         {
-            get { return "SorterPhenotypeBuilderPermuter"; }
+            get { return "SorterPhenotypeBuilderPermuterSkip"; }
         }
 
         public IEntity GetPart(Guid key)

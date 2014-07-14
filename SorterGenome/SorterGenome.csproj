@@ -65,8 +65,10 @@
     <Compile Include="CompPool\Ensemble\SorterCompPoolParameters.cs" />
     <Compile Include="CompPool\Ensemble\SorterCompPoolParameterType.cs" />
     <Compile Include="NextGeneration\NextGeneratorForPermutationSorter.cs" />
+    <Compile Include="NextGeneration\NextGeneratorForPermutationSorterAggregator.cs" />
     <Compile Include="NextGeneration\NextGeneratorForStandardSorter.cs" />
     <Compile Include="NextGeneration\NextGenerators.cs" />
+    <Compile Include="NextGeneration\SorterPhenotypeEvalFamily.cs" />
     <Compile Include="PhenotypeEvals\SorterPhenotypeEvalBuilder.cs" />
     <Compile Include="Phenotypes\Phenotypers.cs" />
     <Compile Include="Phenotypes\SorterPhenotype.cs" />
@@ -74,7 +76,9 @@
     <Compile Include="PhenotypeEvals\PhenotypeEvaluators.cs" />
     <Compile Include="CompPool\SorterCompPool.cs" />
     <Compile Include="Phenotypes\SorterPhenotypeBuilder.cs" />
-    <Compile Include="Phenotypes\SorterPhenotypeBuilderPermuter.cs" />
+    <Compile Include="Phenotypes\SorterPhenotypeBuilderComposer.cs" />
+    <Compile Include="Phenotypes\SorterPhenotypeBuilderPermuterCubeCombo.cs" />
+    <Compile Include="Phenotypes\SorterPhenotypeBuilderPermuterSkip.cs" />
     <Compile Include="Phenotypes\SorterPhenotypeBuilderStandard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompPool\SorterCompPoolStageType.cs" />

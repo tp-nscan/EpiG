@@ -37,7 +37,9 @@ namespace SorterGenome.NextGeneration
                 var randy = Rando.Fast(i);
 
                 var leaderBoard =
-                    eD.Values.OrderBy(v => v.SorterEval)
+                    eD.Values
+                    .Where(ev => ev.SorterEval.Success)
+                    .OrderBy(v => v.SorterEval)
                         .Select(ev => ev.SorterPhenotypeEvalBuilder
                                         .SorterPhenotype
                                         .SorterPhenotypeBuilder

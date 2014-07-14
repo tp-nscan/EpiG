@@ -23,6 +23,10 @@ namespace SorterGenome.Phenotypes
                     return MakeStandard(keyCount);
                 case "MakePermuterSlider":
                     return MakePermuterSlider(keyCount);
+                case "MakePermuterCubeCombo":
+                    return MakePermuterCubeCombo(keyCount);
+                case "MakePermuterComposer":
+                    return MakePermuterComposer(keyCount);
                 default:
                     throw new Exception(String.Format("LookupPhenotyper: {0} not found", name));
             }
@@ -45,8 +49,7 @@ namespace SorterGenome.Phenotypes
         }
 
 
-        public static Func
-            <
+        public static Func<
                 IGenome,
                 IRando,
                 IEnumerable<ISorterPhenotype>> MakePermuterSlider
@@ -62,40 +65,248 @@ namespace SorterGenome.Phenotypes
                     phenotypeGuid: r.NextGuid(),
                     keyCount: keyCount,
                     skips: 0
+                ),
+                 g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 1
+                ),
+                g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 2
+                ),
+                g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 3
                 )
-                //,
-                // g.ToSorterPhenotypePermuter
-                //(
-                //    builderGuid: r.NextGuid(),
-                //    phenotypeGuid: r.NextGuid(),
-                //    keyCount: keyCount,
-                //    skips: 1
-                //),
-                // g.ToSorterPhenotypePermuter
-                //(
-                //    builderGuid: r.NextGuid(),
-                //    phenotypeGuid: r.NextGuid(),
-                //    keyCount: keyCount,
-                //    skips: 2
-                //),
-                //g.ToSorterPhenotypePermuter
-                //(
-                //    builderGuid: r.NextGuid(),
-                //    phenotypeGuid: r.NextGuid(),
-                //    keyCount: keyCount,
-                //    skips: 3
-                //),
-                // g.ToSorterPhenotypePermuter
-                //(
-                //    builderGuid: r.NextGuid(),
-                //    phenotypeGuid: r.NextGuid(),
-                //    keyCount: keyCount,
-                //    skips: 4
-                //)
-
+                ,
+                 g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 4
+                ),
+                 g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 5
+                )
+                ,
+                g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 6
+                )
+                ,
+                 g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skips: 7
+                )
             };
 
+        }
+
+
+
+        public static Func<
+        IGenome,
+        IRando,
+        IEnumerable<ISorterPhenotype>> MakePermuterCubeCombo
+        (
+            int keyCount
+        )
+        {
+            return (g, r) => new List<ISorterPhenotype>
+            {
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: true,
+                    marginC: true
+                )
+                ,
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: true,
+                    marginC: false
+                ),
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: false,
+                    marginC: true
+                )
+                ,
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: false,
+                    marginC: false
+                ),
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: true,
+                    marginC: true
+                )
+                ,
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: true,
+                    marginC: false
+                )
+                ,
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: false,
+                    marginC: true
+                ),
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: false,
+                    marginC: false
+                )
+            };
 
         }
+
+
+        public static Func<
+            IGenome,
+            IRando,
+            IEnumerable<ISorterPhenotype>> MakePermuterComposer
+            (
+                int keyCount
+            )
+        {
+            return (g, r) => new List<ISorterPhenotype>
+            {
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: true,
+                    marginC: true
+                )
+                ,
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: true,
+                    marginC: false
+                ),
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: false,
+                    marginC: true
+                )
+                ,
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: true,
+                    marginB: false,
+                    marginC: false
+                ),
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: true,
+                    marginC: true
+                )
+                ,
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: true,
+                    marginC: false
+                )
+                ,
+                g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: false,
+                    marginC: true
+                ),
+                 g.ToSorterPhenotypePermuterCubeCombo
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    marginA: false,
+                    marginB: false,
+                    marginC: false
+                )
+            };
+
+        }
+
+
+
+
     }
 }

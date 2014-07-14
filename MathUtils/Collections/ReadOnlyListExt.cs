@@ -299,5 +299,109 @@ namespace MathUtils.Collections
                 yield return list[i];
             }
         }
+
+        public static IEnumerable<IReadOnlyList<T>> CubeSub<T>(
+            this IReadOnlyList<T> source, 
+            int blockSize, int marginA,
+            int marginB, int marginC)
+        {
+            var cume = marginA*blockSize;
+            var prefixA = source.Take(cume).ToList();
+            var partA1 = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize;
+            var partA2 = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize;
+            var prefixB = source.Skip(cume).Take(blockSize * marginB).ToList();
+            cume += blockSize * marginB;
+            var partB1 = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize;
+            var partB2 = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize;
+            var prefixC = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize * marginC;
+            var partC1 = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize;
+            var partC2 = source.Skip(cume).Take(blockSize).ToList();
+            cume += blockSize;
+            var suffix = source.Skip(cume).ToList();
+
+            yield return prefixA.Concat(partA1).Concat(prefixB).Concat(partB1).Concat(prefixC).Concat(partC1).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA1).Concat(prefixB).Concat(partB1).Concat(prefixC).Concat(partC2).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA1).Concat(prefixB).Concat(partB2).Concat(prefixC).Concat(partC1).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA1).Concat(prefixB).Concat(partB2).Concat(prefixC).Concat(partC2).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA2).Concat(prefixB).Concat(partB1).Concat(prefixC).Concat(partC1).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA2).Concat(prefixB).Concat(partB1).Concat(prefixC).Concat(partC2).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA2).Concat(prefixB).Concat(partB2).Concat(prefixC).Concat(partC1).Concat(suffix).ToList();
+            yield return prefixA.Concat(partA2).Concat(prefixB).Concat(partB2).Concat(prefixC).Concat(partC2).Concat(suffix).ToList();
+
+        }
+
+        public static IReadOnlyList<T> CubeCorner<T>(
+                this IReadOnlyList<T> source,
+                int blockSize,
+                int marginA,
+                int marginB,
+                int marginC,
+                bool positionA,
+                bool positionB, 
+                bool positionC
+            )
+        {
+            var cume = marginA * blockSize;
+            var prefixA = source.Take(cume).ToList();
+
+            cume += positionA ?  blockSize : 0;
+            var partA = source.Skip(cume).Take(blockSize).ToList();
+            cume = (blockSize * (marginA + 2));
+
+            var prefixB = source.Skip(cume).Take(marginB* blockSize).ToList();
+
+            cume += positionB ? (marginB + 1) * blockSize : marginB * blockSize;
+            var partB = source.Skip(cume).Take(blockSize).ToList();
+            cume = (blockSize * (marginA + marginB + 4));
+
+            var prefixC = source.Skip(cume).Take(marginC * blockSize).ToList();
+
+
+            cume += positionC ? (marginC + 1) * blockSize : marginC * blockSize;
+            var partC = source.Skip(cume).Take(blockSize).ToList();
+            cume = ( blockSize * (marginA + marginB + marginC + 6));
+
+            var suffix = source.Skip(cume).ToList();
+
+            return prefixA.Concat(partA).Concat(prefixB).Concat(partB).Concat(prefixC).Concat(partC).Concat(suffix).ToList();
+        }
+
+
+    //    public static IReadOnlyList<T> CubeCorner<T>(
+    //    this IReadOnlyList<T> source,
+    //    int blockSize,
+    //    int marginA,
+    //    int marginB,
+    //    int marginC,
+    //    bool positionA,
+    //    bool positionB,
+    //    bool positionC
+    //)
+    //    {
+
+    //        var cume = positionA ? blockSize : 0;
+    //        var partA = source.Skip(cume).Take(blockSize).ToList();
+    //        cume = 2 * blockSize;
+
+
+    //        cume += positionB ? blockSize : 0;
+    //        var partB = source.Skip(cume).Take(blockSize).ToList();
+    //        cume = 4 * blockSize;
+
+
+    //        cume += positionC ? blockSize : 0;
+    //        var partC = source.Skip(cume).Take(blockSize).ToList();
+    //        cume = 6 * blockSize;
+
+    //        var suffix = source.Skip(cume).ToList();
+
+    //        return partA.Concat(partB).Concat(partC).Concat(suffix).ToList();
+    //    }
     }
 }

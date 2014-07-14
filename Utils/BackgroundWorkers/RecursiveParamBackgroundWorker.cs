@@ -75,7 +75,14 @@ namespace Utils.BackgroundWorkers
                 }
 
                 var result = IterationResult.Make(default(T), ProgressStatus.StepIncomplete);
-                await Task.Run(() => result = _recursion(CurrentState, Parameters[_currentIteration], _cancellationTokenSource.Token));
+                await Task.Run
+                    (
+                        () => result = _recursion(
+                                                    CurrentState, 
+                                                    Parameters[_currentIteration], 
+                                                    _cancellationTokenSource.Token
+                                                 )
+                    );
 
                 if (result.ProgressStatus != ProgressStatus.StepComplete)
                 {

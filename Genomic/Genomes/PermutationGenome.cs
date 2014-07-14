@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MathUtils.Collections;
 using MathUtils.Rand;
@@ -25,7 +24,7 @@ namespace Genomic.Genomes
         {
             return
                 sequence.Chunk(degree)
-                    .Select(c => Permutation.ToPermutation(c.ToList()).Mutate(rando, mutationRate))
+                    .Select(c => c.ToList().ToPermutation().Mutate(rando, mutationRate))
                     .SelectMany(mp => mp.Values)
                     .Cast<uint>();
         }
