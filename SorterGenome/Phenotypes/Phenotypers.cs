@@ -59,64 +59,66 @@ namespace SorterGenome.Phenotypes
         {
             return (g, r) => new List<ISorterPhenotype>
             {
-                g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 0
-                ),
+                //g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 0
+                //),
+                // g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 1
+                //),
+                //g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 2
+                //),
+                //g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 3
+                //)
+                //,
+                // g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 4
+                //),
+                // g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 5
+                //)
+                //,
+                //g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skipStart: 5,
+                //    skipBlocks: 3
+                //)
+                //,
                  g.ToSorterPhenotypePermuter
                 (
                     builderGuid: r.NextGuid(),
                     phenotypeGuid: r.NextGuid(),
                     keyCount: keyCount,
-                    skips: 1
-                ),
-                g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 2
-                ),
-                g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 3
-                )
-                ,
-                 g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 4
-                ),
-                 g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 5
-                )
-                ,
-                g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 6
-                )
-                ,
-                 g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skips: 7
+                    skipStart: 8,
+                    skipBlocks: 3
                 )
             };
 

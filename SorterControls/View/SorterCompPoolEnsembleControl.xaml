@@ -6,8 +6,6 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:converters="clr-namespace:WpfUtils.Converters;assembly=WpfUtils"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:compPool="clr-namespace:SorterGenome.CompPool;assembly=SorterGenome"
-             xmlns:view="clr-namespace:SorterControls.View"
              xmlns:ensemble="clr-namespace:SorterGenome.CompPool.Ensemble;assembly=SorterGenome"
              x:Class="SorterControls.View.SorterCompPoolEnsembleControl"
              mc:Ignorable="d"             

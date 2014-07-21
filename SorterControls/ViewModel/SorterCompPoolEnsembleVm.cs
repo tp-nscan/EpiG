@@ -17,20 +17,21 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolEnsembleVm()
         {
-            _legacyRate = 0.04;
+            _legacyRate = 0.1;
             _mutationRate = 0.02;
-            _cubRate = 0.24;
+            _cubRate = 0.3;
 
             _sorterCount = 50;
-            _seed = 1234;
+            _seed = 999;
             _keyPairCount = 1250;
             _keyCount = 14;
 
             _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
-            _replicas = 10;
-            _increment = 0.002;
-            _startingValue = 0.02;
+            _replicas = 25;
+            _increment = 0.0004;
+            _startingValue = 0.03;
             _deletionRate = 0.005;
+            _permutationStyle = true;
         }
 
         private int _generationCount;

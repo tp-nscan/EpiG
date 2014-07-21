@@ -37,7 +37,8 @@ namespace SorterGenome.Phenotypes
             Guid builderGuid,
             Guid phenotypeGuid,
             int keyCount,
-            int skips
+            int skipStart,
+            int skipBlocks
         )
         {
             var sorterPhenotypeBuilderStandard = new SorterPhenotypeBuilderPermuterSkip
@@ -45,7 +46,8 @@ namespace SorterGenome.Phenotypes
                     guid: builderGuid,
                     genome: genome,
                     keyCount: keyCount,
-                    skips: skips
+                    skipStart: skipStart,
+                    skipBlocks: skipBlocks
                 );
 
             return sorterPhenotypeBuilderStandard.Make(phenotypeGuid);

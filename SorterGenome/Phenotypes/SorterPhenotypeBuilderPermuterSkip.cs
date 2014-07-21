@@ -10,26 +10,29 @@ namespace SorterGenome.Phenotypes
     public class SorterPhenotypeBuilderPermuterSkip : ISorterPhenotypeBuilder
     {
         public SorterPhenotypeBuilderPermuterSkip(
-            Guid guid, 
-            IGenome genome, 
-            int keyCount, 
-            int skips
+                Guid guid, 
+                IGenome genome, 
+                int keyCount, 
+                int skipStart,
+                int skipBlocks
             )
         {
             _guid = guid;
             _genome = genome;
             _keyCount = keyCount;
-            _skips = skips;
+            _skipStart = skipStart;
+            _skipBlocks = skipBlocks;
         }
 
         public ISorterPhenotype Make(Guid guid)
         {
 
-            var prefix = Genome.Sequence.Take(KeyCount * Skips);
+            var prefix = Genome.Sequence.Take(KeyCount * SkipStart);
+
             var sorter = 
                 prefix.Concat
                 (
-                    Genome.Sequence.Skip(KeyCount * (Skips + 1))
+                    Genome.Sequence.Skip(KeyCount  * (SkipStart  + SkipBlocks + 1))
                 )
                 .ToKeyPairs().ToSorter(KeyCount);
 
@@ -47,10 +50,17 @@ namespace SorterGenome.Phenotypes
             get { return _genome; }
         }
 
-        private readonly int _skips;
-        public int Skips
+
+        private readonly int _skipBlocks;
+        public int SkipBlocks
         {
-            get { return _skips; }
+            get { return _skipBlocks; }
+        }
+
+        private readonly int _skipStart;
+        public int SkipStart
+        {
+            get { return _skipStart; }
         }
 
         private readonly int _keyCount;
