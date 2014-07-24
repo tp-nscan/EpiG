@@ -15,13 +15,13 @@
         <converters:InvBoolToVisibilityConverter x:Key="InvBoolToVisibilityConverter"/>
         <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
-            
+
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="ensemble:SorterCompPoolParameterType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        
-        
+
+
     </UserControl.Resources>
 
     <Grid>
@@ -33,13 +33,14 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="FontSize" Value="14" />
             </Style>
-
+            
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Focusable" Value="True" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Foreground" Value="Gold" />
                 <Setter Property="Background" Value="Transparent" />
+                <Setter Property="MinWidth" Value="50"/>
             </Style>
 
             <Style TargetType="{x:Type ComboBox}" >
@@ -96,9 +97,16 @@
         <DockPanel LastChildFill="True">
 
             <Grid DockPanel.Dock="Right" >
-                <Button Command="{Binding CancelSimulationCommand}" Content="Stop"/>
-                <Button Command="{Binding StartSimulationCommand}" Content="Run" 
-                    Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Button Command="{Binding CancelSimulationCommand}" Content="Stop"/>
+                        <Button Command="{Binding StartSimulationCommand}" Content="Run" 
+                            Visibility="{Binding IsBusy, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
+                    </Grid>
+
+                    <Button Command="{Binding CopySettingsCommand}" Content="Copy"/>
+
+                </StackPanel>
             </Grid>
 
             <Border Margin="2"
@@ -223,14 +231,20 @@
                             Maximum="0.4" />
                     </StackPanel>
 
+                    <StackPanel>
+                        <TextBlock Text="Name" />
+                        <TextBox Text="{Binding EnsembleName}"/>
+                    </StackPanel>
+                    
+                    
                 </WrapPanel>
             </Border>
         </DockPanel>
 
-        
-        <Button Grid.Row="2" Click="Button_Click"> Copy</Button>
 
-        
+        <Button Grid.Row="2" Click="Button_Click">Copy</Button>
+
+
 
         <DataGrid 
                 x:Name="dataGrid" 
@@ -240,7 +254,7 @@
                 AutoGenerateColumns="True"
                 ItemsSource="{Binding SorterPoolSummaryVms}">
         </DataGrid>
-        
+
 
     </Grid>
 

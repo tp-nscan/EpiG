@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\SorterCompPoolEnsembleSummaryVm.cs" />
     <Compile Include="ViewModel\SorterPoolSummaryVm.cs" />
     <Compile Include="ViewModel\SorterPoolSummaryVm2.cs" />
     <Compile Include="ViewModel\SorterPoolVm.cs" />

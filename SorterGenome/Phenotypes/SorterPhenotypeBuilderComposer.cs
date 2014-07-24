@@ -34,9 +34,9 @@ namespace SorterGenome.Phenotypes
 
    
             return new SorterPhenotypeStandard(
-                guid: guid,
-                sorter: sorter,
-                sorterPhenotypeBuilder: this
+                    guid: guid,
+                    sorter: sorter,
+                    sorterPhenotypeBuilder: this
                 );
         }
 

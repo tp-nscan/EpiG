@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using MathUtils.Rand;
 using SorterGenome.CompPool;
@@ -21,15 +22,15 @@ namespace SorterControls.ViewModel
             _mutationRate = 0.02;
             _cubRate = 0.3;
 
-            _sorterCount = 50;
+            _sorterCount = 25;
             _seed = 999;
             _keyPairCount = 1250;
             _keyCount = 14;
 
             _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
-            _replicas = 25;
+            _replicas = 50;
             _increment = 0.0004;
-            _startingValue = 0.03;
+            _startingValue = 0.02;
             _deletionRate = 0.005;
             _permutationStyle = true;
         }
@@ -118,6 +119,59 @@ namespace SorterControls.ViewModel
         }
 
         #endregion // CancelSimulationCommand
+
+
+
+        #region CopySettingsCommand
+
+        RelayCommand _copySettingsCommand;
+        public ICommand CopySettingsCommand
+        {
+            get
+            {
+                return _copySettingsCommand ?? (_copySettingsCommand
+                    = new RelayCommand
+                        (
+                            param => OnCopySettingsCommand(),
+                            param => CanCopySettingsCommand()
+                        ));
+            }
+        }
+
+        void OnCopySettingsCommand()
+        {
+            string hdrs =
+                "Seed\tKeys\tSwitches\tSorters\tMutation\tInsertion\tDeletion\tLegacy\tCub\tPermute\tReps\tVarParam\tVarStart\tVarDelta\tPhenotyper\tPhenoParam\tNextGen";
+
+            string vals = string.Format
+                (
+                    "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t",
+                    Seed,
+                    KeyCount,
+                    KeyPairCount,
+                    SorterCount,
+                    MutationRate,
+                    InsertionRate,
+                    DeletionRate,
+                    LegacyRate,
+                    CubRate,
+                    PermutationStyle,
+                    Replicas,
+                    SorterCompPoolParameterType,
+                    StartingValue,
+                    Increment
+                );
+
+            Clipboard.SetText(string.Format("{0}\n{1}", hdrs, vals));
+        }
+
+        bool CanCopySettingsCommand()
+        {
+            return true;
+        }
+
+        #endregion // CopySettingsCommand
+
 
 
         async Task DoSorterCompPoolAsync()
@@ -227,25 +281,39 @@ namespace SorterControls.ViewModel
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
                     var scps = result.Data.Result.SorterCompPools.ToList();
-                    if (scps[0].Generation % 1 == 0)
-                    {
-                        foreach (var sorterCompPool in scps)
-                        {
-                            var sorterEvals =
-                                sorterCompPool.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
-
                             SorterPoolSummaryVms.Add
                             (
-                                new SorterPoolSummaryVm2
-                                (
-                                    sorterEvals: sorterEvals,
-                                    generation: sorterCompPool.Generation,
-                                    name: sorterCompPool.Name,
-                                    tweak: Double.Parse(sorterCompPool.Name) * 10 - 0.2
-                                )
+                                new SorterCompPoolEnsembleSummaryVm
+                                    (
+                                        name: EnsembleName,
+                                        generation: this.GenerationCount,
+                                        bestValues: scps.Select(p => p.PhenotypeEvals.Select(ev=>ev.Value.SorterEval)
+                                                                      .Where(ev => ev.Success)  
+                                                                      .Min(ev=>(double)ev.SwitchUseCount)
+                                                                ).ToList()
+                                    )
                             );
-                        }
-                    }
+
+
+                    //if (scps[0].Generation % 1 == 0)
+                    //{
+                    //    foreach (var sorterCompPool in scps)
+                    //    {
+                    //        var sorterEvals =
+                    //            sorterCompPool.PhenotypeEvals.Select(ev => ev.Value.SorterEval).ToList();
+
+                    //        SorterPoolSummaryVms.Add
+                    //        (
+                    //            new SorterPoolSummaryVm2
+                    //            (
+                    //                sorterEvals: sorterEvals,
+                    //                generation: sorterCompPool.Generation,
+                    //                name: sorterCompPool.Name,
+                    //                tweak: Double.Parse(sorterCompPool.Name) * 10 - 0.2
+                    //            )
+                    //        );
+                    //    }
+                    //}
                 }
 
             _initialState = result.Data;
@@ -445,11 +513,36 @@ namespace SorterControls.ViewModel
             }
         }
 
+
+        private string _ensembleName;
+
+        public string EnsembleName
+        {
+            get { return _ensembleName; }
+            set
+            {
+                _ensembleName = value;
+                OnPropertyChanged("EnsembleName");
+            }
+        }
+
         #endregion
 
-        private ObservableCollection<SorterPoolSummaryVm2> _sorterPoolVms
-            = new ObservableCollection<SorterPoolSummaryVm2>();
-        public ObservableCollection<SorterPoolSummaryVm2> SorterPoolSummaryVms
+        //private ObservableCollection<SorterPoolSummaryVm2> _sorterPoolVms
+        //    = new ObservableCollection<SorterPoolSummaryVm2>();
+        //public ObservableCollection<SorterPoolSummaryVm2> SorterPoolSummaryVms
+        //{
+        //    get { return _sorterPoolVms; }
+        //    set
+        //    {
+        //        _sorterPoolVms = value;
+        //        OnPropertyChanged("SorterPoolSummaryVms");
+        //    }
+        //}
+
+        private ObservableCollection<SorterCompPoolEnsembleSummaryVm> _sorterPoolVms
+            = new ObservableCollection<SorterCompPoolEnsembleSummaryVm>();
+        public ObservableCollection<SorterCompPoolEnsembleSummaryVm> SorterPoolSummaryVms
         {
             get { return _sorterPoolVms; }
             set
@@ -458,6 +551,5 @@ namespace SorterControls.ViewModel
                 OnPropertyChanged("SorterPoolSummaryVms");
             }
         }
-
     }
 }

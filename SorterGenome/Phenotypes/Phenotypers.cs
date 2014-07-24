@@ -103,15 +103,17 @@ namespace SorterGenome.Phenotypes
                 //    skips: 5
                 //)
                 //,
-                //g.ToSorterPhenotypePermuter
-                //(
-                //    builderGuid: r.NextGuid(),
-                //    phenotypeGuid: r.NextGuid(),
-                //    keyCount: keyCount,
-                //    skipStart: 5,
-                //    skipBlocks: 3
-                //)
-                //,
+
+                g.ToSorterPhenotypePermuter
+                (
+                    builderGuid: r.NextGuid(),
+                    phenotypeGuid: r.NextGuid(),
+                    keyCount: keyCount,
+                    skipStart: 5,
+                    skipBlocks: 3
+                )
+                ,
+
                  g.ToSorterPhenotypePermuter
                 (
                     builderGuid: r.NextGuid(),
