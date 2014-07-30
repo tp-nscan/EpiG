@@ -25,12 +25,14 @@ namespace SorterControls.ViewModel
 
         public double Generation { get; set; }
 
-        public string Name { get; set; }
+        public double TopQuarter { get; set; }
 
         public double Average { get; set; }
 
         public double Best { get; set; }
 
-        public double TopQuarter { get; set; }
+
+        public string Name { get; set; }
+
     }
 }

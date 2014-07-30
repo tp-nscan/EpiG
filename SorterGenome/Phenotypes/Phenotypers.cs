@@ -28,7 +28,7 @@ namespace SorterGenome.Phenotypes
                 case "MakePermuterComposer":
                     return MakePermuterComposer(keyCount);
                 default:
-                    throw new Exception(String.Format("LookupPhenotyper: {0} not found", name));
+                    throw new Exception(String.Format("LookupPhenotyper: {0} not handled", name));
             }
         }
 
@@ -37,7 +37,7 @@ namespace SorterGenome.Phenotypes
             IRando,
             IEnumerable<ISorterPhenotype>> MakeStandard
             (
-            int keyCount
+                int keyCount
             )
         {
             return (g, r) => g.ToSorterPhenotypeStandard
@@ -104,24 +104,58 @@ namespace SorterGenome.Phenotypes
                 //)
                 //,
 
-                g.ToSorterPhenotypePermuter
-                (
-                    builderGuid: r.NextGuid(),
-                    phenotypeGuid: r.NextGuid(),
-                    keyCount: keyCount,
-                    skipStart: 5,
-                    skipBlocks: 3
-                )
-                ,
+                //g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skipStart: 5,
+                //    skipBlocks: 3
+                //)
+                //,
 
-                 g.ToSorterPhenotypePermuter
-                (
+                // g.ToSorterPhenotypePermuter
+                //(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skipStart: 8,
+                //    skipBlocks: 3
+                //)
+
+                g.ToSorterPhenotypeComposer(
                     builderGuid: r.NextGuid(),
                     phenotypeGuid: r.NextGuid(),
                     keyCount: keyCount,
-                    skipStart: 8,
-                    skipBlocks: 3
+                    skips: 0
                 )
+                
+                //,
+
+                //g.ToSorterPhenotypeComposer(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 1
+                //)
+                //,
+
+                //g.ToSorterPhenotypeComposer(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 2
+                //)
+                
+                //,
+
+                //g.ToSorterPhenotypeComposer(
+                //    builderGuid: r.NextGuid(),
+                //    phenotypeGuid: r.NextGuid(),
+                //    keyCount: keyCount,
+                //    skips: 3
+                //)
+
             };
 
         }

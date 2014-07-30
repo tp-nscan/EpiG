@@ -131,6 +131,7 @@ namespace SorterGenome.NextGeneration
                         IReadOnlyDictionary<Guid, IGenome>
                     >
                 _nextGenerator;
+
             public Func<
                          IReadOnlyDictionary<Guid, ISorterPhenotypeEval>,
                          int,

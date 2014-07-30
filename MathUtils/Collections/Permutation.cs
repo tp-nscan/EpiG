@@ -5,7 +5,7 @@ using MathUtils.Rand;
 
 namespace MathUtils.Collections
 {
-    public interface IPermutation
+    public interface IPermutation : IEquatable<IPermutation>
     {
         int Degree { get; }
         int Value(int index);
@@ -153,6 +153,34 @@ namespace MathUtils.Collections
             }
             return true;
         }
+
+        public static IEnumerable<IPermutation> Orbits(this IPermutation seed)
+        {
+            var curVal = seed;
+            while (true)
+            {
+                yield return curVal;
+
+                curVal = curVal.Compose(seed);
+            }
+        }
+
+        public static IEnumerable<IPermutation> Orbit(this IPermutation seed)
+        {
+            var curVal = seed;
+            var dict = new Dictionary<IPermutation, int>(new MyPermutationEqualityComparer());
+            while (true)
+            {
+                if (dict.ContainsKey(curVal))
+                {
+                    yield break;
+                }
+                dict[curVal] = 1;
+                yield return curVal;
+                curVal = curVal.Compose(seed);
+            }
+        }
+
     }
 
 
@@ -190,5 +218,49 @@ namespace MathUtils.Collections
         {
             get { return _values; }
         }
+
+        public bool Equals(IPermutation other)
+        {
+            for (var i = 0; i < Degree; i++)
+            {
+                if (Value(i) != other.Value(i))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public class MyPermutationEqualityComparer : IEqualityComparer<IPermutation>
+    {
+        public bool Equals(IPermutation x, IPermutation y)
+        {
+            for (var i = 0; i < x.Degree; i++)
+            {
+                if (x.Value(i) != y.Value(i))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public int GetHashCode(IPermutation obj)
+        {
+            unchecked
+            {
+                var hashCode = obj.Value(0);
+                for (var i = 1; i < obj.Degree; i++)
+                {
+                    hashCode = ((obj.Value(i) + 1) * 397) ^ hashCode;
+                }
+
+                return hashCode;
+            }
+        }
+
     }
 }

@@ -67,13 +67,14 @@
     <Compile Include="NextGeneration\NextGeneratorForPermutationSorter.cs" />
     <Compile Include="NextGeneration\NextGeneratorForPermutationSorterAggregator.cs" />
     <Compile Include="NextGeneration\NextGeneratorForStandardSorter.cs" />
-    <Compile Include="NextGeneration\NextGenerators.cs" />
+    <Compile Include="NextGeneration\NextGenSpecs\NextGenSpec.cs" />
     <Compile Include="NextGeneration\SorterPhenotypeEvalFamily.cs" />
+    <Compile Include="PhenotypeEvals\PhenotypeEvalSpecs\PhenotypeEvalSpec.cs" />
     <Compile Include="PhenotypeEvals\SorterPhenotypeEvalBuilder.cs" />
     <Compile Include="Phenotypes\Phenotypers.cs" />
+    <Compile Include="Phenotypes\PhenotyperSpecs\PhenotyperSpec.cs" />
     <Compile Include="Phenotypes\SorterPhenotype.cs" />
     <Compile Include="PhenotypeEvals\SorterPhenotypeEval.cs" />
-    <Compile Include="PhenotypeEvals\PhenotypeEvaluators.cs" />
     <Compile Include="CompPool\SorterCompPool.cs" />
     <Compile Include="Phenotypes\SorterPhenotypeBuilder.cs" />
     <Compile Include="Phenotypes\SorterPhenotypeBuilderComposer.cs" />

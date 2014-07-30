@@ -63,7 +63,7 @@ namespace SorterGenome.Phenotypes
             int skips
         )
         {
-            var sorterPhenotypeBuilderStandard = new SorterPhenotypeBuilderComposer
+            var phenotypeBuilderComposer = new SorterPhenotypeBuilderComposer
                 (
                     guid: builderGuid,
                     genome: genome,
@@ -71,7 +71,7 @@ namespace SorterGenome.Phenotypes
                     skips: skips
                 );
 
-            return sorterPhenotypeBuilderStandard.Make(phenotypeGuid);
+            return phenotypeBuilderComposer.Make(phenotypeGuid);
         }
 
         public static ISorterPhenotype ToSorterPhenotypePermuterCubeCombo

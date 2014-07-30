@@ -18,19 +18,19 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolEnsembleVm()
         {
-            _legacyRate = 0.1;
-            _mutationRate = 0.02;
-            _cubRate = 0.3;
+            _legacyRate = 0.125;
+            _mutationRate = 0.03;
+            _cubRate = 0.25;
 
-            _sorterCount = 25;
+            _sorterCount = 32;
             _seed = 999;
-            _keyPairCount = 1250;
-            _keyCount = 14;
+            _keyPairCount = 400;
+            _keyCount = 10;
 
-            _sorterCompPoolParameterType = SorterCompPoolParameterType.MutationRate;
-            _replicas = 50;
-            _increment = 0.0004;
-            _startingValue = 0.02;
+            _sorterCompPoolParameterType = SorterCompPoolParameterType.Seed;
+            _replicas = 256;
+            _increment = 477;
+            _startingValue = 25526;
             _deletionRate = 0.005;
             _permutationStyle = true;
         }
@@ -281,18 +281,21 @@ namespace SorterControls.ViewModel
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
                     var scps = result.Data.Result.SorterCompPools.ToList();
-                            SorterPoolSummaryVms.Add
+
+                    GenerationCount = scps[0].Generation;
+
+                    SorterPoolSummaryVms.Add
+                    (
+                        new SorterCompPoolEnsembleSummaryVm
                             (
-                                new SorterCompPoolEnsembleSummaryVm
-                                    (
-                                        name: EnsembleName,
-                                        generation: this.GenerationCount,
-                                        bestValues: scps.Select(p => p.PhenotypeEvals.Select(ev=>ev.Value.SorterEval)
-                                                                      .Where(ev => ev.Success)  
-                                                                      .Min(ev=>(double)ev.SwitchUseCount)
-                                                                ).ToList()
-                                    )
-                            );
+                                name: EnsembleName,
+                                generation: GenerationCount,
+                                bestValues: scps.Select(p => p.PhenotypeEvals.Select(ev=>ev.Value.SorterEval)
+                                                                .Where(ev => ev.Success)  
+                                                                .Min(ev=>(double)ev.SwitchUseCount)
+                                                        ).ToList()
+                            )
+                    );
 
 
                     //if (scps[0].Generation % 1 == 0)

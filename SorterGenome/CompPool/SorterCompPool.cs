@@ -5,8 +5,11 @@ using Genomic.Genomes;
 using Genomic.Genomes.Builders;
 using MathUtils;
 using MathUtils.Rand;
+using SorterGenome.NextGeneration.NextGenSpecs;
 using SorterGenome.PhenotypeEvals;
+using SorterGenome.PhenotypeEvals.PhenotypeEvalSpecs;
 using SorterGenome.Phenotypes;
+using SorterGenome.Phenotypes.PhenotyperSpecs;
 using Sorting.KeyPairs;
 using Utils;
 
@@ -26,12 +29,13 @@ namespace SorterGenome.CompPool
 
         IReadOnlyDictionary<Guid, ISorterPhenotypeEval> PhenotypeEvals { get; }
 
-        string NextGeneratorName { get; }
+        INextGenSpec NextGenSpec { get; }
 
-        string PhenotyperName { get; }
+        IPhenotyperSpec PhenotyperSpec { get; }
 
-        string PhenotyperEvaluatorName { get; }
+        IPhenotypeEvalSpec PhenotyperEvalSpec { get; }
     }
+
 
     public static class SorterCompPool
     {
@@ -70,9 +74,9 @@ namespace SorterGenome.CompPool
                     mutationRate: mutationRate,
                     legacyRate: legacyRate,
                     cubRate: cubRate,
-                    phenotyperName: "Standard",
-                    phenotyperEvaluatorName: "Standard",
-                    nextGeneratorName: "Standard",
+                    phenotyperSpec: new PhenotyperSpecStandard(), 
+                    phenotyperEvalSpec: new PhenotypeEvalSpecStandard(), 
+                    nextGenSpec: new StandardNextGenSpec(), 
                     name: name
                 );
         }
@@ -114,9 +118,9 @@ namespace SorterGenome.CompPool
                     mutationRate: mutationRate,
                     legacyRate: legacyRate,
                     cubRate: cubRate,
-                    phenotyperName: "MakePermuterSlider",
-                    phenotyperEvaluatorName: "Standard",
-                    nextGeneratorName: "PermutationAggregator",
+                    phenotyperSpec: new PhenotyperSpecPermuterSlider(), 
+                    phenotyperEvalSpec: new PhenotypeEvalSpecStandard(),
+                    nextGenSpec: new PermutationAggregatorNextGenSpec(), 
                     name: name
                 );
         }

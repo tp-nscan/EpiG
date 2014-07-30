@@ -218,7 +218,7 @@
                             Value="{Binding StartingValue}"
                             Minimum="0.0" 
                             Increment="0.02" 
-                            Maximum="0.4" />
+                            />
                     </StackPanel>
 
 
@@ -227,8 +227,7 @@
                         <xctk:DoubleUpDown 
                             Value="{Binding Increment}"
                             Minimum="0.0" 
-                            Increment="0.02" 
-                            Maximum="0.4" />
+                            Increment="0.02" />
                     </StackPanel>
 
                     <StackPanel>

@@ -50,7 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="SorterPhenotypeBuilderComposerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +61,10 @@
     <ProjectReference Include="..\MathUtils\MathUtils.csproj">
       <Project>{45d0ac20-8adf-4830-8ce9-37749385834f}</Project>
       <Name>MathUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SorterGenome\SorterGenome.csproj">
+      <Project>{78481af4-8d78-4bf1-a1aa-a2228f8a0d56}</Project>
+      <Name>SorterGenome</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sorting\Sorting.csproj">
       <Project>{e5827c97-e3d1-4f30-b493-7bea79dbd877}</Project>

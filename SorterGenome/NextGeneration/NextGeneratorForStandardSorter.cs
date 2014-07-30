@@ -10,7 +10,6 @@ using Sorting.KeyPairs;
 
 namespace SorterGenome.NextGeneration
 {
-
     public class NextGeneratorForStandardSorter
     {
         public NextGeneratorForStandardSorter(

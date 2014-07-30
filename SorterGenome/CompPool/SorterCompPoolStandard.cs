@@ -4,9 +4,11 @@ using System.Linq;
 using Genomic.Genomes;
 using MathUtils;
 using MathUtils.Rand;
-using SorterGenome.NextGeneration;
+using SorterGenome.NextGeneration.NextGenSpecs;
 using SorterGenome.PhenotypeEvals;
+using SorterGenome.PhenotypeEvals.PhenotypeEvalSpecs;
 using SorterGenome.Phenotypes;
+using SorterGenome.Phenotypes.PhenotyperSpecs;
 using Utils;
 
 namespace SorterGenome.CompPool
@@ -28,9 +30,9 @@ namespace SorterGenome.CompPool
                 double insertionRate,
                 double mutationRate, 
                 double cubRate, 
-                string phenotyperName, 
-                string phenotyperEvaluatorName, 
-                string nextGeneratorName, 
+                IPhenotyperSpec phenotyperSpec,
+                IPhenotypeEvalSpec phenotyperEvalSpec,
+                INextGenSpec nextGenSpec, 
                 string name
             )
         {
@@ -43,9 +45,9 @@ namespace SorterGenome.CompPool
             _orgCount = orgCount;
             _mutationRate = mutationRate;
             _cubRate = cubRate;
-            _phenotyperName = phenotyperName;
-            _phenotyperEvaluatorName = phenotyperEvaluatorName;
-            _nextGeneratorName = nextGeneratorName;
+            _phenotyperSpec = phenotyperSpec;
+            _phenotyperEvalSpec = phenotyperEvalSpec;
+            _nextGenSpec = nextGenSpec;
             _name = name;
             _guid = guid;
             _legacyRate = legacyRate;
@@ -77,9 +79,9 @@ namespace SorterGenome.CompPool
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
                             cubRate: CubRate,
-                            phenotyperName: PhenotyperName,
-                            phenotyperEvaluatorName: PhenotyperEvaluatorName,
-                            nextGeneratorName: NextGeneratorName,
+                            phenotyperSpec: PhenotyperSpec,
+                            phenotyperEvalSpec: PhenotyperEvalSpec,
+                            nextGenSpec: NextGenSpec,
                             name: Name
                         );
 
@@ -102,9 +104,9 @@ namespace SorterGenome.CompPool
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
                             cubRate: CubRate,
-                            phenotyperName: PhenotyperName,
-                            phenotyperEvaluatorName: PhenotyperEvaluatorName,
-                            nextGeneratorName: NextGeneratorName,
+                            phenotyperSpec: PhenotyperSpec,
+                            phenotyperEvalSpec: PhenotyperEvalSpec,
+                            nextGenSpec: NextGenSpec,
                             name: Name
                         );
 
@@ -125,9 +127,9 @@ namespace SorterGenome.CompPool
                             mutationRate: MutationRate,
                             legacyRate: LegacyRate,
                             cubRate: CubRate,
-                            phenotyperName: PhenotyperName,
-                            phenotyperEvaluatorName: PhenotyperEvaluatorName,
-                            nextGeneratorName: NextGeneratorName,
+                            phenotyperSpec: PhenotyperSpec,
+                            phenotyperEvalSpec: PhenotyperEvalSpec,
+                            nextGenSpec: NextGenSpec,
                             name: Name
                         );
                 default:
@@ -213,22 +215,22 @@ namespace SorterGenome.CompPool
             get { return _phenotypeEvals; }
         }
 
-        private readonly string _nextGeneratorName;
-        public string NextGeneratorName
+        private readonly INextGenSpec _nextGenSpec;
+        public INextGenSpec NextGenSpec
         {
-            get { return _nextGeneratorName; }
+            get { return _nextGenSpec; }
         }
 
-        private readonly string _phenotyperName;
-        public string PhenotyperName
+        private readonly IPhenotyperSpec _phenotyperSpec;
+        public IPhenotyperSpec PhenotyperSpec
         {
-            get { return _phenotyperName; }
+            get { return _phenotyperSpec; }
         }
 
-        private readonly string _phenotyperEvaluatorName;
-        public string PhenotyperEvaluatorName
+        private readonly IPhenotypeEvalSpec _phenotyperEvalSpec;
+        public IPhenotypeEvalSpec PhenotyperEvalSpec
         {
-            get { return _phenotyperEvaluatorName; }
+            get { return _phenotyperEvalSpec; }
         }
 
         private Func<
@@ -243,7 +245,7 @@ namespace SorterGenome.CompPool
         {
             get
             {
-                return _phenotyper ?? (_phenotyper = Phenotypers.LookupPhenotyper(PhenotyperName, KeyCount));
+                return _phenotyper ?? (_phenotyper = PhenotyperSpec.ToPenotyper(KeyCount));
                 
             }
         }
@@ -261,7 +263,7 @@ namespace SorterGenome.CompPool
             get
             {
                 return _phenotypeEvaluator ??
-                       (_phenotypeEvaluator = PhenotypeEvaluators.LookupPhenotypeEvaluator(PhenotyperEvaluatorName));
+                       (_phenotypeEvaluator = PhenotyperEvalSpec.ToPhenotypeEval());
             }
         }
 
@@ -278,19 +280,17 @@ namespace SorterGenome.CompPool
             get 
             { 
                 return _nextGenerator ?? 
-                       (
-                           _nextGenerator = NextGenerators.LookupPhenotypeEvaluator    
-                               (
-                                   name: NextGeneratorName,
-                                   keyCount : KeyCount, 
-                                   orgCount : OrgCount,
-                                   deletionRate: DeletionRate,
-                                   insertionRate: InsertionRate,
-                                   mutationRate: MutationRate,
-                                   legacyRate: LegacyRate,
-                                   cubRate: CubRate
-                               )
-                           ); 
+                (
+                    _nextGenerator = NextGenSpec.ToNextGenerator
+                    (
+                        keyCount : KeyCount, 
+                        orgCount : OrgCount,
+                        deletionRate: DeletionRate,
+                        insertionRate: InsertionRate,
+                        mutationRate: MutationRate,
+                        legacyRate: LegacyRate,
+                        cubRate: CubRate
+                    ));
             }
         }
 

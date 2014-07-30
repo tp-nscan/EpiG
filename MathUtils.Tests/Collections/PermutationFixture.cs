@@ -92,5 +92,15 @@ namespace MathUtils.Tests.Collections
             permutation = Permutation.ToPermutation(new[] { 0, 2, 3, 3 });
             Assert.IsFalse(permutation.IsValid());
         }
+
+        [TestMethod]
+        public void TestPermutationOrbit()
+        {
+
+            var permutation = Permutation.ToPermutation(new[] { 7, 0, 1, 5, 2, 4, 6, 3 });
+
+            var orbits = permutation.Orbit().ToList();
+        }
+
     }
 }
