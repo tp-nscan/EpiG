@@ -140,11 +140,14 @@
                     </StackPanel>
 
                     <StackPanel>
+                        
                         <TextBlock Text="Sorter Count" />
+                        
                         <xctk:IntegerUpDown Value="{Binding SorterCount}"
                             Minimum="0" 
                             Increment="5" 
                             Maximum="10000" />
+                        
                     </StackPanel>
 
                     <StackPanel>
@@ -185,7 +188,7 @@
                         <xctk:DoubleUpDown Value="{Binding CubRate}"
                             Minimum="0.0" 
                             Increment="0.02" 
-                            Maximum="0.4" />
+                            Maximum="1.0" />
                     </StackPanel>
 
 
@@ -197,8 +200,7 @@
                         <TextBlock Text="Replicas" />
                         <xctk:IntegerUpDown Value="{Binding Replicas}"
                             Minimum="0" 
-                            Increment="1" 
-                            Maximum="100" />
+                            Increment="1" />
                     </StackPanel>
 
                     <StackPanel>
@@ -212,6 +214,18 @@
 
                     </StackPanel>
 
+
+                    <StackPanel>
+                        
+                        <TextBlock Text="Param steps" />
+
+                        <xctk:IntegerUpDown Value="{Binding ParamSteps}"
+                            Minimum="1" 
+                            Increment="1" 
+                            Maximum="100" />
+
+                    </StackPanel>
+                    
                     <StackPanel>
                         <TextBlock Text="Starting value" />
                         <xctk:DoubleUpDown 

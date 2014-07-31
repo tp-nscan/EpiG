@@ -20,17 +20,18 @@ namespace SorterControls.ViewModel
         {
             _legacyRate = 0.125;
             _mutationRate = 0.03;
-            _cubRate = 0.25;
+            _cubRate = 0.5;
 
             _sorterCount = 32;
             _seed = 999;
             _keyPairCount = 400;
             _keyCount = 10;
 
-            _sorterCompPoolParameterType = SorterCompPoolParameterType.Seed;
+            _sorterCompPoolParameterType = SorterCompPoolParameterType.LegacyRate;
             _replicas = 256;
-            _increment = 477;
-            _startingValue = 25526;
+            _increment = 0.025;
+            _startingValue = 0.075;
+            _paramSteps = 4;
             _deletionRate = 0.005;
             _permutationStyle = true;
         }
@@ -220,9 +221,10 @@ namespace SorterControls.ViewModel
                     mutationRate: MutationRate,
                     legacyRate: LegacyRate,
                     cubRate: CubRate,
+                    stepCount: ParamSteps,
                     startingValue: StartingValue,
                     increment: Increment,
-                    replicas: Replicas,
+                    reps: Replicas,
                     sorterCompPoolParameterType: SorterCompPoolParameterType
                 
                 ).ToPassThroughWorkflow(_rando.NextGuid())
@@ -243,9 +245,10 @@ namespace SorterControls.ViewModel
                 mutationRate: MutationRate,
                 legacyRate: LegacyRate,
                 cubRate: CubRate,
+                stepCount: ParamSteps,
                 startingValue: StartingValue,
                 increment: Increment,
-                replicas: Replicas,
+                reps: Replicas,
                 sorterCompPoolParameterType: SorterCompPoolParameterType
 
             ).ToPassThroughWorkflow(_rando.NextGuid())
@@ -277,25 +280,43 @@ namespace SorterControls.ViewModel
         {
             if (result.ProgressStatus == ProgressStatus.StepComplete)
 
-
                 if (result.Data.Result.SorterCompPoolStageType == SorterCompPoolStageType.MakeNextGeneration)
                 {
-                    var scps = result.Data.Result.SorterCompPools.ToList();
+                    var scpgs = result.Data.Result.SorterCompPools.GroupBy(p => p.Name).ToList();
+                    GenerationCount = scpgs[0].First().Generation;
 
-                    GenerationCount = scps[0].Generation;
+                    foreach (var group in scpgs)
+                    {
+                        SorterPoolSummaryVms.Add
+                        (
+                            new SorterCompPoolEnsembleSummaryVm
+                                (
+                                    name: group.Key,
+                                    generation: GenerationCount,
+                                    bestValues: group.Select(p => p.PhenotypeEvals.Select(ev => ev.Value.SorterEval)
+                                                                    .Where(ev => ev.Success)
+                                                                    .Min(ev => (double)ev.SwitchUseCount)
+                                                            ).ToList()
+                                )
+                        );
+                    }
 
-                    SorterPoolSummaryVms.Add
-                    (
-                        new SorterCompPoolEnsembleSummaryVm
-                            (
-                                name: EnsembleName,
-                                generation: GenerationCount,
-                                bestValues: scps.Select(p => p.PhenotypeEvals.Select(ev=>ev.Value.SorterEval)
-                                                                .Where(ev => ev.Success)  
-                                                                .Min(ev=>(double)ev.SwitchUseCount)
-                                                        ).ToList()
-                            )
-                    );
+                    //var scps = result.Data.Result.SorterCompPools.ToList();
+
+                    //GenerationCount = scps[0].Generation;
+
+                    //SorterPoolSummaryVms.Add
+                    //(
+                    //    new SorterCompPoolEnsembleSummaryVm
+                    //        (
+                    //            name: EnsembleName,
+                    //            generation: GenerationCount,
+                    //            bestValues: scps.Select(p => p.PhenotypeEvals.Select(ev=>ev.Value.SorterEval)
+                    //                                            .Where(ev => ev.Success)  
+                    //                                            .Min(ev=>(double)ev.SwitchUseCount)
+                    //                                    ).ToList()
+                    //        )
+                    //);
 
 
                     //if (scps[0].Generation % 1 == 0)
@@ -356,6 +377,18 @@ namespace SorterControls.ViewModel
                 _keyCount = value;
                 Reset();
                 OnPropertyChanged("KeyCount");
+            }
+        }
+
+        private int _paramSteps;
+        public int ParamSteps
+        {
+            get { return _paramSteps; }
+            set
+            {
+                _paramSteps = value;
+                Reset();
+                OnPropertyChanged("ParamSteps");
             }
         }
 

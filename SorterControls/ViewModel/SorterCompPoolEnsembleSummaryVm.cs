@@ -31,7 +31,6 @@ namespace SorterControls.ViewModel
 
         public double Best { get; set; }
 
-
         public string Name { get; set; }
 
     }

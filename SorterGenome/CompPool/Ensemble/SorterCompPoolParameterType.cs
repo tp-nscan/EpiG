@@ -2,8 +2,7 @@ namespace SorterGenome.CompPool.Ensemble
 {
     public enum SorterCompPoolParameterType
     {
-        Seed,
-        OrgCount,
+        PoolSize,
         LegacyRate,
         CubRate,
         DeletionRate,

@@ -28,10 +28,11 @@ namespace SorterGenome.CompPool.Ensemble
                 double mutationRate,
                 double legacyRate,
                 double cubRate,
+                int stepCount,
                 double startingValue,
                 double increment,
                 SorterCompPoolParameterType sorterCompPoolParameterType,
-                int replicas
+                int reps
             )
 
         {
@@ -49,7 +50,8 @@ namespace SorterGenome.CompPool.Ensemble
                     startingValue: startingValue,
                     increment: increment,
                     sorterCompPoolParameterType: sorterCompPoolParameterType,
-                    replicas: replicas
+                    reps: reps,
+                    stepCount: stepCount
                 );
 
             return
@@ -87,10 +89,11 @@ namespace SorterGenome.CompPool.Ensemble
             double mutationRate,
             double legacyRate,
             double cubRate,
+            int stepCount,
             double startingValue,
             double increment,
             SorterCompPoolParameterType sorterCompPoolParameterType,
-            int replicas
+            int reps
         )
         {
             var randy = Rando.Fast(seed);
@@ -107,7 +110,8 @@ namespace SorterGenome.CompPool.Ensemble
                     startingValue: startingValue,
                     increment: increment,
                     sorterCompPoolParameterType: sorterCompPoolParameterType,
-                    replicas: replicas
+                    reps: reps,
+                    stepCount: stepCount
                 );
 
             return
