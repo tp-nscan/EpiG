@@ -176,19 +176,14 @@
 
 
                     <StackPanel>
-                        <TextBlock Text="Legacy rate" />
-                        <xctk:DoubleUpDown Value="{Binding LegacyRate}"
-                            Minimum="0.0" 
-                            Increment="0.02" 
-                            Maximum="0.5" />
+                        <TextBlock Text="Legacies" />
+                        <xctk:IntegerUpDown Value="{Binding LegacyCount}" Minimum="0" />
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="Cub rate" />
-                        <xctk:DoubleUpDown Value="{Binding CubRate}"
-                            Minimum="0.0" 
-                            Increment="0.02" 
-                            Maximum="1.0" />
+                        <TextBlock Text="Cubs" />
+                        <xctk:IntegerUpDown Value="{Binding CubCount}"
+                        Minimum="0"/>
                     </StackPanel>
 
 
@@ -245,8 +240,8 @@
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="Name" />
-                        <TextBox Text="{Binding EnsembleName}"/>
+                        <TextBlock Text="Run" />
+                        <TextBox Text="{Binding RunName}"/>
                     </StackPanel>
                     
                     

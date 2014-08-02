@@ -3,7 +3,7 @@ namespace SorterGenome.CompPool.Ensemble
     public enum SorterCompPoolParameterType
     {
         PoolSize,
-        LegacyRate,
+        LegacyCount,
         CubRate,
         DeletionRate,
         InsertionRate,

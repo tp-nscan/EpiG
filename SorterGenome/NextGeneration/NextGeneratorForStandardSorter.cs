@@ -17,16 +17,16 @@ namespace SorterGenome.NextGeneration
             int orgCount,
             double deletionRate, 
             double insertionRate,
-            double mutationRate, 
-            double legacyRate, 
-            double cubRate
+            double mutationRate,
+            int legacyCount,
+            int cubCount
          )
         {
             _keyCount = keyCount;
             _orgCount = orgCount;
             _mutationRate = mutationRate;
-            _legacyRate = legacyRate;
-            _cubRate = cubRate;
+            _legacyCount = legacyCount;
+            _cubCount = cubCount;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
 
@@ -45,10 +45,10 @@ namespace SorterGenome.NextGeneration
                                         .Genome)
                         .ToList();
 
-                var legacies = leaderBoard.Take((int)(OrgCount * LegacyRate)).ToList();
+                var legacies = leaderBoard.Take(LegacyCount).ToList();
 
                 var mutants =
-                    leaderBoard.Take((int)(OrgCount * CubRate))
+                    leaderBoard.Take(CubCount)
                     .Repeat()
                     .Take(OrgCount - legacies.Count)
                     .Select
@@ -99,16 +99,16 @@ namespace SorterGenome.NextGeneration
             get { return _mutationRate; }
         }
 
-        private readonly double _legacyRate;
-        public double LegacyRate
+        private readonly int _legacyCount;
+        public int LegacyCount
         {
-            get { return _legacyRate; }
+            get { return _legacyCount; }
         }
 
-        private readonly double _cubRate;
-        public double CubRate
+        private readonly int _cubCount;
+        public int CubCount
         {
-            get { return _cubRate; }
+            get { return _cubCount; }
         }
 
         private readonly 

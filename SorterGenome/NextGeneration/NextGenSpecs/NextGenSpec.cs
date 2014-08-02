@@ -32,8 +32,8 @@ namespace SorterGenome.NextGeneration.NextGenSpecs
                 double deletionRate,
                 double insertionRate,
                 double mutationRate,
-                double legacyRate,
-                double cubRate
+                int legacyCount,
+                int cubCount
             )
         {
             switch (nextGenSpec.NextGenSpecType)
@@ -46,8 +46,8 @@ namespace SorterGenome.NextGeneration.NextGenSpecs
                            deletionRate: deletionRate,
                            insertionRate: insertionRate,
                            mutationRate: mutationRate,
-                           legacyRate: legacyRate,
-                           cubRate: cubRate
+                           legacyCount: legacyCount,
+                           cubCount: cubCount
                        ).NextGenerator;
 
                 case NextGenSpecType.Permutation:
@@ -58,8 +58,8 @@ namespace SorterGenome.NextGeneration.NextGenSpecs
                                     deletionRate: deletionRate,
                                     insertionRate: insertionRate,
                                     mutationRate: mutationRate,
-                                    legacyRate: legacyRate,
-                                    cubRate: cubRate
+                                    legacyCount: legacyCount,
+                                    cubCount: cubCount
                                 ).NextGenerator;
 
                 case NextGenSpecType.PermutationAggregator:
@@ -70,8 +70,8 @@ namespace SorterGenome.NextGeneration.NextGenSpecs
                                     deletionRate: deletionRate,
                                     insertionRate: insertionRate,
                                     mutationRate: mutationRate,
-                                    legacyRate: legacyRate,
-                                    cubRate: cubRate
+                                    legacyCount: legacyCount,
+                                    cubCount: cubCount
                                 ).NextGenerator;
             }
             return null;

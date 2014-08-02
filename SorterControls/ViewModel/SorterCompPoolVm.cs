@@ -16,9 +16,9 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolVm()
         {
-            _legacyRate = 0.04;
+            _legacyCount = 4;
             _mutationRate = 0.03;
-            _cubRate = 0.24;
+            _cubCount = 24;
 
             _sorterCount = 500;
             Seed = 1234;
@@ -169,8 +169,8 @@ namespace SorterControls.ViewModel
                     deletionRate: DeletionRate,
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
-                    legacyRate: LegacyRate,
-                    cubRate: CubRate,
+                    legacyCount: LegacyCount,
+                    cubCount: CubCount,
                     name: ""
                 ).ToPassThroughWorkflow(_rando.NextGuid())
                 .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
@@ -187,8 +187,8 @@ namespace SorterControls.ViewModel
                     deletionRate: DeletionRate,
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
-                    legacyRate: LegacyRate,
-                    cubRate: CubRate,
+                    legacyCount: LegacyCount,
+                    cubCount: CubCount,
                     name: ""
                 ).ToPassThroughWorkflow(_rando.NextGuid())
                 .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
@@ -295,15 +295,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private double _legacyRate;
-        public double LegacyRate
+        private int _legacyCount;
+        public int LegacyCount
         {
-            get { return _legacyRate; }
+            get { return _legacyCount; }
             set
             {
-                _legacyRate = value;
+                _legacyCount = value;
                 Reset();
-                OnPropertyChanged("LegacyRate");
+                OnPropertyChanged("LegacyCount");
             }
         }
 
@@ -343,15 +343,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private double _cubRate;
-        public double CubRate
+        private int _cubCount;
+        public int CubCount
         {
-            get { return _cubRate; }
+            get { return _cubCount; }
             set
             {
-                _cubRate = value;
+                _cubCount = value;
                 Reset();
-                OnPropertyChanged("CubRate");
+                OnPropertyChanged("CubCount");
             }
         }
 

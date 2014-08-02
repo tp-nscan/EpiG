@@ -48,8 +48,8 @@ namespace SorterGenome.CompPool
             double deletionRate, 
             double insertionRate,
             double mutationRate,
-            double legacyRate,
-            double cubRate,
+            int legacyCount,
+            int cubCount,
             string name
         )
         {
@@ -72,8 +72,8 @@ namespace SorterGenome.CompPool
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    legacyRate: legacyRate,
-                    cubRate: cubRate,
+                    legacyCount: legacyCount,
+                    cubCount: cubCount,
                     phenotyperSpec: new PhenotyperSpecStandard(), 
                     phenotyperEvalSpec: new PhenotypeEvalSpecStandard(), 
                     nextGenSpec: new StandardNextGenSpec(), 
@@ -92,8 +92,8 @@ namespace SorterGenome.CompPool
             double deletionRate,
             double insertionRate,
             double mutationRate,
-            double legacyRate,
-            double cubRate,
+            int legacyCount,
+            int cubCount,
             string name
         )
         {
@@ -116,8 +116,8 @@ namespace SorterGenome.CompPool
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    legacyRate: legacyRate,
-                    cubRate: cubRate,
+                    legacyCount: legacyCount,
+                    cubCount: cubCount,
                     phenotyperSpec: new PhenotyperSpecPermuterSlider(), 
                     phenotyperEvalSpec: new PhenotypeEvalSpecStandard(),
                     nextGenSpec: new PermutationAggregatorNextGenSpec(), 

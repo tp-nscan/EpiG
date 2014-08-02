@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,16 +19,17 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolEnsembleVm()
         {
-            _legacyRate = 0.125;
+            _legacyCount = 1;
             _mutationRate = 0.03;
-            _cubRate = 0.5;
+            _cubCount = 4;
 
-            _sorterCount = 32;
-            _seed = 999;
+            _sorterCount = 64;
+            _seed = (ushort) DateTime.Now.Ticks;
+            _runName = ((uint)DateTime.Now.Ticks).ToString();
             _keyPairCount = 400;
             _keyCount = 10;
 
-            _sorterCompPoolParameterType = SorterCompPoolParameterType.LegacyRate;
+            _sorterCompPoolParameterType = SorterCompPoolParameterType.LegacyCount;
             _replicas = 256;
             _increment = 0.025;
             _startingValue = 0.075;
@@ -122,7 +124,6 @@ namespace SorterControls.ViewModel
         #endregion // CancelSimulationCommand
 
 
-
         #region CopySettingsCommand
 
         RelayCommand _copySettingsCommand;
@@ -154,8 +155,8 @@ namespace SorterControls.ViewModel
                     MutationRate,
                     InsertionRate,
                     DeletionRate,
-                    LegacyRate,
-                    CubRate,
+                    LegacyCount,
+                    CubCount,
                     PermutationStyle,
                     Replicas,
                     SorterCompPoolParameterType,
@@ -172,7 +173,6 @@ namespace SorterControls.ViewModel
         }
 
         #endregion // CopySettingsCommand
-
 
 
         async Task DoSorterCompPoolAsync()
@@ -219,8 +219,8 @@ namespace SorterControls.ViewModel
                     deletionRate: DeletionRate,
                     insertionRate: InsertionRate,
                     mutationRate: MutationRate,
-                    legacyRate: LegacyRate,
-                    cubRate: CubRate,
+                    legacyCount: LegacyCount,
+                    cubCount: CubCount,
                     stepCount: ParamSteps,
                     startingValue: StartingValue,
                     increment: Increment,
@@ -243,14 +243,13 @@ namespace SorterControls.ViewModel
                 deletionRate: DeletionRate,
                 insertionRate: InsertionRate,
                 mutationRate: MutationRate,
-                legacyRate: LegacyRate,
-                cubRate: CubRate,
+                legacyCount: LegacyCount,
+                cubCount: CubCount,
                 stepCount: ParamSteps,
                 startingValue: StartingValue,
                 increment: Increment,
                 reps: Replicas,
                 sorterCompPoolParameterType: SorterCompPoolParameterType
-
             ).ToPassThroughWorkflow(_rando.NextGuid())
              .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
         }
@@ -292,6 +291,7 @@ namespace SorterControls.ViewModel
                             new SorterCompPoolEnsembleSummaryVm
                                 (
                                     name: group.Key,
+                                    run: RunName,
                                     generation: GenerationCount,
                                     bestValues: group.Select(p => p.PhenotypeEvals.Select(ev => ev.Value.SorterEval)
                                                                     .Where(ev => ev.Success)
@@ -451,15 +451,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private double _legacyRate;
-        public double LegacyRate
+        private int _legacyCount;
+        public int LegacyCount
         {
-            get { return _legacyRate; }
+            get { return _legacyCount; }
             set
             {
-                _legacyRate = value;
+                _legacyCount = value;
                 Reset();
-                OnPropertyChanged("LegacyRate");
+                OnPropertyChanged("LegacyCount");
             }
         }
 
@@ -499,15 +499,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private double _cubRate;
-        public double CubRate
+        private int _cubCount;
+        public int CubCount
         {
-            get { return _cubRate; }
+            get { return _cubCount; }
             set
             {
-                _cubRate = value;
+                _cubCount = value;
                 Reset();
-                OnPropertyChanged("CubRate");
+                OnPropertyChanged("CubCount");
             }
         }
 
@@ -550,15 +550,15 @@ namespace SorterControls.ViewModel
         }
 
 
-        private string _ensembleName;
+        private string _runName;
 
-        public string EnsembleName
+        public string RunName
         {
-            get { return _ensembleName; }
+            get { return _runName; }
             set
             {
-                _ensembleName = value;
-                OnPropertyChanged("EnsembleName");
+                _runName = value;
+                OnPropertyChanged("RunName");
             }
         }
 

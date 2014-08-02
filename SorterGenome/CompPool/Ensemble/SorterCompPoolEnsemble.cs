@@ -26,15 +26,14 @@ namespace SorterGenome.CompPool.Ensemble
                 double deletionRate,
                 double insertionRate,
                 double mutationRate,
-                double legacyRate,
-                double cubRate,
+                int legacyCount,
+                int cubCount,
                 int stepCount,
                 double startingValue,
                 double increment,
                 SorterCompPoolParameterType sorterCompPoolParameterType,
                 int reps
             )
-
         {
             var randy = Rando.Fast(seed);
 
@@ -45,8 +44,8 @@ namespace SorterGenome.CompPool.Ensemble
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    legacyRate: legacyRate,
-                    cubRate: cubRate,
+                    legacyCount: legacyCount,
+                    cubCount: cubCount,
                     startingValue: startingValue,
                     increment: increment,
                     sorterCompPoolParameterType: sorterCompPoolParameterType,
@@ -69,8 +68,8 @@ namespace SorterGenome.CompPool.Ensemble
                                     deletionRate: p.DeletionRate, 
                                     insertionRate: p.InsertionRate,
                                     mutationRate: p.MutationRate,
-                                    legacyRate: p.LegacyRate,
-                                    cubRate: p.CubRate,
+                                    legacyCount: p.LegacyCount,
+                                    cubCount: p.CubCount,
                                     name: p.Name
                                 )
                         )
@@ -87,8 +86,8 @@ namespace SorterGenome.CompPool.Ensemble
             double deletionRate,
             double insertionRate,
             double mutationRate,
-            double legacyRate,
-            double cubRate,
+            int legacyCount,
+            int cubCount,
             int stepCount,
             double startingValue,
             double increment,
@@ -105,8 +104,8 @@ namespace SorterGenome.CompPool.Ensemble
                     deletionRate: deletionRate,
                     insertionRate: insertionRate,
                     mutationRate: mutationRate,
-                    legacyRate: legacyRate,
-                    cubRate: cubRate,
+                    legacyCount: legacyCount,
+                    cubCount: cubCount,
                     startingValue: startingValue,
                     increment: increment,
                     sorterCompPoolParameterType: sorterCompPoolParameterType,
@@ -129,8 +128,8 @@ namespace SorterGenome.CompPool.Ensemble
                                     deletionRate: p.DeletionRate,
                                     insertionRate: p.InsertionRate,
                                     mutationRate: p.MutationRate,
-                                    legacyRate: p.LegacyRate,
-                                    cubRate: p.CubRate,
+                                    legacyCount: p.LegacyCount,
+                                    cubCount: p.CubCount,
                                     name: p.Name
                                 )
                         )

@@ -15,8 +15,8 @@ namespace SorterGenome.CompPool.Ensemble
                 double deletionRate,
                 double insertionRate,
                 double mutationRate,
-                double legacyRate,
-                double cubRate,
+                int legacyCount,
+                int cubCount,
                 double startingValue,
                 double increment,
                 SorterCompPoolParameterType sorterCompPoolParameterType,
@@ -29,11 +29,11 @@ namespace SorterGenome.CompPool.Ensemble
                             name: string.Empty,
                             seed: 0,
                             orgCount: orgCount,
-                            legacyRate: legacyRate,
+                            legacyCount: legacyCount,
                             deletionRate: deletionRate,
                             insertionRate: insertionRate,
                             mutationRate: mutationRate,
-                            cubRate: cubRate
+                            cubCount: cubCount
                         );
 
             return sorterCompPoolParameters.GetRange
@@ -85,20 +85,20 @@ namespace SorterGenome.CompPool.Ensemble
             (
                 string name,
                 double seed,
-                double orgCount, 
-                double legacyRate, 
+                double orgCount,
+                int legacyCount, 
                 double deletionRate, 
                 double insertionRate,
-                double mutationRate, 
-                double cubRate
+                double mutationRate,
+                int cubCount
             )
         {
             _name = name;
             _seed = (int) seed;
             _orgCount = (int) orgCount;
             _mutationRate = mutationRate;
-            _cubRate = cubRate;
-            _legacyRate = legacyRate;
+            _cubCount = cubCount;
+            _legacyCount = legacyCount;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
         }
@@ -133,16 +133,16 @@ namespace SorterGenome.CompPool.Ensemble
             get { return _mutationRate; }
         }
 
-        private readonly double _legacyRate;
-        public double LegacyRate
+        private readonly int _legacyCount;
+        public int LegacyCount
         {
-            get { return _legacyRate; }
+            get { return _legacyCount; }
         }
 
-        private readonly double _cubRate;
-        public double CubRate
+        private readonly int _cubCount;
+        public int CubCount
         {
-            get { return _cubRate; }
+            get { return _cubCount; }
         }
 
         private readonly int _seed;
@@ -150,7 +150,6 @@ namespace SorterGenome.CompPool.Ensemble
         {
             get { return _seed; }
         }
-
 
         public SorterCompPoolParameters Modify
             (
@@ -168,24 +167,24 @@ namespace SorterGenome.CompPool.Ensemble
                             name: name,
                             seed: seed,
                             orgCount: newParam,
-                            legacyRate: LegacyRate,
+                            legacyCount: LegacyCount,
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            cubRate: CubRate
+                            cubCount: CubCount
                         );
 
-                case SorterCompPoolParameterType.LegacyRate:
+                case SorterCompPoolParameterType.LegacyCount:
                     return new SorterCompPoolParameters
                         (
                             name: name,
                             seed: seed,
                             orgCount: OrgCount,
-                            legacyRate: newParam,
+                            legacyCount: (int) newParam,
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            cubRate: CubRate
+                            cubCount: CubCount
                         );
 
                 case SorterCompPoolParameterType.CubRate:
@@ -194,11 +193,11 @@ namespace SorterGenome.CompPool.Ensemble
                             name: name,
                             seed: seed,
                             orgCount: OrgCount,
-                            legacyRate: LegacyRate,
+                            legacyCount: LegacyCount,
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            cubRate: newParam
+                            cubCount: (int)newParam
                         );
 
                 case SorterCompPoolParameterType.DeletionRate:
@@ -207,11 +206,11 @@ namespace SorterGenome.CompPool.Ensemble
                             name: name,
                             seed: seed,
                             orgCount: OrgCount,
-                            legacyRate: LegacyRate,
+                            legacyCount: LegacyCount,
                             deletionRate: newParam,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            cubRate: CubRate
+                            cubCount: CubCount
                         );
 
                 case SorterCompPoolParameterType.InsertionRate:
@@ -220,11 +219,11 @@ namespace SorterGenome.CompPool.Ensemble
                             name: name,
                             seed: seed,
                             orgCount: OrgCount,
-                            legacyRate: LegacyRate,
+                            legacyCount: LegacyCount,
                             deletionRate: DeletionRate,
                             insertionRate: newParam,
                             mutationRate: MutationRate,
-                            cubRate: CubRate
+                            cubCount: CubCount
                         );
 
                 case SorterCompPoolParameterType.MutationRate:
@@ -233,11 +232,11 @@ namespace SorterGenome.CompPool.Ensemble
                             name: name,
                             seed: seed,
                             orgCount: OrgCount,
-                            legacyRate: LegacyRate,
+                            legacyCount: LegacyCount,
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: newParam,
-                            cubRate: CubRate
+                            cubCount: CubCount
                         );
 
                 default:

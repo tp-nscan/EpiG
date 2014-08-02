@@ -9,12 +9,14 @@ namespace SorterControls.ViewModel
         public SorterCompPoolEnsembleSummaryVm
             (
                 string name,
+                string run,
                 int generation,
                 IList<double> bestValues
             )
         {
             Generation = generation;
             Name = name;
+            Run = run;
             Average = bestValues.Average(t => t);
             Best = bestValues.Min(t => t);
             TopQuarter = bestValues
@@ -32,6 +34,8 @@ namespace SorterControls.ViewModel
         public double Best { get; set; }
 
         public string Name { get; set; }
+
+        public string Run { get; set; }
 
     }
 }

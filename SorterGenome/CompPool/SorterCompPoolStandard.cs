@@ -23,13 +23,13 @@ namespace SorterGenome.CompPool
                 IReadOnlyDictionary<Guid, ISorterPhenotype> phenotypes,
                 IReadOnlyDictionary<Guid, ISorterPhenotypeEval> phenotypeEvals,
                 SorterCompPoolStageType sorterCompPoolStageType,
-                int keyCount, 
-                int orgCount, 
-                double legacyRate, 
+                int keyCount,
+                int orgCount,
+                int legacyCount,
                 double deletionRate, 
                 double insertionRate,
                 double mutationRate, 
-                double cubRate, 
+                int cubCount,
                 IPhenotyperSpec phenotyperSpec,
                 IPhenotypeEvalSpec phenotyperEvalSpec,
                 INextGenSpec nextGenSpec, 
@@ -44,13 +44,13 @@ namespace SorterGenome.CompPool
             _keyCount = keyCount;
             _orgCount = orgCount;
             _mutationRate = mutationRate;
-            _cubRate = cubRate;
+            _cubCount = cubCount;
             _phenotyperSpec = phenotyperSpec;
             _phenotyperEvalSpec = phenotyperEvalSpec;
             _nextGenSpec = nextGenSpec;
             _name = name;
             _guid = guid;
-            _legacyRate = legacyRate;
+            _legacyCount = legacyCount;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
         }
@@ -77,8 +77,8 @@ namespace SorterGenome.CompPool
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            legacyRate: LegacyRate,
-                            cubRate: CubRate,
+                            legacyCount: LegacyCount,
+                            cubCount: CubCount,
                             phenotyperSpec: PhenotyperSpec,
                             phenotyperEvalSpec: PhenotyperEvalSpec,
                             nextGenSpec: NextGenSpec,
@@ -102,8 +102,8 @@ namespace SorterGenome.CompPool
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            legacyRate: LegacyRate,
-                            cubRate: CubRate,
+                            legacyCount: LegacyCount,
+                            cubCount: CubCount,
                             phenotyperSpec: PhenotyperSpec,
                             phenotyperEvalSpec: PhenotyperEvalSpec,
                             nextGenSpec: NextGenSpec,
@@ -125,8 +125,8 @@ namespace SorterGenome.CompPool
                             deletionRate: DeletionRate,
                             insertionRate: InsertionRate,
                             mutationRate: MutationRate,
-                            legacyRate: LegacyRate,
-                            cubRate: CubRate,
+                            legacyCount: LegacyCount,
+                            cubCount: CubCount,
                             phenotyperSpec: PhenotyperSpec,
                             phenotyperEvalSpec: PhenotyperEvalSpec,
                             nextGenSpec: NextGenSpec,
@@ -169,16 +169,16 @@ namespace SorterGenome.CompPool
             get { return _mutationRate; }
         }
 
-        private readonly double _legacyRate;
-        public double LegacyRate
+        private readonly int _legacyCount;
+        public int LegacyCount
         {
-            get { return _legacyRate; }
+            get { return _legacyCount; }
         }
 
-        private readonly double _cubRate;
-        public double CubRate
+        private readonly int _cubCount;
+        public int CubCount
         {
-            get { return _cubRate; }
+            get { return _cubCount; }
         }
 
         private readonly int _generation;
@@ -288,8 +288,8 @@ namespace SorterGenome.CompPool
                         deletionRate: DeletionRate,
                         insertionRate: InsertionRate,
                         mutationRate: MutationRate,
-                        legacyRate: LegacyRate,
-                        cubRate: CubRate
+                        legacyCount: LegacyCount,
+                        cubCount: CubCount
                     ));
             }
         }
