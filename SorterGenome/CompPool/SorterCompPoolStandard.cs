@@ -9,6 +9,7 @@ using SorterGenome.PhenotypeEvals;
 using SorterGenome.PhenotypeEvals.PhenotypeEvalSpecs;
 using SorterGenome.Phenotypes;
 using SorterGenome.Phenotypes.PhenotyperSpecs;
+using Sorting.SwitchFunctionSets;
 using Utils;
 
 namespace SorterGenome.CompPool
@@ -53,6 +54,8 @@ namespace SorterGenome.CompPool
             _legacyCount = legacyCount;
             _deletionRate = deletionRate;
             _insertionRate = insertionRate;
+
+            KeyPairSwitchSet.Make<uint>(KeyCount);
         }
 
         public ISorterCompPool Step(int seed)
@@ -93,9 +96,7 @@ namespace SorterGenome.CompPool
                             generation: Generation,
                             genomes: Genomes,
                             phenotypes: Phenotypes,
-                            phenotypeEvals: Phenotypes.Values
-                                .Select(p => PhenotypeEvaluator(p, randy))
-                                .ToDictionary(pe => pe.Guid),
+                            phenotypeEvals: DoEvals(Phenotypes, randy),
                             sorterCompPoolStageType: SorterCompPoolStageType.MakeNextGeneration,
                             keyCount: KeyCount,
                             orgCount: OrgCount,
@@ -136,6 +137,18 @@ namespace SorterGenome.CompPool
                     throw new Exception(SorterCompPoolStageType + " not handled");
             }
         }
+
+        IReadOnlyDictionary<Guid, ISorterPhenotypeEval> DoEvals(IReadOnlyDictionary<Guid, ISorterPhenotype> phenotypes, IRando randy)
+        {
+            var kpvs =
+                phenotypes.Values.Select(
+                    p => new Tuple<ISorterPhenotype, Guid, Guid>(p, randy.NextGuid(), randy.NextGuid()));
+
+            return kpvs.AsParallel()
+                .Select(t => PhenotypeEvaluator(t.Item1, t.Item2, t.Item3))
+                .ToDictionary(pe => pe.Guid);
+        }
+
 
         private readonly int _keyCount;
 
@@ -251,13 +264,15 @@ namespace SorterGenome.CompPool
         }
 
         private Func<
-            ISorterPhenotype, 
-            IRando, 
+            ISorterPhenotype,
+            Guid,
+            Guid,
             ISorterPhenotypeEval> _phenotypeEvaluator;
 
         public Func<
             ISorterPhenotype, 
-            IRando, 
+            Guid, 
+            Guid,
             ISorterPhenotypeEval> PhenotypeEvaluator
         {
             get

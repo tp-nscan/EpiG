@@ -29,10 +29,10 @@ namespace SorterControls.ViewModel
             _keyCount = 10;
 
             _sorterCompPoolParameterType = SorterCompPoolParameterType.CubCount;
-            _colonyCount = 256;
+            _colonyCount = 64;
             _increment = 1;
             _startingValue = 6;
-            _paramSteps = 4;
+            _paramSteps = 1;
             _permutationStyle = true;
         }
 

@@ -19,7 +19,6 @@ namespace Sorting.SwitchFunctionSets
 
     public static class KeyPairSwitchSet
     {
-
         static readonly List<IKeyPairSwitchSet> KeyPairSwitchSets = new List<IKeyPairSwitchSet>();
 
         public static IKeyPairSwitchSet<T> Make<T>(int keyCount)

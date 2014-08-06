@@ -18,7 +18,8 @@ namespace SorterGenome.PhenotypeEvals.PhenotypeEvalSpecs
     {
         public static Func<
             ISorterPhenotype,
-            IRando,
+            Guid,
+            Guid,
             ISorterPhenotypeEval> ToPhenotypeEval
             (
                 this IPhenotypeEvalSpec phenotypeEvalSpec
@@ -27,7 +28,7 @@ namespace SorterGenome.PhenotypeEvals.PhenotypeEvalSpecs
             switch (phenotypeEvalSpec.PhenotypeEvalSpecType)
             {
                 case PhenotypeEvalSpecType.Standard:
-                    return (p, r) => p.ToStandard(r.NextGuid(), r.NextGuid());
+                    return (p, bg, pg) => p.ToStandard(bg, pg);
                 default:
                     throw new Exception(String.Format("PhenotypeEvalSpecType: {0} not handled", phenotypeEvalSpec.PhenotypeEvalSpecType));
             }

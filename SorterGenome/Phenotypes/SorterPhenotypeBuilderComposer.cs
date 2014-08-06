@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using Genomic.Genomes;
 using MathUtils;
-using MathUtils.Collections;
 using Sorting.KeyPairs;
 using Sorting.Sorters;
 
