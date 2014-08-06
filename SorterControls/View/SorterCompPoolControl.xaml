@@ -120,8 +120,8 @@
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="Sorter Count" />
-                        <xctk:IntegerUpDown Value="{Binding SorterCount}"
+                        <TextBlock Text="Colony Count" />
+                        <xctk:IntegerUpDown Value="{Binding ColonyCount}"
                         Minimum="0" 
                         Increment="5" 
                         Maximum="10000" />

@@ -17,7 +17,13 @@ namespace SorterGenome.CompPool
 {
     public interface ISorterCompPool : IRandomWalk<ISorterCompPool>, IEntity
     {
+        int CubCount { get; }
+
         int Generation { get; }
+
+        int LegacyCount { get; }
+
+        double MutationRate { get; }
 
         string Name { get; }
         

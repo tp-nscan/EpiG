@@ -14,7 +14,7 @@ namespace SorterControls.ViewModel
     {
         public MakeRandomSortersVm()
         {
-            _sorterCount = 10;
+            _colonyCount = 10;
             _seed = 1234;
             _keyPairCount = 100;
             _keyCount = 10;
@@ -123,7 +123,7 @@ namespace SorterControls.ViewModel
                 {
 
                     _sorterEvalBackgroundWorker = EnumerativeBackgroundWorker.Make(
-                            inputs: Enumerable.Range(0, SorterCount),
+                            inputs: Enumerable.Range(0, ColonyCount),
                             mapper: (i, c) => IterationResult.Make
                                 (
                                     Sorting.TestData.SorterEvals
@@ -209,14 +209,14 @@ namespace SorterControls.ViewModel
         }
 
         private int _lastSorterCount;
-        private int _sorterCount;
-        public int SorterCount
+        private int _colonyCount;
+        public int ColonyCount
         {
-            get { return _sorterCount; }
+            get { return _colonyCount; }
             set
             {
-                _sorterCount = value;
-                OnPropertyChanged("SorterCount");
+                _colonyCount = value;
+                OnPropertyChanged("ColonyCount");
             }
         }
 
@@ -224,7 +224,7 @@ namespace SorterControls.ViewModel
         {
             get
             {
-                if (_lastSorterCount != _sorterCount)
+                if (_lastSorterCount != _colonyCount)
                 {
                     return true;
                 }
@@ -246,7 +246,7 @@ namespace SorterControls.ViewModel
 
         void SyncGui()
         {
-            _lastSorterCount = _sorterCount;
+            _lastSorterCount = _colonyCount;
             _lastSeed = _seed;
             _lastKeyPairCount = _keyPairCount;
             _lastKeyCount = _keyCount;

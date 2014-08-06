@@ -4,7 +4,7 @@ namespace SorterGenome.CompPool.Ensemble
     {
         PoolSize,
         LegacyCount,
-        CubRate,
+        CubCount,
         DeletionRate,
         InsertionRate,
         MutationRate

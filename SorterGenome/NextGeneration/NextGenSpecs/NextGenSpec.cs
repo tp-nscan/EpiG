@@ -15,6 +15,7 @@ namespace SorterGenome.NextGeneration.NextGenSpecs
     public interface INextGenSpec
     {
         NextGenSpecType NextGenSpecType { get; }
+        int LegacyCount { get; }
     }
 
     public static class NextGenSpec
@@ -81,27 +82,48 @@ namespace SorterGenome.NextGeneration.NextGenSpecs
 
     public class StandardNextGenSpec : INextGenSpec
     {
+        private int _legacyCount;
+
         public NextGenSpecType NextGenSpecType
         {
             get { return NextGenSpecType.Standard; }
+        }
+
+        public int LegacyCount
+        {
+            get { return _legacyCount; }
         }
     }
 
 
     public class PermutationNextGenSpec : INextGenSpec
     {
+        private int _legacyCount;
+
         public NextGenSpecType NextGenSpecType
         {
             get { return NextGenSpecType.Permutation; }
+        }
+
+        public int LegacyCount
+        {
+            get { return _legacyCount; }
         }
     }
 
 
     public class PermutationAggregatorNextGenSpec : INextGenSpec
     {
+        private int _legacyCount;
+
         public NextGenSpecType NextGenSpecType
         {
             get { return NextGenSpecType.PermutationAggregator; }
+        }
+
+        public int LegacyCount
+        {
+            get { return _legacyCount; }
         }
     }
 }

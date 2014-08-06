@@ -16,13 +16,13 @@ namespace SorterControls.ViewModel
     {
         public SorterCompPoolVm()
         {
-            _legacyCount = 4;
+            _legacyCount = 1;
             _mutationRate = 0.03;
-            _cubCount = 24;
+            _cubCount = 6;
 
-            _sorterCount = 500;
+            _colonyCount = 64;
             Seed = 1234;
-            _keyPairCount = 450;
+            _keyPairCount = 400;
             _keyCount = 10;
 
             SorterPoolVm = new SorterPoolVm
@@ -163,7 +163,7 @@ namespace SorterControls.ViewModel
             return SorterCompPool.InitStandardFromSeed
                 (
                     seed: Seed,
-                    orgCount: SorterCount,
+                    orgCount: ColonyCount,
                     seqenceLength: KeyPairCount,
                     keyCount: KeyCount,
                     deletionRate: DeletionRate,
@@ -181,7 +181,7 @@ namespace SorterControls.ViewModel
             return SorterCompPool.InitPermuterFromSeed
                 (
                     seed: Seed,
-                    orgCount: SorterCount,
+                    orgCount: ColonyCount,
                     permutationCount: (KeyPairCount * 2) / KeyCount,
                     degree: KeyCount,
                     deletionRate: DeletionRate,
@@ -381,15 +381,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private int _sorterCount;
-        public int SorterCount
+        private int _colonyCount;
+        public int ColonyCount
         {
-            get { return _sorterCount; }
+            get { return _colonyCount; }
             set
             {
-                _sorterCount = value;
+                _colonyCount = value;
                 Reset();
-                OnPropertyChanged("SorterCount");
+                OnPropertyChanged("ColonyCount");
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,18 +22,17 @@ namespace SorterControls.ViewModel
             _mutationRate = 0.03;
             _cubCount = 4;
 
-            _sorterCount = 64;
+            _colonySize = 16;
             _seed = (ushort) DateTime.Now.Ticks;
-            _runName = ((uint)DateTime.Now.Ticks).ToString();
+            _runName = Seed.ToString();
             _keyPairCount = 400;
             _keyCount = 10;
 
-            _sorterCompPoolParameterType = SorterCompPoolParameterType.LegacyCount;
-            _replicas = 256;
-            _increment = 0.025;
-            _startingValue = 0.075;
+            _sorterCompPoolParameterType = SorterCompPoolParameterType.CubCount;
+            _colonyCount = 256;
+            _increment = 1;
+            _startingValue = 6;
             _paramSteps = 4;
-            _deletionRate = 0.005;
             _permutationStyle = true;
         }
 
@@ -143,7 +141,7 @@ namespace SorterControls.ViewModel
         void OnCopySettingsCommand()
         {
             string hdrs =
-                "Seed\tKeys\tSwitches\tSorters\tMutation\tInsertion\tDeletion\tLegacy\tCub\tPermute\tReps\tVarParam\tVarStart\tVarDelta\tPhenotyper\tPhenoParam\tNextGen";
+                "Seed\tKeys\tSwitches\tColonyCount\tMutation\tInsertion\tDeletion\tLegacy\tCub\tPermute\tReps\tVarParam\tVarStart\tVarDelta\tPhenotyper\tPhenoParam\tNextGen";
 
             string vals = string.Format
                 (
@@ -151,14 +149,14 @@ namespace SorterControls.ViewModel
                     Seed,
                     KeyCount,
                     KeyPairCount,
-                    SorterCount,
+                    ColonySize,
                     MutationRate,
                     InsertionRate,
                     DeletionRate,
                     LegacyCount,
                     CubCount,
                     PermutationStyle,
-                    Replicas,
+                    ColonyCount,
                     SorterCompPoolParameterType,
                     StartingValue,
                     Increment
@@ -213,7 +211,7 @@ namespace SorterControls.ViewModel
             return SorterCompPoolEnsemble.InitStandardFromSeed
                 (
                     seed: Seed,
-                    orgCount: SorterCount,
+                    orgCount: ColonySize,
                     seqenceLength: KeyPairCount,
                     keyCount: KeyCount,
                     deletionRate: DeletionRate,
@@ -224,7 +222,7 @@ namespace SorterControls.ViewModel
                     stepCount: ParamSteps,
                     startingValue: StartingValue,
                     increment: Increment,
-                    reps: Replicas,
+                    reps: ColonyCount,
                     sorterCompPoolParameterType: SorterCompPoolParameterType
                 
                 ).ToPassThroughWorkflow(_rando.NextGuid())
@@ -237,7 +235,7 @@ namespace SorterControls.ViewModel
             return SorterCompPoolEnsemble.InitPermuterFromSeed
             (
                 seed: Seed,
-                orgCount: SorterCount,
+                orgCount: ColonySize,
                 permutationCount: (KeyPairCount * 2) / KeyCount,
                 degree: KeyCount,
                 deletionRate: DeletionRate,
@@ -248,7 +246,7 @@ namespace SorterControls.ViewModel
                 stepCount: ParamSteps,
                 startingValue: StartingValue,
                 increment: Increment,
-                reps: Replicas,
+                reps: ColonyCount,
                 sorterCompPoolParameterType: SorterCompPoolParameterType
             ).ToPassThroughWorkflow(_rando.NextGuid())
              .ToRecursiveWorkflowRndWlk(_rando.NextGuid());
@@ -290,12 +288,16 @@ namespace SorterControls.ViewModel
                         (
                             new SorterCompPoolEnsembleSummaryVm
                                 (
-                                    name: group.Key,
                                     run: RunName,
                                     generation: GenerationCount,
+                                    colonySize: ColonySize,
+                                    legacyCount: group.First().LegacyCount,
+                                    cubCount: group.First().CubCount,
+                                    mutationRate: group.First().MutationRate,
+                                    colonyCount: ColonyCount,
                                     bestValues: group.Select(p => p.PhenotypeEvals.Select(ev => ev.Value.SorterEval)
                                                                     .Where(ev => ev.Success)
-                                                                    .Min(ev => (double)ev.SwitchUseCount)
+                                                                    .Min(ev => ev.SwitchUseCount)
                                                             ).ToList()
                                 )
                         );
@@ -392,15 +394,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private int _replicas;
-        public int Replicas
+        private int _colonyCount;
+        public int ColonyCount
         {
-            get { return _replicas; }
+            get { return _colonyCount; }
             set
             {
-                _replicas = value;
+                _colonyCount = value;
                 Reset();
-                OnPropertyChanged("Replicas");
+                OnPropertyChanged("ColonyCount");
             }
         }
 
@@ -537,15 +539,15 @@ namespace SorterControls.ViewModel
             }
         }
 
-        private int _sorterCount;
-        public int SorterCount
+        private int _colonySize;
+        public int ColonySize
         {
-            get { return _sorterCount; }
+            get { return _colonySize; }
             set
             {
-                _sorterCount = value;
+                _colonySize = value;
                 Reset();
-                OnPropertyChanged("SorterCount");
+                OnPropertyChanged("ColonySize");
             }
         }
 

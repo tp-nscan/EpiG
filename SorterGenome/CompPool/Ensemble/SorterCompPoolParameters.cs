@@ -44,7 +44,7 @@ namespace SorterGenome.CompPool.Ensemble
                     startingValue:startingValue,
                     stepCount: stepCount,
                     increment: increment
-                ).Take(reps).ToList();
+                ).ToList();
         }
 
         public static IEnumerable<SorterCompPoolParameters> GetRange
@@ -187,7 +187,7 @@ namespace SorterGenome.CompPool.Ensemble
                             cubCount: CubCount
                         );
 
-                case SorterCompPoolParameterType.CubRate:
+                case SorterCompPoolParameterType.CubCount:
                     return new SorterCompPoolParameters
                         (
                             name: name,

@@ -141,9 +141,9 @@
 
                     <StackPanel>
                         
-                        <TextBlock Text="Sorter Count" />
-                        
-                        <xctk:IntegerUpDown Value="{Binding SorterCount}"
+                        <TextBlock Text="Colony Size" />
+
+                        <xctk:IntegerUpDown Value="{Binding ColonySize}"
                             Minimum="0" 
                             Increment="5" 
                             Maximum="10000" />
@@ -192,8 +192,8 @@
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="Replicas" />
-                        <xctk:IntegerUpDown Value="{Binding Replicas}"
+                        <TextBlock Text="Colony Count" />
+                        <xctk:IntegerUpDown Value="{Binding ColonyCount}"
                             Minimum="0" 
                             Increment="1" />
                     </StackPanel>
