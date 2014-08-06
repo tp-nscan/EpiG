@@ -289,7 +289,7 @@ namespace SorterControls.ViewModel
                             new SorterCompPoolEnsembleSummaryVm
                                 (
                                     run: RunName,
-                                    generation: GenerationCount,
+                                    replications: GenerationCount * ColonySize,
                                     colonySize: ColonySize,
                                     legacyCount: group.First().LegacyCount,
                                     cubCount: group.First().CubCount,

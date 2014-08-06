@@ -9,7 +9,7 @@ namespace SorterControls.ViewModel
         public SorterCompPoolEnsembleSummaryVm
             (
                 string run,
-                int generation,
+                int replications,
                 int colonySize,
                 int legacyCount,
                 int cubCount,
@@ -19,7 +19,7 @@ namespace SorterControls.ViewModel
             )
         {
             Run = run;
-            Generation = generation;
+            Replications = replications;
             ColonySize = colonySize;
             LegacyCount = legacyCount;
             CubCount = cubCount;
@@ -65,7 +65,7 @@ namespace SorterControls.ViewModel
 
         public string Run { get; set; }
 
-        public double Generation { get; set; }
+        public double Replications { get; set; }
 
         public int ColonyCount { get; set; }
 
