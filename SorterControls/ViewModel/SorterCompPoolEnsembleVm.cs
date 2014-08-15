@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MathUtils.Rand;
@@ -67,7 +66,12 @@ namespace SorterControls.ViewModel
         async void OnMakeSortersCommand()
         {
             IsBusy = true;
-            await DoSorterCompPoolAsync();
+            NextRound();
+            while (!_cancellationTokenSource.IsCancellationRequested)
+            {
+                NextRound();
+                await SorterCompPoolBackgroundWorker.Start(_cancellationTokenSource);
+            }
             IsBusy = false;
         }
 
@@ -77,6 +81,29 @@ namespace SorterControls.ViewModel
         }
 
         #endregion // StartSimulationCommand
+
+
+        private IDisposable _updateSubscription;
+        void NextRound()
+        {
+            if (_updateSubscription != null)
+            {
+                _updateSubscription.Dispose();
+            }
+            if (
+                    (_sorterCompPoolBackgroundWorker == null)
+                    ||
+                    (_sorterCompPoolBackgroundWorker != null && _sorterCompPoolBackgroundWorker.IsComplete)
+
+                )
+            {
+                _sorterCompPoolBackgroundWorker = MakeSorterEvalBackgroundWorker();
+            }
+
+            _updateSubscription = _sorterCompPoolBackgroundWorker.OnIterationResult.Subscribe(UpdateResults);
+
+            _cancellationTokenSource = new CancellationTokenSource();
+        }
 
 
         private bool _isBusy;
@@ -138,6 +165,11 @@ namespace SorterControls.ViewModel
             }
         }
 
+
+
+
+
+
         void OnCopySettingsCommand()
         {
             string hdrs =
@@ -171,19 +203,6 @@ namespace SorterControls.ViewModel
         }
 
         #endregion // CopySettingsCommand
-
-
-        async Task DoSorterCompPoolAsync()
-        {
-            IsBusy = true;
-            NextRound();
-            while (!_cancellationTokenSource.IsCancellationRequested)
-            {
-                NextRound();
-                await SorterCompPoolBackgroundWorker.Start(_cancellationTokenSource);
-            }
-            IsBusy = false;
-        }
 
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPoolEnsemble>, int> _sorterCompPoolBackgroundWorker;
         private IRecursiveParamBackgroundWorker<IRecursiveWorkflow<ISorterCompPoolEnsemble>, int> SorterCompPoolBackgroundWorker
@@ -284,6 +303,17 @@ namespace SorterControls.ViewModel
 
                     foreach (var group in scpgs)
                     {
+                        var bvs = group.Select
+                            (
+                                p => p.PhenotypeEvals.Select(ev => ev.Value.SorterEval)
+                                      .Where(ev => ev.Success)
+                                      .ToList()
+                                      
+                            ).ToList();
+
+                        var gvs = bvs.Where(pevs => pevs.Any())
+                            .ToList();
+
                         SorterPoolSummaryVms.Add
                         (
                             new SorterCompPoolEnsembleSummaryVm
@@ -295,10 +325,17 @@ namespace SorterControls.ViewModel
                                     cubCount: group.First().CubCount,
                                     mutationRate: group.First().MutationRate,
                                     colonyCount: ColonyCount,
-                                    bestValues: group.Select(p => p.PhenotypeEvals.Select(ev => ev.Value.SorterEval)
-                                                                    .Where(ev => ev.Success)
-                                                                    .Min(ev => ev.SwitchUseCount)
-                                                            ).ToList()
+                                    bestValues: gvs.Any() ? gvs.Select(sev=>sev.Min(s=>s.SwitchUseCount)).ToList()
+                                                            
+                                                            : Enumerable.Empty<int>().ToList()
+                                    
+                                    
+                                    
+                                    
+                                    //group.Select(p => p.PhenotypeEvals.Select(ev => ev.Value.SorterEval)
+                                    //                                .Where(ev => ev.Success)
+                                    //                                .Min(ev => ev.SwitchUseCount)
+                                    //                        ).ToList()
                                 )
                         );
                     }
@@ -343,28 +380,6 @@ namespace SorterControls.ViewModel
                 }
 
             _initialState = result.Data;
-        }
-
-        private IDisposable _updateSubscription;
-        void NextRound()
-        {
-            if (_updateSubscription != null)
-            {
-                _updateSubscription.Dispose();
-            }
-            if (
-                    (_sorterCompPoolBackgroundWorker == null)
-                    ||
-                    (_sorterCompPoolBackgroundWorker != null && _sorterCompPoolBackgroundWorker.IsComplete)
-
-                )
-            {
-                _sorterCompPoolBackgroundWorker = MakeSorterEvalBackgroundWorker();
-            }
-
-            _updateSubscription = _sorterCompPoolBackgroundWorker.OnIterationResult.Subscribe(UpdateResults);
-
-            _cancellationTokenSource = new CancellationTokenSource();
         }
 
 

@@ -25,8 +25,8 @@ namespace SorterControls.ViewModel
             CubCount = cubCount;
             MutationRate = mutationRate;
             ColonyCount = colonyCount;
-            Average = bestValues.Average(t => t);
-            Best = bestValues.Min(t => t);
+            Average = bestValues.Any() ? bestValues.Average(t => t) : 0;
+            Best = bestValues.Any() ? bestValues.Min(t => t) : 0;
 
             foreach (var countGroup in bestValues.GroupBy(t => t))
             {

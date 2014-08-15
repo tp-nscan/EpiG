@@ -152,7 +152,6 @@ namespace Genomic.Genomes.Builders
             get { return _symbolCount; }
         }
 
-
         public string EntityName
         {
             get { return "SimpleGenomeBuilderRandom"; }

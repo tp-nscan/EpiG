@@ -11,7 +11,6 @@ namespace Genomic.Genomes
         int PermutationCount { get; }
     }
 
-
     public static class PermutationGenome
     {
         public static IEnumerable<uint> PermutationMutate

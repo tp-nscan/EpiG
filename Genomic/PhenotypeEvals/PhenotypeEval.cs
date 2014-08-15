@@ -31,7 +31,7 @@ namespace Genomic.PhenotypeEvals
             get { return _guid; }
         }
 
-// ReSharper disable once InconsistentNaming
+        // ReSharper disable once InconsistentNaming
         protected readonly IComparable _result;
         public IComparable Result
         {

@@ -55,6 +55,28 @@ namespace Sorting.Sorters
                 );
         }
 
+        public static T Sort<T>
+        (
+            this ISorter sorter,
+            T item
+        )
+        {
+            var switchSet = KeyPairSwitchSet.Make<T>(sorter.KeyCount);
+
+            T result = item;
+
+            for (var i = 0; i < sorter.KeyPairCount; i++)
+            {
+                if (switchSet.IsSorted(result))
+                {
+                    break;
+                }
+
+                result = switchSet.SwitchFunction(sorter.KeyPair(i))(result).Item1;
+            }
+            return result;
+        }
+
         public static ISortResult FullTest(this ISorter sorter)
         {
             return sorter.Sort(Switchable.AllSwitchablesForKeyCount(sorter.KeyCount)

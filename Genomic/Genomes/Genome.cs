@@ -29,7 +29,7 @@ namespace Genomic.Genomes
         }
     }
 
-    class SimpleGenome : IGenome 
+    class SimpleGenome : IGenome
     {
         public SimpleGenome
         (

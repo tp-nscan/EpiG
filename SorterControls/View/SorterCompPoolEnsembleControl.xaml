@@ -13,6 +13,7 @@
 
     <UserControl.Resources>
         <converters:InvBoolToVisibilityConverter x:Key="InvBoolToVisibilityConverter"/>
+        
         <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
 
